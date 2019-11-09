@@ -69,8 +69,7 @@ if (isset($_POST['AddGRNToTrans'])){
 												$_POST['AssetID'],
 												0,
 												$_POST['DecimalPlaces'],
-												$_POST['GRNBatchNo'],
-												$_SESSION['SuppTrans']->SuppReference);
+												$_POST['GRNBatchNo'],'');
 	}
 }
 

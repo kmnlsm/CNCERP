@@ -1,6 +1,5 @@
 <?php
-// GLAccountInquiry.php
-// Shows the general ledger transactions for a specified account over a specified range of periods.
+/* Shows the general ledger transactions for a specified account over a specified range of periods */
 
 include ('includes/session.php');
 $Title = _('General Ledger Account Inquiry');
@@ -8,7 +7,9 @@ $ViewTopic = 'GeneralLedger';
 $BookMark = 'GLAccountInquiry';
 include('includes/header.php');
 
-echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/transactions.png" title="',// Icon image.
+echo '
+	<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $Theme,
+	'/images/transactions.png" title="',// Icon image.
 	_('General Ledger Account Inquiry'), '" /> ',// Icon title.
 	_('General Ledger Account Inquiry'), '</p>';// Page title.
 
@@ -34,11 +35,11 @@ if(isset($_GET['Show'])) {
 if(isset($SelectedPeriod)) { //If it was called from itself (in other words an inquiry was run and we wish to leave the periods selected unchanged
 	$FirstPeriodSelected = min($SelectedPeriod);
 	$LastPeriodSelected = max($SelectedPeriod);
-} elseif(isset($_GET['PeriodFrom'])) { //If it was called from the Trial Balance/P&L or Balance sheet
-	$FirstPeriodSelected = $_GET['PeriodFrom'];
-	$LastPeriodSelected = $_GET['PeriodTo'];
-	$SelectedPeriod[0] = $_GET['PeriodFrom'];
-	$SelectedPeriod[1] = $_GET['PeriodTo'];
+} elseif(isset($_GET['FromPeriod'])) { //If it was called from the Trial Balance/P&L or Balance sheet
+	$FirstPeriodSelected = $_GET['FromPeriod'];
+	$LastPeriodSelected = $_GET['ToPeriod'];
+	$SelectedPeriod[0] = $_GET['FromPeriod'];
+	$SelectedPeriod[1] = $_GET['ToPeriod'];
 } else { // Otherwise just highlight the current period
 	$FirstPeriodSelected = GetPeriod(date($_SESSION['DefaultDateFormat']));
 	$LastPeriodSelected = GetPeriod(date($_SESSION['DefaultDateFormat']));
@@ -180,24 +181,34 @@ if(isset($_POST['Show'])) {
 	$SelectedAccountName=$namerow['accountname'];
 	$ErrMsg = _('The transactions for account') . ' ' . $SelectedAccount . ' ' . _('could not be retrieved because') ;
 	$TransResult = DB_query($sql,$ErrMsg);
+	include_once('includes/Transby.php');
 	$BankAccountInfo = isset($BankAccount)
 						?	'<th>' . _('Org Currency') . '</th>
 							<th>' . _('Amount in Org Currency') . '</th>
-							<th>' . _('Bank Ref') . '</th>'
-						:	'' ;
+							<th>' . _('Bank Ref') . '</th>							
+				            <th>' . _('ChineseGL_Author') . '</th>'
+						:	'<th>' . _('ChineseGL_Author') . '</th>' ;
 	echo '<br />
-		<table class="selection">
+	<script src="', $RootPath, '/javascripts/table2excel/exceljs.min.js"></script>
+    <script src="', $RootPath, '/javascripts/table2excel/table2excel.core.js"></script>
+		<table id="toexcel" class="selection">
 		<thead>
+			<tr>';
+			if ($BankAccount){
+				echo '<th colspan="12"><b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b></th><!--银行要多三列-->
+			</tr>';
+			}else{
+				echo '<th colspan="9"><b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b></th><!--其他要少三列-->
+			</tr>';
+			}
+			echo '
 			<tr>
-				<th colspan="11"><b>', _('Transactions for account'), ' ', $SelectedAccount, ' - ', $SelectedAccountName, '</b></th>
-			</tr>
-			<tr>
-				<th>', _('Type'), '</th>
-				<th>', _('Number'), '</th>
-				<th>', ('Date'), '</th>
+				<th>', _('Date'), '</th>
+				<th>', _('ChineseGL_Type'), '</th>
+				<th>', _('ChineseGL_Number'), '</th>
 				<th>', _('Narrative'), '</th>
 				<th>', _('Debit'), '</th>
-				<th>', _('Credit'), '</th>
+				<th>', _('Credits'), '</th>
 				<th>', _('Balance'), '</th>
 				<th>', _('Tag'), '</th>',
 				$BankAccountInfo, '
@@ -227,8 +238,14 @@ if(isset($_POST['Show'])) {
 			echo	'<td class="number"><b>', locale_number_format($RunningTotal,$_SESSION['CompanyRecord']['decimalplaces']), '</b></td>
 					<td>&nbsp;</td>';
 		}
-		echo		'<td colspan="5">&nbsp;</td>
+		if ($BankAccount){
+				echo '<td colspan="6">&nbsp;</td><!--银行要多三列-->
 				</tr>';
+			}else{
+				echo '<td colspan="3">&nbsp;</td><!--其他少三列-->
+				</tr>';
+				}
+
 	}
 	$PeriodTotal = 0;
 	$PeriodNo = -9999;
@@ -319,7 +336,8 @@ if(isset($_POST['Show'])) {
 		}
 
 
-		$URL_to_TransDetail = $RootPath . '/GLTransInquiry.php?TypeID=' . urlencode($myrow['type']) . '&amp;TransNo=' . urlencode($myrow['typeno']);
+		$URL_to_TransDetail = $RootPath . '/GLTransInquiry.php?TypeID=' . $myrow['type'] . '&amp;TransNo=' . $myrow['typeno'];
+		$ShowGLModal= $myrow['type'] . 'AND' . $myrow['typeno'];
 		$FormatedTranDate = ConvertSQLDate($myrow['trandate']);
 		if($myrow['amount']>=0) {
 			$DebitAmount = locale_number_format($myrow['amount'], $_SESSION['CompanyRecord']['decimalplaces']);
@@ -330,10 +348,11 @@ if(isset($_POST['Show'])) {
 		}
 		$RunningTotal += $myrow['amount'];
 		$PeriodTotal += $myrow['amount'];
+		list($userid,$realname,$stepdate)=getTransBy($myrow['type'],$myrow['typeno']);
 		echo	'<tr class="striped_row">
+		        <td class="centre">', $FormatedTranDate, '</td>
 				<td class="text">', _($myrow['typename']), '</td>
-				<td class="number"><a href="', $URL_to_TransDetail, '">', $myrow['typeno'], '</a></td>
-				<td class="centre">', $FormatedTranDate, '</td>
+				<td class="number GLshowlnk noprint" onclick="CNCERP_GLShows(', $myrow['type'] ,',', $myrow['typeno'] ,')">' . $myrow['typeno'] . '</td>
 				<td class="text">', $myrow['narrative'], '</td>
 				<td class="number">', $DebitAmount, '</td>
 				<td class="number">', $CreditAmount, '</td>
@@ -344,7 +363,7 @@ if(isset($_POST['Show'])) {
 				<td class="number"><b>', locale_number_format($OrgAmt, $_SESSION['CompanyRecord']['decimalplaces']), '</b></td>
 				<td class="text">', $BankRef, '</td>';
 		}
-		echo '</tr>';
+		echo '<td class="text">', $realname, '</td></tr>';
 	}
 
 	echo '<tr>
@@ -362,9 +381,25 @@ if(isset($_POST['Show'])) {
 		echo	'<td class="number"><b>', locale_number_format(($RunningTotal), $_SESSION['CompanyRecord']['decimalplaces']), '</b></td>
 				<td>&nbsp;</td>';
 	}
-	echo	'<td colspan="5">&nbsp;</td>
-		</tr>
+	if ($BankAccount){
+				echo '<td colspan="6">&nbsp;</td><!--银行要多三列-->
+				</tr>';
+			}else{
+				echo '<td colspan="3">&nbsp;</td><!--其他少三列-->
+				</tr>';
+				}
+	echo	'
 		</tbody></table>';
+	echo '
+			<br />
+			<div class="centre noprint">', // Form buttons:
+			'<button type="button"  onclick="exportTables()"><img alt="" src="', $RootPath, '/css/', $Theme,
+					'/images/excel.svg" />  导出excel</button>',
+				'<button onclick="javascript:window.print()" type="button"><img alt="" src="', $RootPath, '/css/', $Theme,
+					'/images/printer.png" /> ', _('Print'), '</button>', // "Print" button.
+				'<button onclick="window.location=\'index.php?Application=GL\'" type="button"><img alt="" src="'.$RootPath.'/css/'.$Theme.
+					'/images/return.svg" /> ', _('Return'), '</button>', // "Return" button.
+			'</div>';
 } /* end of if Show button hit */
 
 if(isset($ShowIntegrityReport) AND $ShowIntegrityReport==True AND $_POST['tag']=='0') {
@@ -374,5 +409,6 @@ if(isset($ShowIntegrityReport) AND $ShowIntegrityReport==True AND $_POST['tag']=
 	prnMsg( _('There are differences between the sum of the transactions and the recorded movements in the ChartDetails table') . '. ' . _('A log of the account differences for the periods report shows below'),'warn');
 	echo '<p>' . $IntegrityReport;
 }
+
 include('includes/footer.php');
 ?>

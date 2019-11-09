@@ -8,7 +8,7 @@ $Title = _('Payment Entry');
 if(isset($_GET['SupplierID'])) {// Links to Manual before header.php
 	$ViewTopic = 'AccountsPayable';
 	$BookMark = 'SupplierPayments';
-	$PageTitleText = _('Enter a Payment to, or Receipt from the Supplier');
+	$PageTitleText = _('初始化工具');
 } else {
 	$ViewTopic= 'GeneralLedger';
 	$BookMark = 'BankAccountPayments';
@@ -363,11 +363,11 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 		//check the cheque number
 		if(empty($_POST['ChequeNum'])) {
 			prnMsg(_('There are no Check Number input'),'error');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} elseif(!is_numeric($_POST['ChequeNum'])) {//check if this cheque no has been used
 			prnMsg(_('The cheque no should be numeric'),'error');
-			include('includes/footer.inc');
+			include('includes/footer.php');
 			exit;
 		} else {
 			$cheqsql = "SELECT count(chequeno) FROM  supptrans WHERE chequeno='" . $_POST['ChequeNum'] . "'";
@@ -376,7 +376,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 			$cheqrow = DB_fetch_row($cheqresult);
 			if($cheqrow[0]>0) {
 				prnMsg(_('The cheque has already been used'),'error');
-				include('includes/footer.inc');
+				include('includes/footer.php');
 				exit;
 			}
 		}
@@ -427,8 +427,10 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 
 		//its a nominal bank transaction type 1
 
-			$TransNo = GetNextTransNo( 1 );
-			$TransType = 1;
+			$TransNo = GetNextTransNo( 50 );
+			$TransType = 50;
+			include_once('includes/Transby.php');
+			addTransBy(50,$TransNo);
 
 			if($_SESSION['CompanyRecord']['gllink_creditors']==1) { /* then enter GLTrans */
 				$TotalAmount=0;
@@ -526,7 +528,9 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 
 				*/
 
-					$ReceiptTransNo = GetNextTransNo( 2 );
+					$ReceiptTransNo = GetNextTransNo( 50 );
+					include_once('includes/Transby.php');
+					addTransBy(50,$ReceiptTransNo);
 					$SQL = "INSERT INTO banktrans (
 								transno,
 								type,
@@ -540,7 +544,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 								currcode
 							) VALUES ('" .
 								$ReceiptTransNo . "',
-								2,'" .
+								50,'" .
 								$PaymentItem->GLCode . "','" .
 								'@' . $TransNo . ' ' . _('Act Transfer From') .' '. $_SESSION['PaymentDetail'.$identifier]->Account . ' - ' . $PaymentItem->Narrative . "','" .
 								$ExRate . "','" .
@@ -572,9 +576,10 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 			/*Its a supplier payment type 22 */
 			$CreditorTotal = (($_SESSION['PaymentDetail'.$identifier]->Discount + $_SESSION['PaymentDetail'.$identifier]->Amount)/$_SESSION['PaymentDetail'.$identifier]->ExRate)/$_SESSION['PaymentDetail'.$identifier]->FunctionalExRate;
 
-			$TransNo = GetNextTransNo(22);
-			$TransType = 22;
-
+			$TransNo = GetNextTransNo(50);
+			$TransType = 50;
+			include_once('includes/Transby.php');
+			addTransBy(50,$TransNo);
 			/* Create a SuppTrans entry for the supplier payment */
 			$SQL = "INSERT INTO supptrans (
 							transno,
@@ -589,7 +594,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 							chequeno
 						) VALUES ('" .
 							$TransNo . "',
-							22,'" .
+							50,'" .
 							$_SESSION['PaymentDetail'.$identifier]->SupplierID . "','" .
 							FormatDateForSQL($_SESSION['PaymentDetail'.$identifier]->DatePaid) . "','" .
 							date('Y-m-d H-i-s') . "','" .
@@ -662,7 +667,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 							narrative,
 							amount
 						) VALUES (
-							22,'" .
+							50,'" .
 							$TransNo . "','" .
 							FormatDateForSQL($_SESSION['PaymentDetail'.$identifier]->DatePaid) . "','" .
 							$PeriodNo . "','" .
@@ -685,7 +690,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 								narrative,
 								amount
 							) VALUES (
-								22,'" .
+								50,'" .
 								$TransNo . "','" .
 								FormatDateForSQL($_SESSION['PaymentDetail'.$identifier]->DatePaid) . "','" .
 								$PeriodNo . "','" .

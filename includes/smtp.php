@@ -7,8 +7,8 @@
 * Last Modified..: 21 December 2001
 */
 
-	define('SMTP_STATUS_NOT_CONNECTED', 1, TRUE);
-	define('SMTP_STATUS_CONNECTED', 2, TRUE);
+	define('SMTP_STATUS_NOT_CONNECTED', 1);
+	define('SMTP_STATUS_CONNECTED', 2);
 
 	class smtp{
 
@@ -44,10 +44,10 @@
 		*             to fsockopen()
         */
 
-		function smtp($params = array()){
+		function __construct($params = array()){
 
 			if(!defined('CRLF'))
-				define('CRLF', "\r\n", TRUE);
+				define('CRLF', "\r\n");
 
 			$this->authenticated	= FALSE;
 			$this->timeout			= 5;
@@ -76,6 +76,10 @@
 				$this->$key = $value;
 			}
 		}
+		
+		function smtp(){
+			self::__construct();
+		}
 
 		/**
         * Connect function. This will, when called
@@ -85,10 +89,10 @@
 		* it will connect to the server and send
 		* the HELO command.
         */
+		static $obj;
+		static function connect($params = array()){
 
-		function &connect($params = array()){
-
-			if(!isset($this->status)){
+			if(!isset($obj) || !isset($obj->status)){
 				$obj = new smtp($params);
 				if($obj->connect()){
 					$obj->status = SMTP_STATUS_CONNECTED;
@@ -97,16 +101,16 @@
 				return $obj;
 
 			}else{
-				$this->connection = fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
+				$obj->connection = fsockopen($obj->host, $obj->port, $errno, $errstr, $obj->timeout);
 				if(function_exists('socket_set_timeout')){
-					@socket_set_timeout($this->connection, 5, 0);
+					@socket_set_timeout($obj->connection, 5, 0);
 				}
 
-				$greeting = $this->get_data();
-				if(is_resource($this->connection)){
-					return $this->auth ? $this->ehlo() : $this->helo();
+				$greeting = $obj->get_data();
+				if(is_resource($obj->connection)){
+					return $obj->auth ? $obj->ehlo() : $obj->helo();
 				}else{
-					$this->errors[] = 'Failed to connect to server: '.$errstr;
+					$obj->errors[] = 'Failed to connect to server: '.$errstr;
 					return FALSE;
 				}
 			}

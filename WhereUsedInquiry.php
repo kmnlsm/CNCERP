@@ -48,12 +48,14 @@ echo '<input type="submit" name="ShowWhereUsed" value="' . _('Show Where Used') 
 
 if (isset($StockID)) {
 
-	$SQL = "SELECT bom.*,
+	$SQL = "SELECT locations.locationname,
+                bom.*,
 				stockmaster.description,
 				stockmaster.discontinued
 			FROM bom INNER JOIN stockmaster
 			ON bom.parent = stockmaster.stockid
 			INNER JOIN locationusers ON locationusers.loccode=bom.loccode AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canview=1
+            INNER JOIN locations ON locations.loccode=bom.loccode
 			WHERE component='" . $StockID . "'
                 AND bom.effectiveafter <= '" . date('Y-m-d') . "'
                 AND bom.effectiveto > '" . date('Y-m-d') . "'
@@ -90,7 +92,7 @@ if (isset($StockID)) {
 					<td><a target="_blank" href="' . $RootPath . '/BOMInquiry.php?StockID=' . $myrow['parent'] . '" alt="' . _('Show Bill Of Material') . '">' . $myrow['parent']. ' - ' . $myrow['description']. '</a></td>
 					<td>' . $Status. '</td>
 					<td>' . $myrow['workcentreadded']. '</td>
-					<td>' . $myrow['loccode']. '</td>
+					<td>' . $myrow['locationname'].'['.$myrow['loccode']. ']</td>
 					<td class="number">' . locale_number_format($myrow['quantity'],'Variable') . '</td>
 					<td>' . ConvertSQLDate($myrow['effectiveafter']) . '</td>
 					<td>' . ConvertSQLDate($myrow['effectiveto']) . '</td>

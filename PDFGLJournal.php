@@ -1,29 +1,25 @@
-<?php
+<?php /* $Id$*/
 
-
-/* $Revision: 1.5 $ */
+/* $Revision: 1.5 $2012.2CQZ二次修改 */
 
 include('includes/session.php');
-
+include('includes/Transby.php');
 if (isset($_POST['JournalNo'])) {
 	$JournalNo=$_POST['JournalNo'];
-	$Type = $_POST['Type'];
+	$TypeID=$_POST['Type'];
 } else if (isset($_GET['JournalNo'])) {
 	$JournalNo=$_GET['JournalNo'];
-	$Type = $_GET['Type'];
+	$TypeID=$_GET['Type'];
 } else {
 	$JournalNo='';
+	$TypeID='';
 }
-if (empty($JournalNo) OR empty($Type)) {
-	prnMsg(_('This page should be called with Journal No and Type'),'error');
-	include('includes/footer.php');
-	exit;
-}
-
+//if(empty($TypeID))$TypeID=0;
+if(empty($TypeID));
 if ($JournalNo=='Preview') {
-	$FormDesign = simplexml_load_file(sys_get_temp_dir().'/Journal.xml');
+	$FormDesign = simplexml_load_file(sys_get_temp_dir().'/JournalCN.xml');
 } else {
-	$FormDesign = simplexml_load_file($PathPrefix.'companies/'.$_SESSION['DatabaseName'].'/FormDesigns/Journal.xml');
+	$FormDesign = simplexml_load_file($PathPrefix.'companies/'.$_SESSION['DatabaseName'].'/FormDesigns/JournalCN.xml');
 }
 
 // Set the paper size/orintation
@@ -31,14 +27,19 @@ $PaperSize = $FormDesign->PaperSize;
 $PageNumber=1;
 $line_height=$FormDesign->LineHeight;
 include('includes/PDFStarter.php');
-$pdf->addInfo('Title', _('General Ledger Journal') );
+$pdf->addInfo('Title', _('中国(甲式10)会计凭证') );
+$pdf->addInfo('Author','webERP ' . 'CQZ二次修改');
+$pdf->addInfo('Subject',_('会计凭证——中国式会计凭证--登录ERP打印或下载此凭证的用户：').$_SESSION['UsersRealName']);
+$pdf->SetProtection(array('modify','copy','annot-forms'), '');
 
 if ($JournalNo=='Preview') {
 	$LineCount = 2; // UldisN
 } else {
-	$sql="SELECT gltrans.typeno,
+	$sql="SELECT gltrans.type,
+	            gltrans.typeno,
 				gltrans.trandate,
 				gltrans.account,
+				systypes.typename,
 				chartmaster.accountname,
 				gltrans.narrative,
 				gltrans.amount,
@@ -48,16 +49,18 @@ if ($JournalNo=='Preview') {
 			FROM gltrans
 			INNER JOIN chartmaster
 				ON gltrans.account=chartmaster.accountcode
+			INNER JOIN systypes
+				ON gltrans.type=systypes.typeid 
 			LEFT JOIN tags
 				ON gltrans.tag=tags.tagref
-			WHERE gltrans.type='" . $Type . "'
+			WHERE gltrans.type='".$TypeID."'
 				AND gltrans.typeno='" . $JournalNo . "'";
-
-	$result=DB_query($sql);
+	$result=DB_query($sql, $db);
 	$LineCount = DB_num_rows($result); // UldisN
 	$myrow=DB_fetch_array($result);
 	$JournalDate=$myrow['trandate'];
 	DB_data_seek($result, 0);
+	$Typemame=$myrow['typename'];
 	include('includes/PDFGLJournalHeader.inc');
 }
 $counter=1;
@@ -84,31 +87,73 @@ while ($counter<=$LineCount) {
 		$Tag = $myrow['tag'].' - '.$myrow['tagdescription'];
 		$JobRef = $myrow['jobref'];
 	}
-	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x,$Page_Height-$YPos,$FormDesign->Data->Column1->Length,$FormDesign->Data->Column1->FontSize, $AccountCode);
-	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x,$Page_Height-$YPos,$FormDesign->Data->Column2->Length,$FormDesign->Data->Column2->FontSize, $Description);
-	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x,$Page_Height-$YPos,$FormDesign->Data->Column3->Length,$FormDesign->Data->Column3->FontSize, $Narrative);
-	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column4->x,$Page_Height-$YPos,$FormDesign->Data->Column4->Length,$FormDesign->Data->Column4->FontSize, locale_number_format($Amount,$_SESSION['CompanyRecord']['decimalplaces']), 'right');
-	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x,$Page_Height-$YPos,$FormDesign->Data->Column5->Length,$FormDesign->Data->Column5->FontSize, $Tag);
-	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column6->x,$Page_Height-$YPos,$FormDesign->Data->Column6->Length,$FormDesign->Data->Column6->FontSize, $JobRef, 'left');
+
+	if ( $myrow['amount'] > 0) {
+			$DebitAmount = locale_number_format($myrow['amount'],$_SESSION['CompanyRecord']['decimalplaces']);
+			$DebitTotal += $myrow['amount'];
+			$CreditAmount = ' ';
+	} else {
+			$CreditAmount = locale_number_format(-$myrow['amount'],$_SESSION['CompanyRecord']['decimalplaces']);
+			$CreditTotal += $myrow['amount'];
+			$DebitAmount = ' ';
+	}
+	$pdf->SetTextColor(0,0,0);
+	if((mb_strlen($Narrative,'GB2312')+ substr_count($Narrative," "))>40){
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x+3,$Page_Height-$YPos-5,$FormDesign->Data->Column1->Length,$FormDesign->Data->Column1->FontSize, $Narrative);
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x+3,$Page_Height-$YPos+3,$FormDesign->Data->Column2->Length,$FormDesign->Data->Column2->FontSize, $AccountCode);
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x+3,$Page_Height-$YPos+3,$FormDesign->Data->Column3->Length,$FormDesign->Data->Column3->FontSize, $Description);
+	}else{
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column1->x+3,$Page_Height-$YPos,$FormDesign->Data->Column1->Length,$FormDesign->Data->Column1->FontSize, $Narrative);
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column2->x+3,$Page_Height-$YPos,$FormDesign->Data->Column2->Length,$FormDesign->Data->Column2->FontSize, $AccountCode);
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column3->x+3,$Page_Height-$YPos,$FormDesign->Data->Column3->Length,$FormDesign->Data->Column3->FontSize, $Description);
+	}
+	$pdf->SetFont('helvetica', '', 10);
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column4->x+3,$Page_Height-$YPos,$FormDesign->Data->Column4->Length,$FormDesign->Data->Column4->FontSize,$DebitAmount , 'right');
+			
+	$LeftOvers = $pdf->addTextWrap($FormDesign->Data->Column5->x+3,$Page_Height-$YPos,$FormDesign->Data->Column5->Length,$FormDesign->Data->Column5->FontSize, $CreditAmount, 'right');
+	
+
 	$YPos += $line_height;
-	$counter++;
+	$counter++;	
+
+	$DebitTotal1=locale_number_format($DebitTotal,$_SESSION['CompanyRecord']['decimalplaces'],  'right');
+	$CreditTotal1=locale_number_format(-$CreditTotal,$_SESSION['CompanyRecord']['decimalplaces'],  'right');
+	
+	$pdf->SetFont('javiergb', '', 10);
+
 	if ($YPos >= $FormDesign->LineAboveFooter->starty){
 		/* We reached the end of the page so finsih off the page and start a newy */
 		$PageNumber++;
 		$YPos=$FormDesign->Data->y;
-		include ('includes/PDFGrnHeader.inc');
-	} //end if need a new page headed up
-}
+		include ('includes/PDFGLJournalHeader.inc');
+	}  
+} 
+$pdf->setlineStyle(array('width'=>0.8));
+$pdf->SetLineStyle(array('color'=>array(0,0,0)));
+$pdf->Line($XPos=540, $Page_Height-$YPos+15, $FormDesign->Column33->endx,$Page_Height - $FormDesign->Column33->endy);
+
+//end if need a new page headed up
+
+
+//$pdf->addJpegFromFile('hjje.jpg',$FormDesign->Headings->Column7->x+3+20,$Page_Height - 282,110,28);
+$pdf->SetTextColor(0,0,255);
+$pdf->addText($FormDesign->Headings->Column7->x+3,$Page_Height-$FormDesign->Headings->Column7->y+12,$FormDesign->Headings->Column7->FontSize, _('合 计 金 额'));//$FormDesign->Headings->Column7->name
+$pdf->SetTextColor(0,0,0);
+$pdf->SetFont('helvetica', '', 10);
+$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column8->x+3,$Page_Height - $FormDesign->Headings->Column8->y, $FormDesign->Headings->Column8->Length,$FormDesign->Headings->Column8->FontSize, $DebitTotal1, 'right');
+$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column9->x+3,$Page_Height - $FormDesign->Headings->Column9->y, $FormDesign->Headings->Column9->Length,$FormDesign->Headings->Column9->FontSize, $CreditTotal1, 'right');
+$pdf->SetFont('javiergb', '', 10);
 
 if ($LineCount == 0) {   //UldisN
-	$Title = _('Printing Error');
-	include('includes/header.php');
-	prnMsg(_('There were no Journals to print'),'warn');
-	echo '<br /><a href="'.$RootPath.'/index.php">' .  _('Back to the menu') . '</a>';
-	include('includes/footer.php');
+	$title = _('GRN Error');
+	include('includes/header.inc');
+	prnMsg(_('There were no GRN to print'),'warn');
+	echo '<br /><a href="'.$rootpath.'/index.php">'. _('Back to the menu').'</a>';
+	include('includes/footer.inc');
 	exit;
 } else {
-    $pdf->OutputD($_SESSION['DatabaseName'] . '_Journal_' . date('Y-m-d').'.pdf');//UldisN
+    $pdf->OutputD($_SESSION['DatabaseName'] . '_GRN_' . date('Y-m-d').'.pdf');//UldisN
     $pdf->__destruct(); //UldisN
 }
 ?>
+

@@ -25,7 +25,7 @@ if(!extension_loaded('mbstring')){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>WebERP Installation Wizard</title>
+    <title>CNCERP Installation Wizard</title>
     <link rel="stylesheet" type="text/css" href="installer.css" />
 </head>
 <body>
@@ -178,11 +178,11 @@ if(!extension_loaded('mbstring')){
 	$PathPrefix = '../';//To make the LanguageSetup.php script run properly
 	include('../includes/LanguageSetup.php');
 	include('../includes/MiscFunctions.php');
-	$DefaultTheme = 'xenos';
+	$DefaultTheme = 'stisla';
 
 	// Prevent the installation file from running again:
 	if(file_exists('../config.php') or file_exists('../Config.php')){
-		echo _('It seems that the system has been already installed. If you want to install again, please remove the config.php file first');
+		echo _('系统似乎已经安装过了。如果要再次安装，请先删除config.php文件');
 		exit;
 	}
 	if(isset($_POST['Install'])){//confirm the final install data, the last validation step before we submit the data
@@ -196,13 +196,13 @@ if(!extension_loaded('mbstring')){
 
 			if(!preg_match(',^[^/\\\?%:\|<>\"]+$,',$_POST['CompanyName'])){
 				$InputError = 1;
-				echo _('The Company names cannot contain illegal characters such as /\?%:|<>"');
+				echo _('公司名称不能包含非法字符，如 /\?%:|<>"');
 
 			}
 			$CompanyName= $_POST['CompanyName'];
 		}else{
 				$InputError = 1;
-				echo _('The Company Name name should not be empty');
+				echo _('公司名称不能为空');
 		}
 		//provision for differing database post inputs - need to review and make these consistent
 		if ( (isset($_POST['DatabaseName'])  && !empty($_POST['DatabaseName'])) && (!isset($_POST['Database']) || empty($_POST['Database']))) $_POST['Database'] = $_POST['DatabaseName'];
@@ -213,27 +213,27 @@ if(!extension_loaded('mbstring')){
 
 			if(!preg_match(',[a-zA-Z0-9_\&\-\ ]*,',$_POST['Database'])){
 				$InputError = 1;
-				echo _('The database name should not contains illegal characters such as "/\?%:|<>" etc');
+				echo _('数据库名称不应包含非法字符，如 "/\?%:|<>" etc');
 
 			}
 			$DatabaseName = strtolower($_POST['Database']);
 		}else{
 			$InputError = 1;
-			echo _('The database name should not be empty');
+			echo _('数据库名称不应为空');
 		}
 		if(!empty($_POST['TimeZone'])){
 			if(preg_match(',(Etc|Pacific|India|Europe|Australia|Atlantic|Asia|America|Africa)/[A-Z]{1}[a-zA-Z\-_/]+,',$_POST['TimeZone'])){
 				$TimeZone = $_POST['TimeZone'];
 			}else{
 				$InputError = 1;
-				echo _('The timezone must be legal');
+				echo _('时区必须合法');
 			}
 		}
 		$OnlyDemo = 0;
 		$DualCompany = 0;
 		$NewCompany = 0;
 		if(!empty($_POST['Demo']) and $_POST['Demo'] == 'on'){
-			if(strtolower($DatabaseName) === 'weberpdemo'){//user select to install the weberpdemo
+			if(strtolower($DatabaseName) === 'cncerpdemo'){//user select to install the cncerpdemo
 				$OnlyDemo = 1;
 
 			}else{
@@ -247,13 +247,13 @@ if(!extension_loaded('mbstring')){
 
 		}else{
 			$InputError = 1;
-			echo _('You must enter a valid email address for the Administrator.');
+			echo _('必须为管理员输入有效的电子邮件地址');
 		}
 		if(!empty($_POST['webERPPassword']) and !empty($_POST['PasswordConfirm']) and $_POST['webERPPassword'] == $_POST['PasswordConfirm']){
 			$AdminPassword = $_POST['webERPPassword'];
 		}else{
 			$InputError = 1;
-			echo _('Please correct the password. The password is either blank, or the password check does not match.');
+			echo _('请更正密码。密码为空，或者密码检查不匹配。');
 
 		}
 		if(!empty($_POST['HostName'])){
@@ -265,25 +265,25 @@ if(!extension_loaded('mbstring')){
 			if($HostValid){
 				$HostName = $_POST['HostName'];
 			}else{
-				echo _('The Host Name is not a valid name.');
+				echo _('主机名不是有效的名称。');
 				exit;
 			}
 
 		}else{
 			$InputError = 1;
-			echo _('The Host Name must not be empty.');
+			echo _('主机名不能为空。');
 		}
 		if(!empty($_POST['UserName']) and strlen($_POST['UserName'])<=16){//mysql database user
 			$UserName = $_POST['UserName'];
 		}else{
 			$InputError = 1;
-			echo _('The user name cannot be empty and length must not be over 16 characters.');
+			echo _('用户名不能为空，长度不能超过16个字符。');
 		}
 		if(isset($_POST['Password'])){//mysql database password
 			$Password = $_POST['Password'];
 		}
 		if(!empty($_POST['MysqlExt'])){//get the mysql connect extension
-			$DBConnectType = 'mysql';
+			$DBConnectType = 'mysqli';//都要求mysqli
 		}else{
 			$DBConnectType = 'mysqli';
 		}
@@ -292,17 +292,17 @@ if(!extension_loaded('mbstring')){
 				$UserLanguage = $_POST['UserLanguage'];
 			}else{
 				$InputError = 1;
-				echo _('The user language defintion is not in the correct format');
+				echo _('用户语言定义的格式不正确');
 			}
 		}
 		If(!empty($_FILES['LogoFile'])){//We check the file upload situation
 			if($_FILES['LogoFile']['error'] == UPLOAD_ERR_INI_SIZE || $_FILES['LogoFile']['error'] == UPLOAD_ERR_FORM_SIZE){//the file is over the php.ini limit or over the from limit
 				$InputError = 1;
 				if(upload_max_filesize < 0.01){
-					echo _('The company logo file failed to upload due to it\'s size. The file was over the upload_max_filesize set in your php.ini configuration.');
+					echo _('由于公司logo文件太大，无法上载该文件位于php.ini配置中设置的upload_max_filesizea项。');
 
 				}else{
-					echo _('The logo file failed to upload as it was over 10KB size limit.');
+					echo _('徽标文件无法上载，因为它超过了10KB的大小限制。');
 				}
 
 			}elseif($_FILES['LogoFile']['error'] == UPLOAD_ERR_OK){//The file has been successfully uploaded
@@ -317,11 +317,11 @@ if(!extension_loaded('mbstring')){
 				$CountrySQL = $_POST['CountrySQL'];
 			}else{
 				$InputError = 1;
-				echo _('The country SQL file name must only contain letters,"-","_"');
+				echo _('国家/地区SQL文件名只能包含字母,"-","_"');
 			}
 		}else{
 				$InputError = 1;
-				echo _('There is no country SQL file selected. Please select a file.');
+				echo _('未选择国家/地区SQL文件请选择一个文件。');
 
 		}
 		if($InputError == 1){//return to the company configuration stage
@@ -347,30 +347,31 @@ if(!extension_loaded('mbstring')){
 				$Result = mkdir($CompanyDir . '/reports');
 				$Result = mkdir($CompanyDir . '/reportwriter');
 
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/FGLabel.xml', $CompanyDir . '/FormDesigns/FGLabel.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/Journal.xml', $CompanyDir . '/FormDesigns/Journal.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/QALabel.xml', $CompanyDir . '/FormDesigns/QALabel.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/ShippingLabel.xml', $CompanyDir . '/FormDesigns/ShippingLabel.xml');
-				copy ($Path_To_Root . '/companies/weberpdemo/FormDesigns/WOPaperwork.xml', $CompanyDir . '/FormDesigns/WOPaperwork.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/FGLabel.xml', $CompanyDir . '/FormDesigns/FGLabel.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/GoodsReceived.xml', $CompanyDir . '/FormDesigns/GoodsReceived.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/Journal.xml', $CompanyDir . '/FormDesigns/Journal.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/JournalCN.xml', $CompanyDir . '/FormDesigns/JournalCN.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/PickingList.xml', $CompanyDir . '/FormDesigns/PickingList.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/PurchaseOrder.xml', $CompanyDir . '/FormDesigns/PurchaseOrder.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/QALabel.xml', $CompanyDir . '/FormDesigns/QALabel.xml');
+				copy ($Path_To_Root . '/companies/cncerpdemo/FormDesigns/ShippingLabel.xml', $CompanyDir . '/FormDesigns/ShippingLabel.xml');
+				copy ($Path_To_Root . '/companies/cbcerpdemo/FormDesigns/WOPaperwork.xml', $CompanyDir . '/FormDesigns/WOPaperwork.xml');
 
 				if(isset($File_Temp_Name)){
-					$Result = move_uploaded_file($File_Temp_Name, $CompanyDir . '/logo.jpg');
+					$Result = move_uploaded_file($File_Temp_Name, $CompanyDir . '/logo.png');
 
 				}elseif(isset($File_To_Copy)){
-					$Result = copy ($Path_To_Root . '/logo_server.jpg',$CompanyDir.'/logo.jpg');
+					$Result = copy ($Path_To_Root . '/logo_server.png',$CompanyDir.'/logo.png');
 				}
 			}
 			if ( isset($NewCompany) and ($NewCompany == 1)) {
 			    $CompanyList[] = array('database' => $DatabaseName, 'company' => $CompanyName);
 			} elseif (isset($DualCompany) and $DualCompany == 1) {
 			    $CompanyList[] = array('database' => $DatabaseName, 'company' => $CompanyName);
-			    $CompanyList[] = array('database' => 'weberpdemo', 'company' => _('WebERP Demo Company'));
+			    $CompanyList[] = array('database' => 'cncerpdemo', 'company' => _('CN Cloud ERP Demo Company'));
 			} else {
 			    //make sure we have at least the demo
-			    $CompanyList[] = array('database' => 'weberpdemo', 'company' => _('WebERP Demo Company'));
+			    $CompanyList[] = array('database' => 'cncerpdemo', 'company' => _('ENEERP Demo Company'));
 			}
 
 			//$msg holds the text of the new config.php file
@@ -403,7 +404,7 @@ if(!extension_loaded('mbstring')){
 			if(isset($NewCompany)){
 				$msg .= "\$DefaultDatabase = '".$DatabaseName."';\n";
 			}else{
-				$msg .= "\$DefaultDatabase = 'weberpdemo';\n";
+				$msg .= "\$DefaultDatabase = 'cncerpdemo';\n";
 			}
 			$msg .= "\$SessionLifeTime = 3600;\n";
 			$msg .= "\$MaximumExecutionTime = 120;\n";
@@ -431,11 +432,11 @@ if(!extension_loaded('mbstring')){
 			//write the config.php file since we have test the writability of the root path and companies,
 			//there is little possibility that it will fail here. So just an warn if it is failed.
 			if(!$zp = fopen($Path_To_Root . '/config.php','w')){
-				echo _("Cannot open the configuration file").$Config_File;
+				echo _("无法打开配置文件").$Config_File;
 			} else {
 				if (!fwrite($zp, $msg)){
 					fclose($zp);
-					echo _("Cannot write to the configuration file").$Config_File;
+					echo _("无法写入配置文件").$Config_File;
 				}
 				//close file
 				fclose($zp);
@@ -446,12 +447,12 @@ if(!extension_loaded('mbstring')){
 			if($DBConnectType == 'mysqli'){
 				$Db = mysqli_connect($HostName,$UserName,$Password);
 				if(!$Db){
-					echo _('Failed to connect the database, the error is ').mysqli_connect_error();
+					echo _('连接数据库失败，错误是 ').mysqli_connect_error();
 				}
 			}elseif($DBConnectType == 'mysql'){
 				$Db = mysql_connect($HostName,$UserName,$Password);
                 if(!$Db){
-                    echo _('Failed to connect the database, the error is ').mysql_connect_error();
+                    echo _('连接数据库失败，错误是').mysql_connect_error();
                 }
 			}
 			$NewSQLFile = $Path_To_Root.'/sql/mysql/country_sql/'.$CountrySQL;
@@ -468,13 +469,13 @@ if(!extension_loaded('mbstring')){
 
 					}
 				}
-				$sql = 'CREATE DATABASE IF NOT EXISTS `weberpdemo`';
+				$sql = 'CREATE DATABASE IF NOT EXISTS `cncerpdemo`';
 				$result = ($DBConnectType == 'mysqli') ? mysqli_query($Db,$sql) : mysql_query($sql,$Db);
 				if(!$result){
 					if($DBConnectType == 'mysqli'){
-						echo _('Failed to create database weberpdemo and the error is '.' '.mysqli_error($Db));
+						echo _('Failed to create database cncerpdemo and the error is '.' '.mysqli_error($Db));
 					}else{
-						echo _('Failed to create database weberpdemo and the error is '.' '.mysql_error($Db));
+						echo _('Failed to create database cncerpdemo and the error is '.' '.mysql_error($Db));
 
 					}
 
@@ -482,8 +483,8 @@ if(!extension_loaded('mbstring')){
 				}
 				PopulateSQLData($NewSQLFile,false,$Db,$DBConnectType,$DatabaseName);
 				DBUpdate($Db,$DatabaseName,$DBConnectType,$AdminPassword,$Email,$UserLanguage,$CompanyName);
-				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'weberpdemo');
-				DBUpdate($Db,'weberpdemo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'weberpdemo');
+				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'cncerpdemo');
+				DBUpdate($Db,'cncerpdemo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'cncerpdemo');
 
 			}elseif(!empty($NewCompany) and $NewCompany == 1){//only install the production data
 
@@ -501,26 +502,26 @@ if(!extension_loaded('mbstring')){
 				DBUpdate($Db,$DatabaseName,$DBConnectType,$AdminPassword,$Email,$UserLanguage,$CompanyName);
 
 			}else { //if(!empty($OnlyDemo) and $OnlyDemo == 1){//only install the demo data
-				$sql = 'CREATE DATABASE IF NOT EXISTS `weberpdemo`';
+				$sql = 'CREATE DATABASE IF NOT EXISTS `cncerpdemo`';
 				$result = ($DBConnectType == 'mysqli') ? mysqli_query($Db,$sql) : mysql_query($sql,$Db);
 				if(!$result){
 					if($DBConnectType == 'mysqli'){
-						echo _('Failed to create database weberpdemo and the error is '.' '.mysqli_error($Db));
+						echo _('Failed to create database cncerpdemo and the error is '.' '.mysqli_error($Db));
 					}else{
-						echo _('Failed to create database weberpdemo and the error is '.' '.mysql_error($Db));
+						echo _('Failed to create database cncerpdemo and the error is '.' '.mysql_error($Db));
 
 					}
 
 				}
-				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'weberpdemo');
-				DBUpdate($Db,'weberpdemo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'weberpdemo');
+				PopulateSQLData(false,$DemoSQLFile,$Db,$DBConnectType,'cncerpdemo');
+				DBUpdate($Db,'cncerpdemo',$DBConnectType,$AdminPassword,$Email,$UserLanguage,'cncerpdemo');
 
 			}
 			session_unset();
 			session_destroy();
 
 			header('Location: ' . $Path_To_Root . '/index.php?newDb=1');
-			ini_set('max_execution_time', '120');
+			ini_set('max_execution_time', '360');
 			echo '<META HTTP-EQUIV="Refresh" CONTENT="0; URL=' . $Path_To_Root . '/index.php">';
 
 
@@ -545,14 +546,14 @@ if(!extension_loaded('mbstring')){
 			if($HostValid){
 				$HostName = $_POST['HostName'];
 			}else{
-				echo _('The Host Name is illegal');
+				echo _('主机名非法');
 				exit;
 			}
 
 
 		}else{
 			$InputError = 1;
-			echo _('The Host Name should not be empty');
+			echo _('主机名不应为空');
 		}
 		if(!empty($_POST['Database'])){
 			//validate the Database name setting
@@ -564,13 +565,13 @@ if(!extension_loaded('mbstring')){
 			}
 			if(preg_match(',[/\\\?%:\|<>\."]+,',$_POST['Database'])){
 				$InputError = 1;
-				echo _('The database name should be lower case and not contains illegal characters such as "/\?%:|<>"');
+				echo _('数据库名称应为小写，并且不包含非法字符，如 "/\?%:|<>"');
 
 			}
 			$DatabaseName = $_POST['Database'];
 		}else{
 			$InputError = 1;
-			echo _('The database name should not be empty');
+			echo _('数据库名称不应为空');
 		}
 
 		if(!empty($_POST['Password'])){
@@ -592,7 +593,7 @@ if(!extension_loaded('mbstring')){
 			}
 			exit;
 		}else{
-			echo _('Please correct the displayed error first');
+			echo _('请先更正显示的错误');
 			if(!empty($_POST['MysqlExt'])){
 				DbConfig($_POST['UserLanguage'],$_POST['MysqlExt']);
 			}else{
@@ -606,7 +607,7 @@ if(!extension_loaded('mbstring')){
 
 	?>
 
-    <h1><?php echo _('webERP Installation Wizard'); ?></h1>
+    <h1><?php echo _('CNCERP Installation Wizard'); ?></h1>
 	<?php
     	if(!isset($_POST['LanguageSet'])){
 		 Installation($DefaultLanguage);
@@ -623,7 +624,7 @@ if(!extension_loaded('mbstring')){
 		    //Check if the browser has been set properly
 		    if(!isset($_SESSION['CookieAllowed']) or !($_SESSION['CookieAllowed'] == 1)){
 			    $InputError = 1;
-			    $ErrMsg .= '<p>' . _('Please set Cookies allowed in your web brower, otherwise webERP cannot run properly') . '</p>';
+			    $ErrMsg .= '<p>' . _('请在您的web浏览器中设置允许的Cookie，否则CNCERP无法正常运行') . '</p>';
 
 		    }
 		    //Check the situation of php safe mode
@@ -632,7 +633,7 @@ if(!extension_loaded('mbstring')){
 				    $InputWarn = 1;
 				    $WarnMsg .= '<p>' . _($_POST['SafeModeWarning']) . '</p>';
 			    }else{//Something must be wrong since this messages have been defined.
-				    echo _('Illegal characters or data has been identified, please see your admistrator for help');
+				    echo _('已识别非法字符或数据，请向您的超级管理员寻求帮助');
 				    exit;
 
 			    }
@@ -640,7 +641,7 @@ if(!extension_loaded('mbstring')){
 		    //check the php version
 		    if(empty($_POST['PHPVersion'])){
 				$InputError = 1;
-				$ErrMsg .= '<p>' . _('Although webERP should work with PHP version 5.1 onwards, a PHP version greater than 5.2 is strongly recommended') . '</p>';
+				$ErrMsg .= '<p>' . _('尽管CNCERP可以在PHP 5.1之后使用，但强烈建议使用大于7.2的PHP版本') . '</p>';
 		    }
 		    //check the directory access authority of rootpath and companies
 		    if(empty($_POST['ConfigFile'])){
@@ -727,10 +728,10 @@ function Installation($DefaultLanguage)
     }
 
     //It's time to check the php version. The version should be run greater than 5.1
-    if(version_compare(PHP_VERSION,'5.1.0')>=0){
+    if(version_compare(PHP_VERSION,'7.0.0')>=0){
         $PHPVersion = 1;
     }
-    if(version_compare(PHP_VERSION,'5.5.0')>=0){
+    if(version_compare(PHP_VERSION,'7.1.0')>=0){
         $PHP55 = 1;
     }
     //Check the writability of the root path and companies path
@@ -781,7 +782,7 @@ function Installation($DefaultLanguage)
 
     <form id="installation" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'); ?>" method="post">
     <fieldset>
-        <legend><?php echo _('Welcome to the webERP Installation Wizard'); ?></legend>
+        <legend><?php echo _('Welcome to the CNCERP Installation Wizard'); ?></legend>
         <div class="page_help_text">
             <?php echo '
             <ul>
@@ -913,9 +914,10 @@ function Installation($DefaultLanguage)
 
         <?php echo '
         <div class="page_help_text">
-            <p>' .  _('webERP is an open source application licenced under GPL V2 and absolutely free to download.<br /> By installing webERP you acknowledge you have read <a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">the licence</a>. <br />Please visit the official webERP website for more information.').'
+            <p>' .  _('CNCERP(中文本地化webERP)是一个在GPL V2下获得许可的开源应用程序，绝对可以免费下载。<br/>安装CNCERP，您确认已阅读<a href="http://www.gnu.org/licenses/gpl-2.0.html#SEC1" target="_blank">GPL V2许可</a>. <br />请访问CNCERP或Weberp官方网站了解更多信息。').'
             </p>
             <p><img src="../css/webERPsm.gif" title="webERP" alt="webERP" />&#160; <a href="http://www.weberp.org">http://www.weberp.org</a></p>
+            <p><img src="../css/cncerp.png" title="CNCERP" alt="CNCERP" />&#160; <a href="http://www.cncerp.com">http://www.cncerp.com</a></p>
         </div>';
         ?>
 
@@ -947,7 +949,7 @@ function DbConfig($Language,$MysqlExt = FALSE){//The screen for users to input m
                 </li>
                 <li>
                     <label for="Database"><?php echo _('Database Name'); ?>: </label>
-                    <input type="text" name="Database" id="Database" required="true" pattern="^[a-zA-Z0-9_\&\-\ ]+$" value="weberp" maxlength="16" placeholder="<?php echo _('The database name'); ?>" />
+                    <input type="text" name="Database" id="Database" required="true" pattern="^[a-zA-Z0-9_\&\-\ ]+$" value="cncerp" maxlength="16" placeholder="<?php echo _('The database name'); ?>" />
                     <span><?php echo _('The database must have a valid name'); ?></span>
                 </li>
                 <li>
@@ -1016,7 +1018,7 @@ function DbCheck($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,$Mysq
 			$Con = mysqli_connect($HostName,$UserName,$Password);
 		}
 		if(!$Con){
-			echo '<h1>' . _('webERP Installation Wizard') . '</h1>';
+			echo '<h1>' . _('CNCERP Installation Wizard') . '</h1>';
 			echo _('Failed to connect to the database. Please correct the following error:') . '<br/>' . mysqli_connect_error() . '<br/> '.('This error is usually caused by entry of an incorrect database password or user name.');
 			if($MysqlExt){
 				DbConfig($UserLanguage,$MysqlExt);
@@ -1094,7 +1096,7 @@ function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,
             <ul>
                 <li>
                     <label for="InstallDemo"><?php echo _('Install the demo data?'); ?> </label><input type="checkbox" name="Demo" checked="checked"  />
-                    <span><?php echo _("WebERPDemo site and data will be installed"); ?></span>
+                    <span><?php echo _("CNCERPDemo site and data will be installed"); ?></span>
                 </li>
             </ul>
         </fieldset>
@@ -1106,27 +1108,27 @@ function CompanySetup($UserLanguage,$HostName,$UserName,$Password,$DatabaseName,
                             <?php echo _('The default user name is \'admin\' and it cannot be changed.'); ?>
                         </li>
                         <li>
-                            <?php echo _('The default password is \'weberp\' which you can change below.'); ?>
+                            <?php echo _('The default password is \'cncerp\' which you can change below.'); ?>
                         </li>
                     </ul>
                 </div>
                 <ul>
                     <li>
-                        <label for="adminaccount"><?php echo _('webERP Admin Account'); ?>: </label>
+                        <label for="adminaccount"><?php echo _('CNCERP Admin Account'); ?>: </label>
                         <input type="text" name="adminaccount" value="admin" disabled="disabled" />
                     </li>
                     <li>
                         <label for="Email"><?php echo _('Email address'); ?>: </label>
-                        <input type="text" name="Email" required="true" placeholder="admin@yoursite.com" value="admin@weberp.org" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*" />
+                        <input type="text" name="Email" required="true" placeholder="admin@yoursite.com" value="admin@cncerp.org" pattern="[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\.[a-z0-9-]+)*" />
                         <span> <?php echo _('For example: admin@yourcompany.com'); ?></span>
                     </li>
                     <li>
-                        <label for="webERPPassword"><?php echo _('webERP Password'); ?>: </label>
-                        <input type="password" name="webERPPassword" value="weberp" required="true" />
+                        <label for="webERPPassword"><?php echo _('cncerp Password'); ?>: </label>
+                        <input type="password" name="webERPPassword" value="cncerp" required="true" />
                     </li>
                     <li>
                         <label for="PasswordConfirm"><?php echo _('Re-enter Password'); ?>: </label>
-                        <input type="password" required="true" value="weberp" name="PasswordConfirm" />
+                        <input type="password" required="true" value="cncerp" name="PasswordConfirm" />
                     </li>
                 </ul>
 
@@ -1200,7 +1202,7 @@ function PopulateSQLData($NewSQL=false,$Demo=false,$db,$DBType,$NewDB = false){
 /*
 						//we can let users wait instead of changing the my.cnf file
 						//It is a non affordable challenge for them since wamp set the max_allowed_packet 1M
-						//and weberpdemo.sql is 1.4M so at least it cannot install in wamp
+						//and cncerpdemo.sql is 1.4M so at least it cannot install in wamp
 						//so we not use the multi query here
 
 
@@ -1238,7 +1240,7 @@ function PopulateSQLData($NewSQL=false,$Demo=false,$db,$DBType,$NewDB = false){
 //@para $NewDB is the new database name
 //@para $DemoDB is the demo database name
 //The purpose of this function is populate the database with mysql extention
-function PopulateSQLDataBySQL($File,$db,$DBType,$NewDB=false,$DemoDB='weberpdemo'){
+function PopulateSQLDataBySQL($File,$db,$DBType,$NewDB=false,$DemoDB='cncerpdemo'){
 	$dbName = ($NewDB) ? $NewDB : $DemoDB;
 	$useMySQLi = ($DBType=='mysqli');
 

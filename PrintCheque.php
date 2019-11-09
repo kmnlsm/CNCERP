@@ -41,6 +41,9 @@ $CurrencyName = mb_strtolower($CurrencyRow['currency']);
 // cheque
 $YPos= $Page_Height-5*$line_height;
 $LeftOvers = $pdf->addTextWrap($Page_Width-75,$YPos,100,$FontSize,$_GET['ChequeNum'], 'left');
+include_once('includes/Transby.php');
+list($userid,$realname,$stepdate)=getTransBy(1,$_GET['ChequeNum']);
+$LeftOvers = $pdf->addTextWrap($Page_Width-150,$YPos,100,$FontSize,_('ChineseGL_Author') . ': ' . $realname, 'left');
 $YPos -= 3*$line_height;
 
 $AmountWords = number_to_words($_SESSION['PaymentDetail' . $identifier]->Amount) . ' ' . $CurrencyName;

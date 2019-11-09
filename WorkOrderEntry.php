@@ -5,6 +5,7 @@ include('includes/session.php');
 $Title = _('Work Order Entry');
 include('includes/header.php');
 include('includes/SQL_CommonFunctions.inc');
+include('includes/Transby.php');
 
 echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $Theme,
 	'/images/transactions.png" title="', // Icon image.
@@ -86,6 +87,7 @@ if(isset($SelectedWO) AND$SelectedWO!='') {
 									'" . $Ref . "',
 									'" . $Remark . "')";
 	$InsWOResult = DB_query($SQL);
+	addTransBy(40,$_POST['WO']);
 }
 
 
@@ -557,12 +559,14 @@ if(isset($_POST['submit']) OR isset($_POST['Search'])) { //The update button has
 				} else {
 					$Cost = $CostRow['cost'];
 				}
+				addTransBy(40,$_POST['WO']);
 				$SQL[] = "UPDATE woitems SET qtyreqd =  '". $_POST['OutputQty' . $i] . "',
 											 nextlotsnref = '". $_POST['NextLotSNRef'.$i] ."',
 											 stdcost ='" . $Cost . "'
 										WHERE wo='" . $_POST['WO'] . "'
 										AND stockid='" . $_POST['OutputItem'.$i] . "'";
   			} elseif(isset($_POST['HasWOSerialNos'.$i]) AND $_POST['HasWOSerialNos'.$i]==false) {
+				addTransBy(40,$_POST['WO']);
 				$SQL[] = "UPDATE woitems SET qtyreqd =  '". $_POST['OutputQty' . $i] . "',
 											 nextlotsnref = '". $_POST['NextLotSNRef'.$i] ."'
 										WHERE wo='" . $_POST['WO'] . "'

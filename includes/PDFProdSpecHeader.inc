@@ -4,7 +4,7 @@ if ($PageNumber>1){
 	$pdf->newPage();
 }
 $SectionHeading=0;
-$pdf->setFont('Helvetica','');
+//$pdf->setFont('Helvetica','');
 
 $XPos = 65;
 $YPos=50;

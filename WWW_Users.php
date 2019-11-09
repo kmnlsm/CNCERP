@@ -1,11 +1,5 @@
 <?php
-// WWW_Users.php
-// Entry of users and security settings of users.
-
-include('includes/session.php');
-$Title = _('Users Maintenance');
-$ViewTopic = 'GettingStarted';
-$BookMark = 'UserMaintenance';
+/* Entry of users and security settings of users */
 
 if(isset($_POST['UserID']) AND isset($_POST['ID'])) {
 	if($_POST['UserID'] == $_POST['ID']) {
@@ -13,6 +7,10 @@ if(isset($_POST['UserID']) AND isset($_POST['ID'])) {
 	}
 }
 
+include('includes/session.php');
+$Title = _('Users Maintenance');
+$ViewTopic = 'GettingStarted';
+$BookMark = 'UserMaintenance';
 include('includes/header.php');
 
 echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $Theme,
@@ -21,10 +19,6 @@ echo '<p class="page_title_text"><img alt="" src="', $RootPath, '/css/', $Theme,
 	$Title, '</p>';// Page title.
 echo '<br />';// Extra line after page_title_text.
 
-if($AllowDemoMode) {
-	prnMsg(_('The the system is in demo mode and the security model administration is disabled'), 'warn');
-	exit;
-} 
 $ModuleList = array(
 	_('Sales'),
 	_('Receivables'),
@@ -729,15 +723,12 @@ foreach($ModuleList as $ModuleName) {
 // Turn off/on dashboard:
 echo '<tr>
 		<td><label for="ShowDashboard">', _('Display dashboard'), ':</label></td>
-		<td><select id="ShowDashboard" name="ShowDashboard">';
-if($_POST['ShowDashboard']==0) {
-	echo '<option selected="selected" value="0">', _('No'), '</option>',
-		 '<option value="1">', _('Yes'), '</option>';
-} else {
-	echo '<option value="0">', _('No'), '</option>',
- 		 '<option selected="selected" value="1">', _('Yes'), '</option>';
-}
-echo '</select>', fShowFieldHelp(_('Show dashboard page after login')), // Function fShowFieldHelp() in ~/includes/MiscFunctions.php
+		<td><select id="ShowDashboard" name="ShowDashboard" value="'.$_POST['ShowDashboard'].'">
+			<option value="0">', _('No'), '</option>
+ 			<option value="1">', _('Yes'), '</option>
+ 			<option value="2">', _('POS'), '</option>';
+echo '</select>',
+		(!isset($_SESSION['ShowFieldHelp']) || $_SESSION['ShowFieldHelp'] ? _('Show dashboard page after login') : ''), // If the parameter $_SESSION['ShowFieldHelp'] is not set OR is TRUE, shows this field help text.
 		'</td>
 	</tr>';
 // Turn off/on page help:
@@ -751,7 +742,8 @@ if($_POST['ShowPageHelp']==0) {
 	echo '<option value="0">', _('No'), '</option>',
  		 '<option selected="selected" value="1">', _('Yes'), '</option>';
 }
-echo '</select>', fShowFieldHelp(_('Show page help when available')), // Function fShowFieldHelp() in ~/includes/MiscFunctions.php
+echo '</select>',
+		(!isset($_SESSION['ShowFieldHelp']) || $_SESSION['ShowFieldHelp'] ? _('Show page help when available') : ''), // If the parameter $_SESSION['ShowFieldHelp'] is not set OR is TRUE, shows this field help text.
 		'</td>
 	</tr>';
 // Turn off/on field help:
@@ -765,7 +757,8 @@ if($_POST['ShowFieldHelp']==0) {
 	echo '<option value="0">', _('No'), '</option>',
  		 '<option selected="selected" value="1">', _('Yes'), '</option>';
 }
-echo '</select>', fShowFieldHelp(_('Show field help when available')), // Function fShowFieldHelp() in ~/includes/MiscFunctions.php
+echo '</select>',
+		(!isset($_SESSION['ShowFieldHelp']) || $_SESSION['ShowFieldHelp'] ? _('Show field help when available') : ''), // If the parameter $_SESSION['ShowFieldHelp'] is not set OR is TRUE, shows this field help text.
 		'</td>
 	</tr>';
 
@@ -837,3 +830,11 @@ echo '</table>
 
 include('includes/footer.php');
 ?>
+<script type="text/javascript" src="javascripts/jquery.js"></script>
+<script>
+$(function(){
+	try{
+		$("#ShowDashboard").val($("#ShowDashboard").attr('value')); 
+	}catch(e){}
+});
+</script>

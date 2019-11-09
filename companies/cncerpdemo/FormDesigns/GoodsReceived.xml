@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form name="采购收货入库单">
+	<PaperSize name="Paper size">Bills</PaperSize>
+	<LineHeight name="Line height">16</LineHeight>
+	<logo type="image" name="Logo" id="Logo">
+		<x>55</x>
+		<y>115</y>
+		<width>0</width>
+		<height>30</height>
+	</logo>
+	<SupplierName type="SimpleText" name="供应商名称" id="SupplierName">
+		<FontSize>10</FontSize>
+		<x>225</x>
+		<y>-135</y>
+	</SupplierName>
+	<SupplierAddress1 type="SimpleText" name="供应商 Address1" id="SupplierAddress1">
+		<FontSize>10</FontSize>
+		<x>225</x>
+		<y>-125</y>
+	</SupplierAddress1>
+	<SupplierAddress2 type="SimpleText" name="供应商 Address2" id="SupplierAddress2">
+		<FontSize>10</FontSize>
+		<x>205</x>
+		<y>-135</y>
+	</SupplierAddress2>
+	<SupplierAddress3 type="SimpleText" name="供应商 Address3" id="SupplierAddress3">
+		<FontSize>10</FontSize>
+		<x>235</x>
+		<y>-135</y>
+	</SupplierAddress3>
+	<SupplierAddress4 type="SimpleText" name="供应商 Address4" id="SupplierAddress4">
+		<FontSize>10</FontSize>
+		<x>325</x>
+		<y>-135</y>
+	</SupplierAddress4>
+	<SupplierAddress5 type="SimpleText" name="供应商 Address5" id="SupplierAddress5">
+		<FontSize>10</FontSize>
+		<x>365</x>
+		<y>-135</y>
+	</SupplierAddress5>
+	<SupplierAddress6 type="SimpleText" name="供应商 Address6" id="SupplierAddress6">
+		<FontSize>10</FontSize>
+		<x>405</x>
+		<y>-135</y>
+	</SupplierAddress6>
+		<Sno1 type="SimpleText" name="bai" id="Sno1">
+		<FontSize>8</FontSize>
+		<x>554</x>
+		<y>-110</y>
+	</Sno1>
+	<CompanyName type="SimpleText" name="公司名称" id="CompanyName">
+		<FontSize>10</FontSize>
+		<x>50</x>
+		<y>-125</y>
+	</CompanyName>
+	<GRNNumber type="SimpleText" name="收货单据号" id="GRNNumber">
+		<FontSize>10</FontSize>
+		<x>455</x>
+		<y>-145</y>
+	</GRNNumber>
+	<OrderNumber type="SimpleText" name="订单号" id="OrderNumber">
+		<FontSize>10</FontSize>
+		<x>455</x>
+		<y>-135</y>
+	</OrderNumber>
+	<PrintDate type="SimpleText" name="打印日期" id="PrintDate">
+		<FontSize>10</FontSize>
+		<x>455</x>
+		<y>-125</y>
+	</PrintDate>
+	<HeaderRectangle type="Rectangle" name="表头方形" id="HeaderRectangle">
+		<x>53</x>
+	    <y>133</y>
+		<width>500</width>
+		<height>15</height>
+	</HeaderRectangle>
+	<Headings type="ElementArray" name="表头标题">
+		<Column1 type="SimpleText" name="第一列1" id="Heading1">
+			<FontSize>10</FontSize>
+			<x>54</x>
+			<y>136</y>
+		</Column1>
+		<Column2 type="SimpleText" name="第二列 2" id="Heading2">
+			<FontSize>10</FontSize>
+			<x>140</x>
+			<y>136</y>
+		</Column2>
+		<Column3 type="SimpleText" name="第三列 3" id="Heading3">
+			<FontSize>10</FontSize>
+			<x>227</x>
+			<y>136</y>
+		</Column3>
+		<Column4 type="MultiLineText" name="第四列 4" id="Heading4">
+			<FontSize>10</FontSize>
+			<x>318</x>
+			<y>136</y>
+			<Length>100</Length>
+		</Column4>
+		<Column5 type="MultiLineText" name="第五列 5" id="Heading5">
+			<FontSize>10</FontSize>
+			<x>450</x>
+			<y>136</y>
+			<Length>100</Length>
+		</Column5>
+	</Headings>
+	<DataRectangle type="Rectangle" name="数据区方形" id="DataRectangle">
+		<x>53</x>
+	    <y>133</y>
+		<width>500</width>
+		<height>155</height>
+	</DataRectangle>
+	<LineAboveFooter type="Line" name="分页横线" id="LineAboveFooter">
+		<startx>572</startx>
+		<starty>293</starty>
+		<endx>570</endx>
+		<endy>293</endy>
+	</LineAboveFooter>
+	<Column1 type="Line" name="线 1" id="Column1">
+		<startx>100</startx>
+		<starty>133</starty>
+		<endx>100</endx>
+		<endy>288</endy>
+	</Column1>
+	<Column3 type="Line" name="线 3" id="Column3">
+		<startx>220</startx>
+		<starty>133</starty>
+		<endx>220</endx>
+		<endy>288</endy>
+	</Column3>
+	<Column4 type="Line" name="线 4" id="Column4">
+		<startx>280</startx>
+		<starty>133</starty>
+		<endx>280</endx>
+		<endy>288</endy>
+	</Column4>
+	<Column5 type="Line" name="线 5" id="Column5">
+		<startx>420</startx>
+		<starty>133</starty>
+		<endx>420</endx>
+		<endy>288</endy>
+	</Column5>
+	<Data type="ElementArray" name="数据列">
+		<y type="StartLine" name="Y坐标的第一数据线" id="DataStartLine">160</y>
+		<Column1 type="DataText" name="数据一列 1" id="Data1">
+			<FontSize>10</FontSize>
+			<x>55</x>
+			<Length>94</Length>
+		</Column1>
+		<Column2 type="DataText" name="数据二列 2" id="Data2">
+			<FontSize>10</FontSize>
+			<x>100</x>
+			<Length>270</Length>
+		</Column2>
+		<Column3 type="DataText" name="数据三列 3" id="Data3">
+			<FontSize>10</FontSize>
+			<x>225</x>
+			<Length>85</Length>
+		</Column3>
+		<Column4 type="DataText" name="第四列 4" id="Data4">
+			<FontSize>10</FontSize>
+			<x>325</x>
+			<Length>60</Length>
+		</Column4>
+		<Column5 type="DataText" name="第五列 5" id="Data5">
+			<FontSize>10</FontSize>
+			<x>385</x>
+			<Length>30</Length>
+		</Column5>
+		<Column6 type="DataText" name="第六列 6" id="Data6">
+			<FontSize>10</FontSize>
+			<x>468</x>
+			<Length>60</Length>
+		</Column6>
+		<Column7 type="DataText" name="第七列 7" id="Data7">
+			<FontSize>10</FontSize>
+			<x>528</x>
+			<Length>30</Length>
+		</Column7>
+	</Data>
+	<ReceiptDate type="SimpleText" name="收货日期" id="ReceiptDate">
+		<FontSize>10</FontSize>
+		<x>270</x>
+		<y>295</y>
+	</ReceiptDate>
+	<SignedFor type="SimpleText" name="签名位置" id="SignedFor">
+		<FontSize>10</FontSize>
+		<x>50</x>
+		<y>295</y>
+	</SignedFor>
+</form>

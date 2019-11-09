@@ -88,7 +88,8 @@ $SQL = "SELECT stockmoves.stockid,
 				stockmoves.newqoh,
 				stockmaster.controlled,
 				stockmaster.serialised,
-				stockmaster.decimalplaces
+				stockmaster.decimalplaces,
+				stockmaster.description
 			FROM stockmoves
 			INNER JOIN systypes
 				ON stockmoves.type=systypes.typeid
@@ -106,6 +107,7 @@ if (DB_num_rows($MovtsResult) > 0) {
 	echo '<table cellpadding="5" cellspacing="4" class="selection">
 			<tr>
 				<th>', _('Item Code'), '</th>
+				<th>', _('Item Description'), '</th>
 				<th>', _('Type'), '</th>
 				<th>', _('Trans No'), '</th>
 				<th>', _('Date'), '</th>
@@ -116,10 +118,11 @@ if (DB_num_rows($MovtsResult) > 0) {
 				<th>', _('Discount'), '</th>
 				<th>', _('Quantity on Hand'), '</th>
 				<th>', _('Serial No.'), '</th>
+				<th>' . _('ChineseGL_Author') . '</th>
 			</tr>';
-
+	include('includes/Transby.php');
 	while ($MyRow = DB_fetch_array($MovtsResult)) {
-
+		list($userid,$realname,$stepdate)=getTransBy($MyRow['type'],$MyRow['transno']);
 		$DisplayTranDate = ConvertSQLDate($MyRow['trandate']);
 
 		$SerialSQL = "SELECT serialno, moveqty FROM stockserialmoves WHERE stockmoveno='" . $MyRow['stkmoveno'] . "'";
@@ -136,6 +139,7 @@ if (DB_num_rows($MovtsResult) > 0) {
 
 		echo '<tr class="striped_row">
 				<td><a target="_blank" href="', $RootPath, '/StockStatus.php?StockID=', mb_strtoupper(urlencode($MyRow['stockid'])), '">', mb_strtoupper($MyRow['stockid']), '</a></td>
+				<td>', $MyRow['description'], '</td>
 				<td>', $MyRow['typename'], '</td>
 				<td>', $MyRow['transno'], '</td>
 				<td>', $DisplayTranDate, '</td>
@@ -146,6 +150,7 @@ if (DB_num_rows($MovtsResult) > 0) {
 				<td class="number">', locale_number_format($MyRow['discountpercent'] * 100, 2), '%</td>
 				<td class="number">', locale_number_format($MyRow['newqoh'], $MyRow['decimalplaces']), '</td>
 				<td>', $SerialText, '</td>
+				<td>', $realname, '</td>
 			</tr>';
 	}
 	//end of while loop

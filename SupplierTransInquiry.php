@@ -61,7 +61,7 @@ echo '<td>' . _('From') . ':</td>
 	</table>
 	<br />
 	<div class="centre">
-		<input type="submit" name="ShowResults" value="' . _('Show transactions') . '" />
+		<input type="submit" name="ShowResults" value="' . _('Show Transactions') . '" />
 	</div>
 	<br />
     </div>
@@ -70,6 +70,7 @@ echo '<td>' . _('From') . ':</td>
 if (isset($_POST['ShowResults']) && $_POST['TransType'] != ''){
    $SQL_FromDate = FormatDateForSQL($_POST['FromDate']);
    $SQL_ToDate = FormatDateForSQL($_POST['ToDate']);
+   
    $sql = "SELECT type,
 				transno,
 		   		trandate,
@@ -95,9 +96,8 @@ if (isset($_POST['ShowResults']) && $_POST['TransType'] != ''){
 	if  ($_POST['TransType']!='All')  {
 		$sql .= " AND type = " . $_POST['TransType'];
 	}
-	if($_POST['SupplierNo'] != "")
-	{
-		$sql .= " AND supptrans.supplierno LIKE '%".$_POST['SupplierNo']."%'";
+	if  ($_POST['SupplierNo'])  {
+		$sql .= " AND supplierno = " . $_POST['SupplierNo'] ;
 	}
 	$sql .=  " ORDER BY id";
 

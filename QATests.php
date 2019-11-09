@@ -5,6 +5,7 @@ $Title = _('QA Tests Maintenance');
 $ViewTopic= 'QualityAssurance';// Filename in ManualContents.php's TOC.
 $BookMark = 'QA_Tests';// Anchor's id in the manual's html document.
 include('includes/header.php');
+include('includes/QASectionsArray.php');
 
 if (isset($_GET['SelectedQATest'])){
 	$SelectedQATest =mb_strtoupper($_GET['SelectedQATest']);
@@ -244,9 +245,19 @@ if (! isset($_GET['delete'])) {
 			<td><input type="text" name="Method" title="' . _('ASTM, ISO, UL or other') . '" size="20" maxlength="20" value="' . $_POST['Method'] . '" /></td>
 		</tr>';
 	echo '<tr>
+
 			<td>' . _('Group By') . ':</td>
-			<td><input type="text" name="GroupBy" title="' . _('Can be used to group certain Tests on the Product Specification or Certificate of
-Analysis or left blank') . '" size="20" maxlength="20" value="' . $_POST['GroupBy'] . '" /></td>
+			<td><select name="GroupBy" title="' . _('Can be used to group certain Tests on the Product Specification or Certificate of
+Analysis or left blank') . '" >';
+	
+	foreach($SectionsArray as $row) {
+		if($row[0]==$_POST['GroupBy']){
+			echo '<option value="'.$row[0].'" selected="selected">'.$row[2].'</option>';
+		}else{
+			echo '<option value="'.$row[0].'">'.$row[2].'</option>';
+		}
+	}
+	echo '</select></td>
 		</tr>';
 	echo '<tr>
 			<td>' . _('Units') . ':</td>
@@ -399,6 +410,8 @@ or deletion of the records*/
 			<th class="ascending">' . _('Show on Spec') . '</th>
 			<th class="ascending">' . _('Show on Test Plan') . '</th>
 			<th class="ascending">' . _('Active') . '</th>
+			<th class="ascending">' . '' . '</th>
+			<th class="ascending">' . '' . '</th>
 			</tr>
 		</thead>
 		<tbody>';
@@ -468,7 +481,7 @@ or deletion of the records*/
 			$myrow['testid'],
 			$myrow['name'],
 			$myrow['method'],
-			$myrow['groupby'],
+			getQAGroupByTitle($myrow['groupby']),
 			$myrow['units'],
 			$TypeDisp,
 			$myrow['defaultvalue'],

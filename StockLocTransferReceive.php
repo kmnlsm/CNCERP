@@ -110,6 +110,8 @@ if(isset($_POST['ProcessTransfer'])) {
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock movement record cannot be inserted because');
 				$DbgMsg = _('The following SQL to insert the stock movement record was used');
 				$Result = DB_query($SQL,$ErrMsg, $DbgMsg, true);
+				include_once('includes/Transby.php');
+				addTransBy(16,$_SESSION['Transfer']->TrfID,1);
 
 				/*Get the ID of the StockMove... */
 				$StkMoveNo = DB_Last_Insert_ID('stockmoves','stkmoveno');
@@ -198,8 +200,7 @@ if(isset($_POST['ProcessTransfer'])) {
 				}
 
 				// Insert outgoing inventory GL transaction if any of the locations has a GL account code:
-				if(($_SESSION['Transfer']->StockLocationFromAccount !='' OR $_SESSION['Transfer']->StockLocationToAccount !='') AND
-					($_SESSION['Transfer']->StockLocationFromAccount != $_SESSION['Transfer']->StockLocationToAccount)) {
+				if(($_SESSION['Transfer']->StockLocationFromAccount !='' or $_SESSION['Transfer']->StockLocationToAccount !='')) {
 					// Get the account code:
 					if($_SESSION['Transfer']->StockLocationFromAccount !='') {
 						$AccountCode = $_SESSION['Transfer']->StockLocationFromAccount;
@@ -230,7 +231,7 @@ if(isset($_POST['ProcessTransfer'])) {
 							"',16,'" .
 							$_SESSION['Transfer']->TrfID . "','" .
 							$AccountCode . "','" .
-							$_SESSION['Transfer']->StockLocationFrom.' - '.$TrfLine->StockID.' x '.$TrfLine->Quantity.' @ '. $StandardCost . "','" .
+							$_SESSION['Transfer']->StockLocationFromName.' - '.$TrfLine->ItemDescription.' x '.$TrfLine->Quantity.' @ '. $StandardCost . "','" .
 							-$TrfLine->Quantity * $StandardCost . "')";
 					$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The outgoing inventory GL transacction record could not be inserted because');
 					$DbgMsg =  _('The following SQL to insert records was used');
@@ -352,8 +353,7 @@ if(isset($_POST['ProcessTransfer'])) {
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				// Insert incoming inventory GL transaction if any of the locations has a GL account code:
-				if(($_SESSION['Transfer']->StockLocationFromAccount !='' OR $_SESSION['Transfer']->StockLocationToAccount !='') AND
-					($_SESSION['Transfer']->StockLocationFromAccount != $_SESSION['Transfer']->StockLocationToAccount)) {
+				if(($_SESSION['Transfer']->StockLocationFromAccount !='' or $_SESSION['Transfer']->StockLocationToAccount !='')) {
 					// Get the account code:
 					if($_SESSION['Transfer']->StockLocationToAccount !='') {
 						$AccountCode = $_SESSION['Transfer']->StockLocationToAccount;
@@ -384,7 +384,7 @@ if(isset($_POST['ProcessTransfer'])) {
 							16,'" .
 							$_SESSION['Transfer']->TrfID . "','" .
 							$AccountCode . "','" .
-							$_SESSION['Transfer']->StockLocationTo.' - '.$TrfLine->StockID.' x '.$TrfLine->Quantity.' @ '. $StandardCost . "','" .
+							$_SESSION['Transfer']->StockLocationToName.' - '.$TrfLine->ItemDescription.' x '.$TrfLine->Quantity.' @ '. $StandardCost . "','" .
 							$TrfLine->Quantity * $StandardCost . "')";
 					$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The incoming inventory GL transacction record could not be inserted because');
 					$DbgMsg =  _('The following SQL to insert records was used');

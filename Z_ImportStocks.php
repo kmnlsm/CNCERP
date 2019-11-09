@@ -13,8 +13,8 @@ echo '<p class="page_title_text"><img alt="" src="' . $RootPath . '/css/' . $The
 // Otherwise, a file upload form is displayed
 
 // The CSV file must be saved in a format like the template in the import module I.E. "RECVALUE","RECVALUE2". The CSV file needs ANSI encoding for the import to work properly.
-
-
+//ini_set('auto_detect_line_endings',FALSE);
+//setlocale(LC_ALL,'zh_CN');
 $FieldHeadings = array(
 	'StockID',         	//  0 'STOCKID',
 	'Description',     	//  1 'DESCRIPTION',
@@ -33,13 +33,14 @@ $FieldHeadings = array(
 	'DiscountCategory',	// 14 'DISCOUNTCATEGORY',
 	'TaxCat',          	// 15 'TAXCAT',
 	'DecimalPlaces',   	// 16 'DECIMALPLACES',
-	'ItemPDF'          	// 17 'ITEMPDF'
+	'materialcost',     // 17 'materialcost',
+    'lastcostupdate'   	// 18 'lastcostupdate',
 );
 
 if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file processing
 
 	//initialize
-	$FieldTarget = 18;
+	$FieldTarget = count($FieldHeadings);
 	$InputError = 0;
 
 	//check file info
@@ -51,12 +52,13 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 	$FileHandle = fopen($TempName, 'r');
 
 	//get the header row
-	$headRow = fgetcsv($FileHandle, 10000, ",",'"');  // Modified to handle " "" " enclosed csv - useful if you need to include commas in your text descriptions
+	$headRow = fgetcsv($FileHandle, 10000, ",");  // Modified to handle " "" " enclosed csv - useful if you need to include commas in your text descriptions
 
 	//check for correct number of fields
 	if ( count($headRow) != count($FieldHeadings) ) {
 		prnMsg (_('File contains '. count($headRow). ' columns, expected '. count($FieldHeadings). '. Try downloading a new template.'),'error');
 		fclose($FileHandle);
+		var_dump($headRow);
 		include('includes/footer.php');
 		exit;
 	}
@@ -78,13 +80,15 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 
 	//loop through file rows
 	$row = 1;
-	while ( ($myrow = fgetcsv($FileHandle, 10000, ",")) !== FALSE ) {
-
+	while ( ($myrow = fgets($FileHandle)) !== FALSE ) {//, 10000, ","//fgetcsv
+		//echo $myrow;
+		$myrow=explode(',',$myrow);
 		//check for correct number of fields
 		$fieldCount = count($myrow);
 		if ($fieldCount != $FieldTarget){
 			prnMsg (_($FieldTarget. ' fields required, '. $fieldCount. ' fields received'),'error');
 			fclose($FileHandle);
+			var_dump($myrow);
 			include('includes/footer.php');
 			exit;
 		}
@@ -176,10 +180,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 			$InputError = 1;
 			prnMsg(_('There are no inventory categories defined. All inventory items must belong to a valid inventory category,'),'error');
 		}
-		if ($myrow[17]==''){
-			$InputError = 1;
-			prnMsg(_('ItemPDF must contain either a filename, or the keyword `none`'),'error');
-		}
+
 
 		if ($InputError !=1){
 			if ($myrow[9]==1){ /*Not appropriate to have several dp on serial items */
@@ -195,6 +196,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 					categoryid,
 					units,
 					mbflag,
+                    materialcost,
 					eoq,
 					discontinued,
 					controlled,
@@ -205,7 +207,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 					barcode,
 					discountcategory,
 					taxcatid,
-					decimalplaces)
+					decimalplaces,
+                    lastcostupdate)
 				VALUES (
 					'$StockID',
 					'" . $myrow[1]	. "',
@@ -213,6 +216,7 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 					'" . $myrow[3]	. "',
 					'" . $myrow[4]	. "',
 					'" . $myrow[5]	. "',
+                    "  . $myrow[17]	. ",
 					"  . $myrow[6]	. ",
 					"  . $myrow[7]	. ",
 					"  . $myrow[8]	. ",
@@ -223,7 +227,8 @@ if (isset($_FILES['userfile']) and $_FILES['userfile']['name']) { //start file p
 					'" . $myrow[13]	. "',
 					'" . $myrow[14]	. "',
 					"  . $myrow[15]	. ",
-					"  . $myrow[16]	. "
+                    "  . $myrow[16]	. ",
+					'"  . $myrow[18]. "'
 				);
 			";
 

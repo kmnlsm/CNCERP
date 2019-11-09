@@ -1,6 +1,5 @@
 <?php
-// ShiptsList.php
-// Shows a list of all the open shipments for a selected supplier. Linked from POItems.php
+
 
 //$PageSecurity = 2;
 include ('includes/session.php');

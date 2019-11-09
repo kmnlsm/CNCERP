@@ -1,14 +1,18 @@
 /* Print style sheet. */
 
 @media print {
-
-#FooterDiv, #HeaderDiv, #MainMenuDiv, .noprint, .page_title_text img, .site-description, .site-title {
+CNCERP-menu
+CNCERP-menu-content
+CNCERP-menu-items-wrapper
+CNCERP-menu-scroller
+/*#FooterDiv, #HeaderDiv, #MainMenuDiv, .noprint, .page_title_text img, .site-description, .site-title {*/
+#CNCERP-menu, #CNCERP-menu-content,#CNCERP-menu-items-wrapper,#CNCERP-menu-scroller,.noprint, .page_title_text,.img, .site-description, .site-title {
 	display:none;
 	/* Remove unwanted elements. */
 }
 
 h1 {
-	font-size: 173%;
+	font-size: 100%;
 	font-weight:bold;
 	/* Heading 1. */
 }

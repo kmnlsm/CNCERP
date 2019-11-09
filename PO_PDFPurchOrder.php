@@ -6,7 +6,7 @@ include('includes/SQL_CommonFunctions.inc');
 include('includes/DefinePOClass.php');
 
 if (!isset($_GET['OrderNo']) AND !isset($_POST['OrderNo'])) {
-	$Title = _('Select a purchase order');
+	$Title = _('Select a Purchase Order');
 	include('includes/header.php');
 	echo '<div class="centre"><br /><br /><br />';
 	prnMsg(_('Select a Purchase Order Number to Print before calling this page'), 'error');
@@ -271,7 +271,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 			while (mb_strlen($LeftOvers) > 1) {
 				$YPos -= $line_height;
 				if ($YPos - $line_height <= $Bottom_Margin) {
-					/* We reached the end of the page so finsih off the page and start a newy */
+					/* We reached the end of the page so finsih off the page and start a newy 我们到了这一页的末尾，所以把这一页找下来，开始一个新的*/
 					$PageNumber++;
 					$YPos = $Page_Height - $FormDesign->Data->y;
 					include('includes/PO_PDFOrderPageHeader.inc');
@@ -288,9 +288,10 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				$YPos -= $line_height;
 			}
 			if ($YPos - $line_height <= $Bottom_Margin) {
-				/* We reached the end of the page so finsih off the page and start a newy */
+				/* We reached the end of the page so finsih off the page and start a newy 我们到了这一页的末尾，所以把这一页找下来，开始一个新的*/
 				$PageNumber++;
-				$YPos = $Page_Height - $FormDesign->Data->y;
+				$YPos = $Page_Height - $FormDesign->Data->y + $line_height ;
+				//$YPos = $Page_Height - $FormDesign->Data->y;
 				include('includes/PO_PDFOrderPageHeader.inc');
 			} //end if need a new page headed up
 
@@ -302,7 +303,7 @@ if (isset($MakePDFThenDisplayIt) or isset($MakePDFThenEmailIt)) {
 				$OrderNo = 'Preview_PurchaseOrder';
 			} //$OrderNo == 'Preview'
 		} //end while there are line items to print out
-		if ($YPos - $line_height <= $Bottom_Margin) { // need to ensure space for totals
+		if ($YPos - $line_height <= $Bottom_Margin) { // need to ensure space for totals需要确保总计空间
 			$PageNumber++;
 			include('includes/PO_PDFOrderPageHeader.inc');
 		} //end if need a new page headed up

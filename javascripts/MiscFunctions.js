@@ -1,3 +1,7 @@
+
+function exportTables () {
+      new Table2Excel("#toexcel").export()
+}
 /* Miscellaneous JavaScript functions. */
 
 function defaultControl(c) {

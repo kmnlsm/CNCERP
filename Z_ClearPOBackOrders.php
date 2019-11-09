@@ -1,7 +1,4 @@
 <?php
-// Z_ClearPOBackOrders.php
-//
-
 $PageSecurity =15;
 include ('includes/session.php');
 $Title = _('UTILITY PAGE To Clear purchase orders with quantity on back order');

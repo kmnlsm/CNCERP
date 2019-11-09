@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by shsg (rainbow) -->
+<form name="票据打印">
+	<PaperSize name="纸张大小">Bills</PaperSize>
+	<LineHeight name="内容行距">26</LineHeight>
+	<logo type="image" name="logo设置" id="Logo">
+		<x>60</x>
+		<y>110</y>
+		<width>0</width>
+		<height>30</height>
+	</logo>
+	<CompanyName type="SimpleText" name="公司名称" id="CompanyName">
+		<FontSize>10</FontSize>
+		<x>55</x>
+		<y>115</y>
+	</CompanyName>
+	<GRNNumber type="SimpleText" name="单据号码" id="GRNNumber">
+		<FontSize>10</FontSize>
+		<x>440</x>
+		<Length></Length>
+		<y>105</y>
+	</GRNNumber>
+	<GRNNumber2 type="SimpleText" name="要求日期" id="GRNNumber2">
+		<FontSize>10</FontSize>
+		<x>440</x>
+		<Length></Length>
+		<y>117</y>
+	</GRNNumber2>
+	<OrderNumber type="SimpleText" name="单据名称" id="OrderNumber">
+		<FontSize>18</FontSize>
+		<x>220</x>
+		<y>90</y>
+	</OrderNumber>
+	<PrintDate type="SimpleText" name="打印日期" id="PrintDate">
+		<FontSize>10</FontSize>
+		<x>440</x>
+		<Length></Length>
+		<y>129</y>
+	</PrintDate>
+	<HeaderRectangle type="Rectangle" name="长方形边框" id="HeaderRectangle">
+		<x>50</x>
+		<y>130</y>
+		<width>500</width>
+		<height>158</height>
+	</HeaderRectangle>
+	<Headings type="ElementArray" name="表头标题">
+		<Column1 type="SimpleText" name="表头一" id="Heading1">
+			<FontSize>10</FontSize>
+			<x>110</x>
+			<y>135</y>
+		</Column1>
+		<Column2 type="SimpleText" name="表头 2" id="Heading2">
+			<FontSize>10</FontSize>
+			<x>225</x>
+			<y>135</y>
+		</Column2>
+		<Column3 type="SimpleText" name="表头 3" id="Heading3">
+			<FontSize>10</FontSize>
+			<x>350</x>
+			<y>135</y>
+		</Column3>
+		<Column4 type="MultiLineText" name="表头 4" id="Heading4">
+			<FontSize>10</FontSize>
+			<x>450</x>
+			<y>135</y>
+			<Length>100</Length>
+		</Column4>
+		<Column5 type="MultiLineText" name="借方元角分" id="Heading5">
+			<FontSize>8</FontSize>
+			<x>352</x>
+			<y>100</y>
+			<Length>100</Length>
+		</Column5>
+		<Column6 type="MultiLineText" name="贷方元角分" id="Heading6">
+			<FontSize>8</FontSize>
+			<x>439</x>
+			<y>100</y>
+			<Length>100</Length>
+		</Column6>
+		<Column7 type="MultiLineText" name="合计金额" id="Heading7">
+			<FontSize>14</FontSize>
+			<x>140</x>
+			<y>100</y>
+			<Length>100</Length>
+		</Column7>
+		<Column8 type="MultiLineText" name="借方合计金额" id="Heading8">
+			<FontSize>13</FontSize>
+			<x>392</x>
+			<y>100</y>
+			<Length>60</Length>
+		</Column8>
+		<Column9 type="MultiLineText" name="贷方合计金额" id="Heading9">
+			<FontSize>13</FontSize>
+			<x>479</x>
+			<y>100</y>
+			<Length>60</Length>
+		</Column9>
+		<Column10 type="MultiLineText" name="附" id="Heading10">
+			<FontSize>13</FontSize>
+			<x>550</x>
+			<y>120</y>
+			<Length>10</Length>
+		</Column10>
+		<Column11 type="MultiLineText" name="件" id="Heading11">
+			<FontSize>13</FontSize>
+			<x>550</x>
+			<y>140</y>
+			<Length>10</Length>
+		</Column11>
+		<Column12 type="MultiLineText" name="张" id="Heading12">
+			<FontSize>13</FontSize>
+			<x>550</x>
+			<y>100</y>
+			<Length>10</Length>
+		</Column12>
+	</Headings>
+	<DataRectangle type="Rectangle" name="数据区的矩形" id="DataRectangle">
+		<x>40</x>
+		<y>135</y>
+		<width>400</width>
+		<height>187</height>
+	</DataRectangle>
+	<LineAboveFooter type="Line" name="分页位置" id="LineAboveFooter">
+		<startx>40</startx>
+		<starty>300</starty>
+		<endx>400</endx>
+		<endy>300</endy>
+	</LineAboveFooter>
+	<Column1 type="Line" name="1竖线" id="Column1">
+		<startx>220</startx>
+		<starty>130</starty>
+		<endx>220</endx>
+		<endy>288</endy>
+	</Column1>
+	<Column2 type="Line" name="2竖线" id="Column2">
+		<startx>320</startx>
+		<starty>130</starty>
+		<endx>320</endx>
+		<endy>288</endy>
+	</Column2>
+	<Column3 type="Line" name="3表头横线" id="Column3">
+		<startx>53</startx>
+		<starty>148</starty>
+		<endx>553</endx>
+		<endy>148</endy>
+	</Column3>
+	<Column4 type="Line" name="横线格子1" id="Column4">
+		<startx>53</startx>
+		<starty>162</starty>
+		<endx>553</endx>
+		<endy>162</endy>
+	</Column4>
+	<Column5 type="Line" name="横线格子2" id="Column5">
+		<startx>53</startx>
+		<starty>176</starty>
+		<endx>553</endx>
+		<endy>176</endy>
+	</Column5>
+	<Column6 type="Line" name="横线格子3" id="Column6">
+		<startx>53</startx>
+		<starty>190</starty>
+		<endx>553</endx>
+		<endy>190</endy>
+	</Column6>
+	<Column7 type="Line" name="横线格子4" id="Column7">
+		<startx>53</startx>
+		<starty>204</starty>
+		<endx>553</endx>
+		<endy>204</endy>
+	</Column7>
+	<Column8 type="Line" name="横线格子5" id="Column8">
+		<startx>53</startx>
+		<starty>218</starty>
+		<endx>553</endx>
+		<endy>218</endy>
+	</Column8>
+	<Column9 type="Line" name="横线格子6" id="Column9">
+		<startx>53</startx>
+		<starty>232</starty>
+		<endx>553</endx>
+		<endy>232</endy>
+	</Column9>
+	<Column10 type="Line" name="横线格子7" id="Column10">
+		<startx>53</startx>
+		<starty>246</starty>
+		<endx>553</endx>
+		<endy>246</endy>
+	</Column10>
+	<Column11 type="Line" name="横线格子8" id="Column11">
+		<startx>53</startx>
+		<starty>260</starty>
+		<endx>553</endx>
+		<endy>260</endy>
+	</Column11>
+	<Column12 type="Line" name="横线格子9" id="Column12">
+		<startx>53</startx>
+		<starty>274</starty>
+		<endx>553</endx>
+		<endy>274</endy>
+	</Column12>
+	<Column13 type="Line" name="13" id="Column13">
+		<startx>445</startx>
+		<starty>82</starty>
+		<endx>445</endx>
+		<endy>284</endy>
+	</Column13>
+	<Column14 type="Line" name="14" id="Column14">
+		<startx>453</startx>
+		<starty>65</starty>
+		<endx>453</endx>
+		<endy>284</endy>
+	</Column14>
+	<Column15 type="Line" name="15" id="Column15">
+		<startx>457</startx>
+		<starty>65</starty>
+		<endx>457</endx>
+		<endy>284</endy>
+	</Column15>
+	<Column16 type="Line" name="16" id="Column16">
+		<startx>465</startx>
+		<starty>82</starty>
+		<endx>465</endx>
+		<endy>284</endy>
+	</Column16>
+	<Column17 type="Line" name="17" id="Column17">
+		<startx>473</startx>
+		<starty>82</starty>
+		<endx>473</endx>
+		<endy>284</endy>
+	</Column17>
+	<Column18 type="Line" name="18" id="Column18">
+		<startx>482</startx>
+		<starty>82</starty>
+		<endx>482</endx>
+		<endy>284</endy>
+	</Column18>
+	<Column19 type="Line" name="19" id="Column19">
+		<startx>489</startx>
+		<starty>82</starty>
+		<endx>489</endx>
+		<endy>284</endy>
+	</Column19>
+	<Column20 type="Line" name="20" id="Column20">
+		<startx>498</startx>
+		<starty>82</starty>
+		<endx>498</endx>
+		<endy>284</endy>
+	</Column20>
+	<Column21 type="Line" name="21" id="Column21">
+		<startx>507</startx>
+		<starty>82</starty>
+		<endx>507</endx>
+		<endy>284</endy>
+	</Column21>
+	<Column22 type="Line" name="22" id="Column22">
+		<startx>514</startx>
+		<starty>82</starty>
+		<endx>514</endx>
+		<endy>284</endy>
+	</Column22>
+	<Column23 type="Line" name="23" id="Column23">
+		<startx>523</startx>
+		<starty>82</starty>
+		<endx>523</endx>
+		<endy>283</endy>
+	</Column23>
+	<Column24 type="Line" name="24" id="Column24">
+		<startx>532</startx>
+		<starty>82</starty>
+		<endx>532</endx>
+		<endy>284</endy>
+	</Column24>
+	<Column25 type="Line" name="25" id="Column25">
+		<startx>40</startx>
+		<starty>123</starty>
+		<endx>540</endx>
+		<endy>123</endy>
+	</Column25>
+	<Column26 type="Line" name="26" id="Column26">
+		<startx>40</startx>
+		<starty>149</starty>
+		<endx>540</endx>
+		<endy>149</endy>
+	</Column26>
+	<Column27 type="Line" name="27" id="Column27">
+		<startx>40</startx>
+		<starty>175</starty>
+		<endx>540</endx>
+		<endy>175</endy>
+	</Column27>
+	<Column28 type="Line" name="28" id="Column28">
+		<startx>40</startx>
+		<starty>201</starty>
+		<endx>540</endx>
+		<endy>201</endy>
+	</Column28>
+	<Column29 type="Line" name="29" id="Column29">
+		<startx>40</startx>
+		<starty>227</starty>
+		<endx>540</endx>
+		<endy>227</endy>
+	</Column29>
+	<Column30 type="Line" name="30" id="Column30">
+		<startx>370</startx>
+		<starty>82</starty>
+		<endx>540</endx>
+		<endy>82</endy>
+	</Column30>
+	<Column31 type="Line" name="31" id="Column31">
+		<startx>200</startx>
+		<starty>40</starty>
+		<endx>385</endx>
+		<endy>40</endy>
+	</Column31>
+	<Column32 type="Line" name="32" id="Column32">
+		<startx>200</startx>
+		<starty>43</starty>
+		<endx>385</endx>
+		<endy>43</endy>
+	</Column32>
+	<Column33 type="Line" name="33" id="Column33">
+		<startx></startx>
+		<starty></starty>
+		<endx>365</endx>
+		<endy>253</endy>
+	</Column33>
+	<Column34 type="Line" name="34" id="Column34">
+		<startx>485</startx>
+		<starty>38</starty>
+		<endx>540</endx>
+		<endy>38</endy>
+	</Column34>
+	<Column35 type="Line" name="35" id="Column35">
+		<startx>485</startx>
+		<starty>50</starty>
+		<endx>540</endx>
+		<endy>50</endy>
+	</Column35>
+	<Data type="ElementArray" name="栏中的数据">
+		<y type="StartLine" name="Y co-ordinate of first data line" id="DataStartLine">160</y>
+		<Column1 type="DataText" name="第一列" id="Data1">
+			<FontSize>10</FontSize>
+			<x>55</x>
+			<Length>260</Length>
+		</Column1>
+		<Column2 type="DataText" name="第二列" id="Data2">
+			<FontSize>10</FontSize>
+			<x>215</x>
+			<Length>77</Length>
+		</Column2>
+		<Column3 type="DataText" name="第三列" id="Data3">
+			<FontSize>10</FontSize>
+			<x>290</x>
+			<Length>30</Length>
+		</Column3>
+		<Column4 type="DataText" name="借方" id="Data4">
+			<FontSize>13</FontSize>
+			<x>392</x>
+			<Length>60</Length>
+		</Column4>
+		<Column5 type="DataText" name="贷方" id="Data5">
+			<FontSize>13</FontSize>
+			<x>479</x>
+			<Length>60</Length>
+		</Column5>
+	</Data>
+	<ReceiptDate type="SimpleText" name="发料仓库" id="ReceiptDate">
+		<FontSize>10</FontSize>
+		<x>236</x>
+		<y>115</y>
+	</ReceiptDate>
+	<SignedFor type="SimpleText" name="签名" id="SignedFor">
+		<FontSize>10</FontSize>
+		<x>50</x>
+		<y>295</y>
+	</SignedFor>
+	<SignedFor1 type="SimpleText" name="签名名字" id="SignedFor1">
+		<FontSize>11</FontSize>
+		<x>370</x>
+		<y>295</y>
+	</SignedFor1>
+</form>

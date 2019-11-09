@@ -364,7 +364,17 @@ if (!isset($_POST['Search']) AND (isset($_POST['Select']) OR isset($_SESSION['Se
 									ON suppliers.currcode=currencies.currabrev
 									WHERE purchdata.stockid = '" . $StockID . "'
 									AND purchdata.effectivefrom=(SELECT max(a.effectivefrom) FROM purchdata a WHERE purchdata.supplierno=a.supplierno and a.stockid=purchdata.stockid)
-									ORDER BY purchdata.preferred DESC");
+									GROUP BY suppliers.suppname,
+										suppliers.currcode,
+										suppliers.supplierid,
+										purchdata.price,
+										purchdata.suppliers_partno,
+										purchdata.leadtime,
+										purchdata.conversionfactor,
+										purchdata.minorderqty,
+										purchdata.preferred,
+										currencies.decimalplaces
+								ORDER BY purchdata.preferred DESC");
 
 		while ($SuppRow = DB_fetch_array($SuppResult)) {
 			echo '<tr>
@@ -428,19 +438,19 @@ if (!isset($_POST['Search']) AND (isset($_POST['Select']) OR isset($_SESSION['Se
 		//show the item image if it has been uploaded
 		if ( extension_loaded ('gd') && function_exists ('gd_info') && file_exists ($imagefile) ) {
 			if ($_SESSION['ShowStockidOnImages'] == '0'){
-				$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC'.
+				$StockImgLink = '<a href="' . $imagefile . '" target="_blank"><img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC'.
 									'&amp;StockID='.urlencode($StockID).
 									'&amp;text='.
 									'&amp;width=200'.
 									'&amp;height=200'.
-									'" alt="" />';
+									'" alt="" /></a>';
 			} else {
-				$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC'.
+				$StockImgLink = '<a href="' . $imagefile . '" target="_blank"><img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC'.
 									'&amp;StockID='.urlencode($StockID).
 									'&amp;text='. $StockID .
 									'&amp;width=200'.
 									'&amp;height=200'.
-									'" alt="" />';
+									'" alt="" /></a>';
 			}
 		} else if (file_exists ($imagefile)) {
 			$StockImgLink = '<img src="' . $imagefile . '" height="200" width="200" />';
@@ -862,14 +872,14 @@ if (isset($SearchResult) AND !isset($_POST['Select'])) {
 			$SupportedImgExt = array('png','jpg','jpeg');
 			$imagefile = reset((glob($_SESSION['part_pics_dir'] . '/' . $myrow['stockid'] . '.{' . implode(",", $SupportedImgExt) . '}', GLOB_BRACE)));
 			if (extension_loaded('gd') && function_exists('gd_info') && file_exists ($imagefile) ) {
-				$StockImgLink = '<img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC'.
+				$StockImgLink = '<a href="' . $imagefile . '" target="_blank"><img src="GetStockImage.php?automake=1&amp;textcolor=FFFFFF&amp;bgcolor=CCCCCC'.
 				'&amp;StockID='.urlencode($myrow['stockid']).
 				'&amp;text='. //$myrow['stockid'] .
 				'&amp;width=100'.
 				'&amp;height=100'.
-				'" alt="" />';
+				'" alt="" /></a>';
 			} else if (file_exists ($imagefile)) {
-				$StockImgLink = '<img src="' . $imagefile . '" height="100" width="100" />';
+				$StockImgLink = '<a href="' . $imagefile . '" target="_blank"><img src="' . $imagefile . '" height="100" width="100" /></a>';//加了个图片
 			} else {
 				$StockImgLink = '<p>'._('No Image').'</p>';
 			}

@@ -12,9 +12,9 @@ normally the lower case two character language code underscore uppercase
 2 character country code does the trick  except for en !!*/
 
 
-If (isset($_POST['Language'])) {
-	$_SESSION['Language'] = $_POST['Language'];
-	$Language = $_POST['Language'];
+If (isset($_GET['Language'])) {
+	$_SESSION['Language'] = $_GET['Language'];
+	$Language = $_GET['Language'];
 } elseif (!isset($_SESSION['Language'])) {
 	$_SESSION['Language'] = $DefaultLanguage;
 	$Language = $DefaultLanguage;
@@ -92,6 +92,9 @@ if (!function_exists('gettext')) {
 	// possibly even if locale fails the language will still switch by using Language instead of locale variable
 	putenv('LANG=' . $_SESSION['Language']);
 	putenv('LANGUAGE=' . $_SESSION['Language']);
+	//bindtextdomain ('messages_'.$_SESSION['Language'], $PathPrefix . 'locale');
+	//textdomain ('messages_'.$_SESSION['Language']);
+	//bind_textdomain_codeset('messages', 'UTF-8');
 	bindtextdomain ('messages', $PathPrefix . 'locale');
 	textdomain ('messages');
 	bind_textdomain_codeset('messages', 'UTF-8');

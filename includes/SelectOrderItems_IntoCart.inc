@@ -10,7 +10,6 @@ Used only in: SelectOrderItems.php
 The reason that it is in this seperate file is because it is used within a loop to get kitset
 items into the cart as well as plain vanilla items outside of the kitset loop
 */
-
 $AlreadyOnThisOrder =0;
 
 if (count($_SESSION['Items'.$identifier]->LineItems)>0
@@ -27,7 +26,6 @@ if (count($_SESSION['Items'.$identifier]->LineItems)>0
        		}
 	} /* end of the foreach loop to look for preexisting items of the same code */
 }
-
 if ($AlreadyOnThisOrder!=1){
 
     $sql = "SELECT stockmaster.description,
@@ -50,11 +48,10 @@ if ($AlreadyOnThisOrder!=1){
 			ON stockmaster.stockid=locstock.stockid
 			WHERE locstock.loccode='" . $_SESSION['Items'.$identifier]->Location . "'
 			AND stockmaster.stockid = '". $NewItem . "'";
-
     $ErrMsg = _('The details for') . ' ' . $NewItem . ' ' . _('could not be retrieved because');
     $DbgMsg = _('The SQL used to retrieve the pricing details but failed was');
     $result1 = DB_query($sql,$ErrMsg,$DbgMsg);
-
+	
     if (DB_num_rows($result1)==0){
 		prnMsg(_('The item code') . ' ' . $NewItem  . ' '  . _('could not be found in the database') . ' - ' . _('it has not been added to the order'),'warn',_('Item Does Not Exist'));
 

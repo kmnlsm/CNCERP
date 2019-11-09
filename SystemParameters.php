@@ -382,15 +382,6 @@ if (isset($_POST['submit'])) {
 			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_QualityCOAText'] . "' WHERE confname='QualityCOAText'";
 
 		}
-		if ($_SESSION['ShortcutMenu'] != $_POST['X_ShortcutMenu']){
-			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_ShortcutMenu'] . "' WHERE confname='ShortcutMenu'";
-
-		}
-		if ($_SESSION['LastDayOfWeek'] != $_POST['X_LastDayOfWeek']){
-			$sql[] = "UPDATE config SET confvalue = '" . $_POST['X_LastDayOfWeek'] . "' WHERE confname='LastDayOfWeek'";
-
-		}
-
 		$ErrMsg =  _('The system configuration could not be updated because');
 		if (sizeof($sql) > 1 ) {
 			$result = DB_Txn_Begin();
@@ -413,10 +404,10 @@ if (isset($_POST['submit'])) {
 
 } /* end of if submit */
 
-echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">
-	<div>
-	<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
-	<table cellpadding="2" class="selection" width="98%">';
+echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
+echo '<div>';
+echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
+echo '<table cellpadding="2" class="selection" width="98%">';
 
 $TableHeader = '<tr>
 					<th>' . _('System Variable Name') . '</th>
@@ -601,7 +592,7 @@ echo '<tr style="outline: 1px solid"><td>' . _('Invoice Orientation') . ':</td>
 //Default Invoice Quantity
 echo '<tr style="outline: 1px solid"><td>' . _('Invoice Quantity Default') . ':</td>
 	<td><select name="X_InvoiceQuantityDefault">
-	<option '.($_SESSION['InvoiceQuantityDefault']=='0'?'selected="selected" ':'').'value="0">0</option>
+	<option '.($_SESSION['InvoiceQuantityDefault']=='0'?'selected="selected" ':'').'value="0">' . _('0') . '</option>
 	<option '.($_SESSION['InvoiceQuantityDefault']=='1'?'selected="selected" ':'').'value="1">' . _('Outstanding') . '</option>
 	</select></td>
 	<td>' . _('This setting controls the default behaviour of invoicing. Setting to 0 defaults the invocie quantity to zero to force entry. Set to outstanding to default the invoice quantity to the balance outstanding, after previous deliveries, on the sales order') . '</td>
@@ -1257,44 +1248,10 @@ echo '</select>
          </td>
 	 <td>' .  _('The flag determines if the system creates quality samples automatically for each lot during P/O Receipt and W/O Receipt transactions.').'
 	 </td>
-	</tr>
-	<tr style="outline: 1px solid">
-	<td>' . _('Allow use of short-cut menus'). '</td>
-	<td>
-		<select type="text" name="X_ShortcutMenu" >';
-		if ($_SESSION['ShortcutMenu'] == 0){
-			echo '<option select="selected" value="0">' . _('No') . '</option>';
-			echo '<option value="1">' . _('Yes') . '</option>';
-		} elseif ($_SESSION['ShortcutMenu'] == 1){
-			echo '<option select="selected" value="1">' . _('Yes') . '</option>';
-			echo '<option value="0">' . _('No') . '</option>';
-		}
-
-echo '</select>
-         </td>
-	 <td>' .  _('The flag determines if the system allows users to create the javascript short cut menu - this can cause confusion to some users with some themes.').'
-	 </td>
-	</tr>
-
-	<tr style="outline: 1px solid">
-	<td>' . _('Last day of the week'). '</td>
-	<td>
-		<select type="text" name="X_LastDayOfWeek" >
-			<option ' . ($_SESSION['LastDayOfWeek'] == 0 ?'selected="selected"':'') . ' value="0">' . _('Sunday') . '</option>
-			<option ' . ($_SESSION['LastDayOfWeek'] == 1 ?'selected="selected"':'') . ' value="1">' . _('Monday') . '</option>
-			<option ' . ($_SESSION['LastDayOfWeek'] == 2 ?'selected="selected"':'') . ' value="2">' . _('Tuesday') . '</option>
-			<option ' . ($_SESSION['LastDayOfWeek'] == 3 ?'selected="selected"':'') . ' value="3">' . _('Wednesday') . '</option>
-			<option ' . ($_SESSION['LastDayOfWeek'] == 4 ?'selected="selected"':'') . ' value="4">' . _('Thursday') . '</option>
-			<option ' . ($_SESSION['LastDayOfWeek'] == 5 ?'selected="selected"':'') . ' value="5">' . _('Friday') . '</option>
-			<option ' . ($_SESSION['LastDayOfWeek'] == 6 ?'selected="selected"':'') . ' value="6">' . _('Saturday') . '</option>
-	</select>
-         </td>
-	 <td>' .  _('Timesheet entry default to weeks ending on this day').'
-	 </td>
-	</tr>
+     </tr>';
 
 
-	</table>
+echo '</table>
 		<br /><div class="centre"><input type="submit" name="submit" value="' . _('Update') . '" /></div>
     </div>
 	</form>';

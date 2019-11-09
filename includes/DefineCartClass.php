@@ -338,7 +338,6 @@ Class Cart {
 			AND taxauthrates.dispatchtaxprovince=" . $this->DispatchTaxProvince . "
 			AND taxauthrates.taxcatid = " . $this->LineItems[$LineNumber]->TaxCategory . "
 			ORDER BY taxgrouptaxes.calculationorder";
-
 		$ErrMsg = _('The taxes and rates for this item could not be retrieved because');
 		$GetTaxRatesResult = DB_query($SQL,$ErrMsg);
 		unset($this->LineItems[$LineNumber]->Taxes);

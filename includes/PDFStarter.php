@@ -56,6 +56,32 @@ switch ($PaperSize) {
 		$Right_Margin=30;
 		break;
 
+  case 'Bills':
+
+		$DocumentPaper = 'Z1'; 
+		$DocumentOrientation ='L';
+
+		$Page_Width=595;
+		$Page_Height=320;
+		$Top_Margin=10;
+		$Bottom_Margin=10;
+		$Left_Margin=20;
+		$Right_Margin=10;
+		break;
+
+  case 'BillsGB':
+
+		$DocumentPaper = 'Z1';
+		$DocumentOrientation ='L';
+
+		$Page_Width=595;
+		$Page_Height=320;
+		$Top_Margin=10;
+		$Bottom_Margin=10;
+		$Left_Margin=50;
+		$Right_Margin=25;
+		break;
+
   case 'A5':
 
 		$DocumentPaper = 'A5';
@@ -110,16 +136,16 @@ switch ($PaperSize) {
 
    case 'P/3/A4_pingzheng':
 
-	   	$DocumentPaper = 'Z2';
-	   	$DocumentOrientation ='L';
+		$DocumentPaper = 'Z2';
+		$DocumentOrientation ='L';
 
-      		$Page_Width=595;
-      		$Page_Height=320;
-      		$Top_Margin=10;
-      		$Bottom_Margin=10;
-      		$Left_Margin=20;
-      		$Right_Margin=10;
-      		break;
+		$Page_Width=595;
+		$Page_Height=320;
+		$Top_Margin=10;
+		$Bottom_Margin=10;
+		$Left_Margin=20;
+		$Right_Margin=10;
+		break;
 
    case 'Letter': // 216mm x 279mm
 
@@ -193,8 +219,8 @@ switch ($PaperSize) {
 //	$PageSize = array(0,0,$Page_Width,$Page_Height);
 //	$pdf = new Cpdf($PageSize);
 $pdf = new Cpdf($DocumentOrientation, 'pt', $DocumentPaper);
-$pdf->addInfo('Creator', 'webERP http://www.weberp.org');
-$pdf->addInfo('Author', 'WebERP ' . $Version);
+$pdf->addInfo('Creator', 'webERP http://www.weberp.org cncERP http://www.cncerp.com');
+$pdf->addInfo('Author', 'WebERP/cncERP ' . $Version);
 
 /* Javier: I have brought this piece from the pdf class constructor to get it closer to the admin/user,
 	I corrected it to match TCPDF, but it still needs check, after which,

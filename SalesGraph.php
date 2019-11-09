@@ -100,7 +100,7 @@ if ((! isset($_POST['FromPeriod']) OR ! isset($_POST['ToPeriod']))
 	}
 
 	echo '<tr>
-			<td>', _('Select Period'), '</td>
+			<td>', _('Select Period'), ':</td>
 			<td>', ReportPeriodList($_POST['Period'], array('l', 't')), '</td>
 		</tr>';
 
@@ -218,6 +218,8 @@ if ((! isset($_POST['FromPeriod']) OR ! isset($_POST['ToPeriod']))
 } else {
 
 	$graph = new PHPlot(950,450);
+	$graph->SetTTFPath('F:/UPUPW_AP7.2_64/htdocs/cncerp/includes/droid/');
+	$graph->SetDefaultTTFont('Droid.ttf');
 	$SelectClause ='';
 	$WhereClause ='';
 	$GraphTitle ='';

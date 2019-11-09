@@ -1,7 +1,10 @@
 <?php
 
 include('includes/session.php');
-$Title = _('Stock Location Transfer Docket Error');
+//$Title = _('Stock Location Transfer Docket Error');
+$Title = _('打印调拨单');
+include('includes/Transby.php');//获取操作员签名
+$PaperSize='BillsGB';//定义纸张
 
 include('includes/PDFStarter.php');
 
@@ -13,13 +16,13 @@ if (!isset($_GET['TransferNo'])){
 
 	include ('includes/header.php');
 	echo '<p class="page_title_text"><img src="'.$RootPath.'/css/'.$Theme.'/images/maintenance.png" title="' . _('Search') .
-		'" alt="" />' . ' ' . _('Reprint transfer docket') . '</p><br />';
+		'" alt="" />' . ' ' . '打印调拨单'/*_('Reprint transfer docket')*/ . '</p><br />';
 	echo '<form method="post" action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '">';
     echo '<div>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 	echo '<table>
 			<tr>
-				<td>' . _('Transfer docket to reprint') . '</td>
+				<td>' . '请选择调拨单号'/*_('Transfer docket to reprint')*/ . '</td>
 				<td><input type="text" class="number" size="10" name="TransferNo" /></td>
 			</tr>
 		</table>';
@@ -51,8 +54,8 @@ if (!isset($_GET['TransferNo'])){
 	exit;
 }
 
-$pdf->addInfo('Title', _('Inventory Location Transfer BOL') );
-$pdf->addInfo('Subject', _('Inventory Location Transfer BOL') . ' # ' . $_GET['TransferNo']);
+$pdf->addInfo('Title', '调拨提单'/*_('Inventory Location Transfer BOL')*/ );
+$pdf->addInfo('Subject', '调拨提单号'/*_('Inventory Location Transfer BOL')*/ . ' # ' . $_GET['TransferNo']);
 $FontSize=10;
 $PageNumber=1;
 $line_height=30;

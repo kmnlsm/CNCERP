@@ -186,7 +186,8 @@ if (isset($_POST['Process'])){ //user hit submit a new entry to the receipt batc
 	}
 	if ($_POST['Discount']==0 AND $ReceiptTypes[$_SESSION['ReceiptBatch' . $identifier]->ReceiptType]['percentdiscount']>0){
 		if (isset($_GET['Type']) AND $_GET['Type'] == 'Customer') {
-			$_POST['Discount'] = $_POST['Amount']*$ReceiptTypes[$_SESSION['ReceiptBatch' . $identifier]->ReceiptType]['percentdiscount'];
+			$AmountTotal=$_POST['Amount']/(1-$ReceiptTypes[$_SESSION['ReceiptBatch' . $identifier]->ReceiptType]['percentdiscount']);
+			$_POST['Discount'] = $AmountTotal*$ReceiptTypes[$_SESSION['ReceiptBatch' . $identifier]->ReceiptType]['percentdiscount'];
 		}
 	}
 
@@ -273,7 +274,8 @@ if (isset($_POST['CommitBatch'])){
 	/*Start a transaction to do the whole lot inside */
 	$result = DB_Txn_Begin();
 	$_SESSION['ReceiptBatch' . $identifier]->BatchNo = GetNextTransNo(12);
-
+	include_once('includes/Transby.php');
+	addTransBy(12,$_SESSION['ReceiptBatch' . $identifier]->BatchNo);
 
 	$BatchReceiptsTotal = 0; //in functional currency
 	$BatchDiscount = 0; //in functional currency
@@ -394,6 +396,8 @@ if (isset($_POST['CommitBatch'])){
 				*/
 
 				$PaymentTransNo = GetNextTransNo( 1 );
+				include_once('includes/Transby.php');
+				addTransBy(1,$PaymentTransNo);
 				$SQL="INSERT INTO banktrans (transno,
 											type,
 											bankact,

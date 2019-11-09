@@ -9,10 +9,10 @@
 
 $type = 'cidfont0';
 // $name = 'STSongStd-Light-Acro';	// TCPDF name doesn't show the apostrophe
-$name = 'AdobeSongStd-Light';		// name as Reader 8 and 9.1
+$name = 'AdobeHeitiStd-Regular';		// name as Reader 8 and 9.1
 
 // $displayname = 'STSong Light (Simp. Chinese)';
-$displayname = 'Adobe Song Std L';	// Reader 9.1
+$displayname = 'AdobeHeitiStd-Regular';	// Reader 9.1
 
 $desc = array(
 	'Ascent' => 752,

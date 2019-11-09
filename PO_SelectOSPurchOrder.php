@@ -622,12 +622,12 @@ else {
 		$Bal = '';
 		if (isset($_POST['PODetails'])) {
 			//lets retrieve the PO balance here to make it a standard sql query.
-			$BalSql = "SELECT itemcode, quantityord - quantityrecd as balance FROM purchorderdetails WHERE orderno = '" . $myrow['orderno'] . "'";
+			$BalSql = "SELECT itemcode, itemdescription, quantityord - quantityrecd as balance FROM purchorderdetails WHERE orderno = '" . $myrow['orderno'] . "'";
 			$ErrMsg = _('Failed to retrieve purchorder details');
 			$BalResult  = DB_query($BalSql,$ErrMsg);
 			if (DB_num_rows($BalResult)>0) {
 				while ($BalRow = DB_fetch_array($BalResult)) {
-					$Bal .= '<br/>' . $BalRow['itemcode'] . ' -- ' . $BalRow['balance'];
+					$Bal .= '<br/>' . $BalRow['itemdescription'] . ' -- ' . locale_number_format($BalRow['balance'],2);
 				}
 			}
 		}

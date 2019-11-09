@@ -160,7 +160,7 @@
 									ON purchorderdetails.glcode=chartmaster.accountcode
 									WHERE purchorderdetails.completed=0
 									AND purchorderdetails.orderno ='" . $_GET['ModifyOrderNumber'] . "'
-									ORDER BY podetailitem";
+									ORDER BY itemcode";
 
 			$ErrMsg =  _('The lines on the purchase order cannot be retrieved because');
 			$DbgMsg =  _('The SQL statement that was used to retrieve the purchase order lines was');

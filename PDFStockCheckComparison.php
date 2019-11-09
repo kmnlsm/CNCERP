@@ -19,6 +19,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['ReportOrClose'])){
 	if ($_POST['ReportOrClose']=='ReportAndClose'){
 
 		$sql = "SELECT stockcheckfreeze.stockid,
+						stockmaster.description,
 						stockcheckfreeze.loccode,
 						qoh,
 						materialcost+labourcost+overheadcost AS standardcost
@@ -130,7 +131,8 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['ReportOrClose'])){
 				$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				if ($_SESSION['CompanyRecord']['gllink_stock']==1 AND $myrow['standardcost'] > 0){
-
+		include_once('includes/Transby.php');
+		addTransBy(17,$AdjustmentNumber);
 					$StockGLCodes = GetStockGLCode($myrow['stockid']);
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
 					$DbgMsg = _('The following SQL to insert the GL entries was used');
@@ -148,7 +150,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['ReportOrClose'])){
 								'" . $PeriodNo . "',
 								'" .  $StockGLCodes['adjglact'] . "',
 								'" . ($myrow['standardcost'] * -($StockQtyDifference)) . "',
-								'" . $myrow['stockid'] . " x " . $StockQtyDifference . " @ " . $myrow['standardcost'] . " - " . _('Inventory Check') . "')";
+								'" . $myrow['description'] . " x " . $StockQtyDifference . " @ " . $myrow['standardcost'] . " - " . _('Inventory Check') . "')";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The general ledger transaction entries could not be added because');
@@ -167,7 +169,7 @@ If (isset($_POST['PrintPDF']) AND isset($_POST['ReportOrClose'])){
 								'" . $PeriodNo . "',
 								'" .  $StockGLCodes['stockact'] . "',
 								'" . $myrow['standardcost'] * $StockQtyDifference . "',
-                                '" . $myrow['stockid'] . " x " . $StockQtyDifference . " @ " . $myrow['standardcost'] . " - " . _('Inventory Check') . "')";
+                                '" . $myrow['description'] . " x " . $StockQtyDifference . " @ " . $myrow['standardcost'] . " - " . _('Inventory Check') . "')";
 					$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 
 				} //END INSERT GL TRANS

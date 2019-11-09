@@ -14,8 +14,12 @@ echo '<div class="centre">' . _('Making a comma separated values file of the cur
 
 $ErrMsg = _('The SQL to get the stock quantities failed with the message');
 
-$sql = "SELECT stockid, SUM(quantity) FROM locstock
+/*$sql = "SELECT stockid, SUM(quantity) FROM locstock
 			INNER JOIN locationusers ON locationusers.loccode=locstock.loccode AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canview=1
+			GROUP BY stockid HAVING SUM(quantity)<>0";*/
+$sql = "SELECT stockmaster.stockid,description, SUM(quantity) FROM locstock
+			INNER JOIN locationusers ON locationusers.loccode=locstock.loccode AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canview=1
+			INNER JOIN stockmaster ON stockmaster.stockid=locstock.stockid
 			GROUP BY stockid HAVING SUM(quantity)<>0";
 $result = DB_query($sql, $ErrMsg);
 
@@ -35,7 +39,7 @@ if ($fp==FALSE){
 }
 
 While ($myrow = DB_fetch_row($result)){
-	$line = stripcomma($myrow[0]) . ', ' . stripcomma($myrow[1]);
+	$line = stripcomma($myrow[0]) . ', ' . stripcomma($myrow[1]) . ', ' . stripcomma($myrow[2]);
 	fputs($fp,"\xEF\xBB\xBF" . $line . "\n");
 }
 

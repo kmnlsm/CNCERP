@@ -166,10 +166,12 @@ if(isset($_POST['ShowStatus'])) {
 	$DbgMsg = _('The SQL that failed was');
 	$LocStockResult = DB_query($sql, $ErrMsg, $DbgMsg);
 
-
-	echo '<br />', DisplayDateTime(), // Display current date and time.
-		'<br />
-		<table cellpadding="5" cellspacing="4" class="selection">
+// Display current date and time.
+	echo '<br /> 
+	    <script src="', $RootPath, '/javascripts/table2excel/exceljs.min.js"></script>
+        <script src="', $RootPath, '/javascripts/table2excel/table2excel.core.js"></script>
+		<table cellpadding="5" cellspacing="4" class="selection" id="toexcel">
+		<td colspan="8" class="centre"><h5>查询截至：',date('Y年m月d日 H点i分s秒',Time()),'</h5></td>
 			<tr>
 				<th>', _('StockID'), '</th>
 				<th class="text">', _('Description'), '</th>
@@ -308,9 +310,20 @@ if(isset($_POST['ShowStatus'])) {
 	//end of while loop
 
 	echo '</table>';
-} /* Show status button hit */
-echo '</div>
+	echo '</div>
       </form>';
+	echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post">
+			<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
+			<br />
+			<div class="centre noprint">', // Form buttons:
+			'<button type="button"  onclick="exportTables()"><img alt="" src="', $RootPath, '/css/', $Theme,
+					'/images/excel.svg" />  导出excel</button>',
+					'<button onclick="window.location=\'index.php?Application=stock\'" type="button"><img alt="" src="'.$RootPath.'/css/'.$Theme.
+					'/images/return.svg" /> ', _('Return'), '</button>', // "Return" button.
+			'</div>
+		</form>';
+} /* Show status button hit */
+
 
 include('includes/footer.php');
 ?>

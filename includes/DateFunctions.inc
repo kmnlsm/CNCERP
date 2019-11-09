@@ -146,7 +146,6 @@ function GetMonthText($MonthNumber){
 }
 
 function GetWeekDayText ($WeekDayNumber){
-	$Day='';
 	switch ($WeekDayNumber) {
 		case 0:
 			$Day = _('Sunday');

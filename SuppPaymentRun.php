@@ -4,9 +4,12 @@ Class Allocation {
 	Var $TransID;
 	Var $Amount;
 
-	function Allocation ($TransID, $Amount){
+	function __construct ($TransID, $Amount){
 		$this->TransID = $TransID;
 		$this->Amount = $Amount;
+	}
+	function Allocation() {
+		self::__construct();
 	}
 }
 
@@ -138,6 +141,8 @@ if ((isset($_POST['PrintPDF']) OR isset($_POST['PrintPDFAndProcess']))
 				$SupplierName = $DetailTrans['suppname'];
 				if (isset($_POST['PrintPDFAndProcess'])){
 					$SuppPaymentNo = GetNextTransNo(22);
+					include_once('includes/Transby.php');
+					addTransBy(22,$SuppPaymentNo);
 				}
 				$AccumBalance = 0;
 				$AccumDiffOnExch = 0;

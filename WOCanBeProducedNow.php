@@ -211,7 +211,7 @@ function display()  //####DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_DISPLAY_#####
 			<br/>';
 	echo '<input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />';
 
-	echo '<p class="page_title_text" align="center"><strong>' . "List of items in WO ready to be produced in: " . '</strong></p>';
+	echo '<p class="page_title_text" align="center"><strong>' . _("List of items in WO ready to be produced in: ") . '</strong></p>';
 
 	echo '<table>';
 

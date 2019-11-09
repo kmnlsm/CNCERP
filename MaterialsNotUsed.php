@@ -24,7 +24,7 @@ $SQL = "SELECT stockmaster.stockid,
 				WHERE bom.component = stockmaster.stockid )
 		ORDER BY stockmaster.stockid";
 $result = DB_query($SQL);
-if (DB_num_rows($result) != 0){
+//if (DB_num_rows($result) != 0){
 	$TotalValue = 0;
 	echo '<p class="page_title_text"><strong>' . _('Raw Materials Not Used in any BOM') . '</strong></p>';
 	echo '<div>';
@@ -75,7 +75,7 @@ if (DB_num_rows($result) != 0){
 	echo '</table>
 			</div>
 			</form>';
-}
+//}
 
 include ('includes/footer.php');
 ?>

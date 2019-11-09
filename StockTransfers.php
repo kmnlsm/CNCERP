@@ -91,48 +91,27 @@ if($NewTransfer) {
 
 	if(!isset($_POST['StockLocationFrom'])) {
 		$_POST['StockLocationFrom']='';
-		$StockLocationFromAccount = '';
-	}
-	else
-	{
-		$SQL = "SELECT glaccountcode
-				FROM locations
-				INNER JOIN locationusers
-				ON locationusers.loccode=locations.loccode AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canupd=1
-				WHERE locations.loccode = '" . $_POST['StockLocationFrom'] . "'";
-		$Result = DB_query($SQL);
-		$myrow = DB_fetch_array($Result);
-		{
-			$StockLocationFromAccount = $myrow['glaccountcode'];
-		}
 	}
 	if(!isset($_POST['StockLocationTo'])) {
 		$_POST['StockLocationTo']='';
-		$StockLocationToAccount = '';
 	}
-	else
-	{
-		$SQL = "SELECT glaccountcode
-				FROM locations
-				INNER JOIN locationusers
-				ON locationusers.loccode=locations.loccode AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canupd=1
-				WHERE locations.loccode = '" . $_POST['StockLocationTo'] . "'";
-		$Result = DB_query($SQL);
-		$myrow = DB_fetch_array($Result);
-		{
-			$StockLocationToAccount = $myrow['glaccountcode'];
-		}
-
-		$_SESSION['Transfer']->StockLocationTo = $_POST['StockLocationTo'];
-	}
-
+/*
+$TrfID,
+				$StockLocationFrom,
+				$StockLocationFromName,
+				$StockLocationFromAccount,
+				$StockLocationTo,
+				$StockLocationToName,
+				$StockLocationToAccount,
+				$TranDate 
+*/
 	$_SESSION['Transfer']= new StockTransfer(0,
 										$_POST['StockLocationFrom'],
 										'',
-										$StockLocationFromAccount,
+										'',
 										$_POST['StockLocationTo'],
 										'',
-										$StockLocationToAccount,
+										'',
 										Date($_SESSION['DefaultDateFormat'])
 										);
 	$result = DB_query("SELECT description,
@@ -182,39 +161,14 @@ if(isset($_POST['Quantity'])
 }
 
 if(isset($_POST['StockLocationFrom'])
-	AND $_POST['StockLocationFrom'] != $_SESSION['Transfer']->StockLocationFrom ) {
-
-	$SQL = "SELECT glaccountcode
-			FROM locations
-			INNER JOIN locationusers
-			ON locationusers.loccode=locations.loccode AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canupd=1
-			WHERE locations.loccode = '" . $_POST['StockLocationFrom'] . "'";
-	$Result = DB_query($SQL);
-	$myrow = DB_fetch_array($Result);
-	{
-		$_SESSION['Transfer']->StockLocationFromAccount = $myrow['glaccountcode'];
-	}
+	AND $_POST['StockLocationFrom']!= $_SESSION['Transfer']->StockLocationFrom ) {
 
 	$_SESSION['Transfer']->StockLocationFrom = $_POST['StockLocationFrom'];
 	$_SESSION['Transfer']->StockLocationTo = $_POST['StockLocationTo'];
 	$_SESSION['Transfer']->TransferItem[0]->Quantity=filter_number_format($_POST['Quantity']);
 	$_SESSION['Transfer']->TransferItem[0]->SerialItems=array();
 }
-
-if(isset($_POST['StockLocationTo'])
-	AND $_POST['StockLocationTo'] != $_SESSION['Transfer']->StockLocationTo) {
-
-	$SQL = "SELECT glaccountcode
-			FROM locations
-			INNER JOIN locationusers
-			ON locationusers.loccode=locations.loccode AND locationusers.userid='" .  $_SESSION['UserID'] . "' AND locationusers.canupd=1
-			WHERE locations.loccode = '" . $_POST['StockLocationTo'] . "'";
-	$Result = DB_query($SQL);
-	$myrow = DB_fetch_array($Result);
-	{
-		$_SESSION['Transfer']->StockLocationToAccount = $myrow['glaccountcode'];
-	}
-
+if(isset($_POST['StockLocationTo']) ) {
 	$_SESSION['Transfer']->StockLocationTo = $_POST['StockLocationTo'];
 }
 
@@ -274,12 +228,13 @@ if(isset($_POST['EnterTransfer']) ) {
 			include('includes/footer.php');
 			exit;
 		}
+		include_once('includes/Transby.php');
+		addTransBy(16,$TransferNumber);
 		// Insert outgoing inventory GL transaction if any of the locations has a GL account code:
-		if(($_SESSION['Transfer']->StockLocationFromAccount !='' OR $_SESSION['Transfer']->StockLocationToAccount !='') AND
-			($_SESSION['Transfer']->StockLocationFromAccount != $_SESSION['Transfer']->StockLocationToAccount)) {
+		if($_SESSION['Transfer']->StockLocationFromAccount !='' or $_SESSION['Transfer']->StockLocationToAccount !='') {
 			// Get the account code:
-			if($_SESSION['Transfer']->StockLocationFromAccount !='') {
-				$AccountCode = $_SESSION['Transfer']->StockLocationFromAccount;
+			if($_SESSION['Transfer']->StockLocationToAccount !='') {
+				$AccountCode = $_SESSION['Transfer']->StockLocationToAccount;
 			} else {
 				$StockGLCode = GetStockGLCode($_SESSION['Transfer']->TransferItem[0]->StockID);// Get Category's account codes.
 				$AccountCode = $StockGLCode['stockact'];// Select account code for stock.
@@ -308,7 +263,7 @@ if(isset($_POST['EnterTransfer']) ) {
 					16,'" .
 					$TransferNumber . "','" .
 					$AccountCode . "','" .
-					$_SESSION['Transfer']->StockLocationFrom.' - '.$_SESSION['Transfer']->TransferItem[0]->StockID.' x '.$_SESSION['Transfer']->TransferItem[0]->Quantity.' @ '. $StandardCost . "','" .
+					$_SESSION['Transfer']->StockLocationFrom.' - '.$_SESSION['Transfer']->TransferItem[0]->ItemDescription.' x '.$_SESSION['Transfer']->TransferItem[0]->Quantity.' @ '. $StandardCost . "','" .
 					-$_SESSION['Transfer']->TransferItem[0]->Quantity * $StandardCost . "')";
 					$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The outgoing inventory GL transacction record could not be inserted because');
 					$DbgMsg =  _('The following SQL to insert records was used');
@@ -432,8 +387,7 @@ if(isset($_POST['EnterTransfer']) ) {
 			$QtyOnHandPrior = 0;
 		}
 		// Insert incoming inventory GL transaction if any of the locations has a GL account code:
-		if(($_SESSION['Transfer']->StockLocationFromAccount !='' OR $_SESSION['Transfer']->StockLocationToAccount !='') AND
-			($_SESSION['Transfer']->StockLocationFromAccount != $_SESSION['Transfer']->StockLocationToAccount)) {
+		if($_SESSION['Transfer']->StockLocationFromAccount !='' or $_SESSION['Transfer']->StockLocationToAccount !='') {
 			// Get the account code:
 			if($_SESSION['Transfer']->StockLocationToAccount !='') {
 				$AccountCode = $_SESSION['Transfer']->StockLocationToAccount;
@@ -465,7 +419,7 @@ if(isset($_POST['EnterTransfer']) ) {
 					16,'" .
 					$TransferNumber . "','" .
 					$AccountCode . "','" .
-					$_SESSION['Transfer']->StockLocationTo.' - '.$_SESSION['Transfer']->TransferItem[0]->StockID.' x '.$_SESSION['Transfer']->TransferItem[0]->Quantity.' @ '. $StandardCost . "','" .
+					$_SESSION['Transfer']->StockLocationTo.'('.$_SESSION['Transfer']->StockLocationToName.') - '.$_SESSION['Transfer']->TransferItem[0]->ItemDescription.' x '.$_SESSION['Transfer']->TransferItem[0]->Quantity.' @ '. $StandardCost . "','" .
 					$_SESSION['Transfer']->TransferItem[0]->Quantity * $StandardCost . "')";
 			$ErrMsg =  _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The incoming inventory GL transacction record could not be inserted because');
 			$DbgMsg =  _('The following SQL to insert records was used');
@@ -489,7 +443,7 @@ if(isset($_POST['EnterTransfer']) ) {
 					'" . $SQLTransferDate . "',
 					'" . $_SESSION['UserID'] . "',
 					'" . $PeriodNo . "',
-					'" . _('From') . " " . $_SESSION['Transfer']->StockLocationFrom . "',
+					'" . _('From') . " " . $_SESSION['Transfer']->StockLocationFrom . "(".$_SESSION['Transfer']->StockLocationFromName.")',
 					'" . $_SESSION['Transfer']->TransferItem[0]->Quantity . "',
 					'" . round($QtyOnHandPrior + $_SESSION['Transfer']->TransferItem[0]->Quantity,$_SESSION['Transfer']->TransferItem[0]->DecimalPlaces) . "')";
 

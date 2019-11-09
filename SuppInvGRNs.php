@@ -113,6 +113,7 @@ echo '<form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8'
 			<th colspan="10"><h3>', _('Invoiced Goods Received Selected'), '</h3></th>
 		</tr>
 		<tr>
+		    <th>' . _('#') . ' </th>
 			<th>' . _('Sequence') . ' #</th>
 			<th>' . _("Supplier's Ref") . '</th>
 			<th>' . _('Item Code') . '</th>
@@ -138,6 +139,7 @@ foreach ($_SESSION['SuppTrans']->GRNs as $EnteredGRN){
 	}
 
 	echo '<tr>
+	        <td class="number">', $i , '</td>
 			<td class="number">', $EnteredGRN->GRNNo, '</td>
 			<td class="text">', $EnteredGRN->SupplierRef, '</td>
 			<td class="number">', $EnteredGRN->ItemCode, '</td>
@@ -191,7 +193,7 @@ $SQL = "SELECT grnbatch,
 		LEFT JOIN stockmaster ON grns.itemcode=stockmaster.stockid
 		WHERE grns.supplierid ='" . $_SESSION['SuppTrans']->SupplierID . "'
 		AND grns.qtyrecd - grns.quantityinv > 0
-		ORDER BY grns.grnno";
+		ORDER BY grns.grnno,purchorderdetails.itemcode";
 $GRNResults = DB_query($SQL);
 
 if (DB_num_rows($GRNResults)==0){

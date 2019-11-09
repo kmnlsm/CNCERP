@@ -348,6 +348,7 @@ if (!isset($StockID)) {
 			$Status_WO = $RootPath . '/WorkOrderStatus.php?WO=' .$myrow['wo'] . '&amp;StockID=' . urlencode($myrow['stockid']);
 			$Receive_WO = $RootPath . '/WorkOrderReceive.php?WO=' .$myrow['wo'] . '&amp;StockID=' . urlencode($myrow['stockid']);
 			$Issue_WO = $RootPath . '/WorkOrderIssue.php?WO=' .$myrow['wo'] . '&amp;StockID=' . urlencode($myrow['stockid']);
+			$Issue2_WO = $RootPath . '/WorkOrderIssue2.php?WO=' .$myrow['wo'] . '&amp;StockID=' . urlencode($myrow['stockid']);
 			$Costing_WO =$RootPath . '/WorkOrderCosting.php?WO=' .$myrow['wo'];
 			$Printing_WO =$RootPath . '/PDFWOPrint.php?WO=' .$myrow['wo'] . '&amp;StockID=' . urlencode($myrow['stockid']);
 
@@ -359,6 +360,7 @@ if (!isset($StockID)) {
 					<td><a href="%s">%s</a></td>
 					<td><a href="%s">' . _('Status') . '</a></td>
 					<td><a href="%s">' . _('Issue To') . '</a></td>
+					<td><a href="%s">' . _('Issue To_cqz') . '</a></td>
 					<td><a href="%s">' . _('Receive') . '</a></td>
 					<td><a href="%s">' . _('Costing') . '</a></td>
 					<td><a href="%s">' . _('Print W/O') . '</a></td>
@@ -374,6 +376,7 @@ if (!isset($StockID)) {
 					$myrow['wo'].'['.$myrow['reference'] . ']',
 					$Status_WO,
 					$Issue_WO,
+					$Issue2_WO,
 					$Receive_WO,
 					$Costing_WO,
 					$Printing_WO,

@@ -31,15 +31,23 @@ if(!isset($_POST['TransType'])) {
 if($_POST['TransType']==20) {
 	 echo '<option selected="selected" value="20">' . _('Purchase Invoice') . '</option>
 			<option value="22">' . _('Payment') . '</option>
+			<option value="50">' . _('初始化') . '</option>
 			<option value="21">' . _('Debit Note') . '</option>';
 } elseif($_POST['TransType'] == 22) {
 	echo '<option selected="selected" value="22">' . _('Payment') . '</option>
 			<option value="20">' . _('Purchase Invoice') . '</option>
+			<option value="50">' . _('初始化') . '</option>
 			<option value="21">' . _('Debit Note') . '</option>';
 } elseif($_POST['TransType'] == 21) {
 	echo '<option selected="selected" value="21">' . _('Debit Note') . '</option>
 		<option value="20">' . _('Purchase Invoice') . '</option>
+		<option value="50">' . _('初始化') . '</option>
 		<option value="22">' . _('Payment') . '</option>';
+}elseif($_POST['TransType'] == 50) {
+	echo '<option selected="selected" value="50">' . _('初始化') . '</option>
+		<option value="20">' . _('Purchase Invoice') . '</option>
+		<option value="22">' . _('Payment') . '</option>
+		<option value="21">' . _('Debit Note') . '</option>';
 }
 
 echo '</select></td>';
@@ -93,9 +101,9 @@ if(isset($_POST['ShowResults']) AND $_POST['TransNo']!='') {
 					suppallocs.amt
 				FROM supptrans
 				INNER JOIN suppallocs ";
-		if($_POST['TransType']==22 OR $_POST['TransType'] == 21) {
+		if($_POST['TransType']==22 OR $_POST['TransType'] == 21 OR $_POST['TransType'] == 50) {
 
-			$TitleInfo = ($_POST['TransType'] == 22)?_('Payment'):_('Debit Note');
+			$TitleInfo = ($_POST['TransType'] == 22 OR $_POST['TransType'] == 50)?_('Payment'):_('Debit Note');
 			$sql .= "ON supptrans.id = suppallocs.transid_allocto
 				WHERE suppallocs.transid_allocfrom = '" . $AllocToID . "'";
 		} else {
@@ -110,7 +118,7 @@ if(isset($_POST['ShowResults']) AND $_POST['TransNo']!='') {
 
 		if(DB_num_rows($TransResult)==0) {
 
-			if($myrow['totamt']>0 AND ($_POST['TransType']==22 OR $_POST['TransType'] == 21)) {
+			if($myrow['totamt']>0 AND ($_POST['TransType']==22 OR $_POST['TransType'] == 21 OR $_POST['TransType'] == 50)) {
 					prnMsg(_('This transaction was a receipt of funds and there can be no allocations of receipts or credits to a receipt. This inquiry is meant to be used to see how a payment which is entered as a negative receipt is settled against credit notes or receipts'),'info');
 			} else {
 				prnMsg(_('There are no allocations made against this transaction'),'info');
@@ -162,7 +170,7 @@ if(isset($_POST['ShowResults']) AND $_POST['TransNo']!='') {
 					</tr>';
 
 				$RowCounter++;
-				if($RowCounter == 22) {
+				if($RowCounter == 22 OR $_POST['TransType'] == 50) {
 					$RowCounter=1;
 					echo $TableHeader;
 				}

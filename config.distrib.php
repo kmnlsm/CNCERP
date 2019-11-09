@@ -6,7 +6,7 @@
 
 // Default language to use for the login screen and the setup of new users.
 //The users' language selection will override
-$DefaultLanguage = 'en_GB.utf8';
+$DefaultLanguage ='zh_CN.utf8';
 
 // Default theme to use for the login screen and the setup of new users.
 //The users' theme selection will override
@@ -14,7 +14,7 @@ $DefaultLanguage = 'en_GB.utf8';
 //$DefaultTheme = 'wood';
 //$DefaultTheme = 'silverwolf';
 //$DefaultTheme = 'gel';
-$DefaultTheme = 'xenos';
+$DefaultTheme = 'stisla';
 
 // Whether to display the demo login and password or not on the login screen
 $AllowDemoMode = True;
@@ -45,8 +45,8 @@ $DBType = 'mysqli';
 
 
 // sql user & password
-$DBUser = 'weberp_db_user';
-$DBPassword = 'weberp_db_pwd';
+$DBUser = 'cncerp_db_user';
+$DBPassword = 'cncerp_db_pwd';
 
 // It would probably be inappropraite to allow selection of the company in a hosted envionment so this option can be switched to 'ShowInputBox' or 'Hide'
 // depending if you allow the user to select the name of the company or must use the default one described at $DefaultCompany
@@ -64,14 +64,14 @@ $AllowCompanySelectionBox = 'ShowSelectionBox';
 
 //If $AllowCompanySelectionBox is not 'ShowSelectionBox' above then the $DefaultDatabase string is used to determined the default Company
 //entered in the login screen as a default, otherwise the user is expected to know the name of the company to log into.
-$DefaultDatabase = 'weberpdemo';
+$DefaultDatabase = 'cncerpdemo';
 
 //The maximum time that a login session can be idle before automatic logout
 //time is in seconds  3600 seconds in an hour
 $SessionLifeTime = 3600;
 
 //The maximum time that a script can execute for before the web-server should terminate it
-$MaximumExecutionTime =120;
+$MaximumExecutionTime =600;
 
 /*The path to which session files should be stored in the server - useful for some multi-host web servers where pages are serviced using load balancing servers - when the load picks a different server then the session can be lost unless this option is used - which tells the server explicitly where to find the session file.
 It is also useful where there are several webERP installs where the code is in two different paths on the same server and being used by the same client browser. It is possible in this scenario for the session to be over-written by the two different webERP installations. The solution is to specify different $SessionSavePath in each installations config.php
@@ -115,7 +115,7 @@ error_reporting(E_ALL && ~E_NOTICE && E_WARNING);
 //error_reporting (-1);
 
 //Installed companies
-$CompanyList[0] = array('database'=>'weberpdemo' ,'company'=>'WebERP Demo Company' );
+$CompanyList[0] = array('database'=>'cncerpdemo' ,'company'=>'CN Cloud ERP Demo Company' );
 $CompanyList[1] = array('database'=>'your_db' ,'company'=>'Your Company inc' );
 /*Make sure there is nothing - not even spaces after this last ?> */
 ?>

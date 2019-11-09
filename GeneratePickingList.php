@@ -1,6 +1,5 @@
 <?php
-// GeneratePickingList.php
-// Generate a picking list.
+/* Generate a picking list */
 
 include('includes/session.php');
 /* $Title is set in several parts of this script. */
@@ -442,13 +441,10 @@ for ( $i = 0; $i < $TotalOrderCount; $i++ ){
 
 			if ($MyRow2['controlled'] == 1) {
 				if ($MyRow2['serialised'] == 1) {
-/*					$BundleLabel = _('Serial#:');*/
-					$BundleLabel = _('Serial number') . ':';
+					$BundleLabel = _('Serial#:');
 				}
 				else {
-/*					$BundleLabel = _('Lot#:');*/
-					$BundleLabel = _('Lot Number') . ':';
-/*					$BundleLabel = _('Lot number') . ':';*/
+					$BundleLabel = _('Lot#:');
 				}
 				$SQL = "SELECT serialno,
 								quantity,
@@ -505,7 +501,7 @@ for ( $i = 0; $i < $TotalOrderCount; $i++ ){
 
 		$YPos = $Page_Height - 45;
 		$pdf->setFont('', 'B');
-		$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column2->x, $Page_Height - $YPos, $FormDesign->Headings->Column2->Length, $FormDesign->Headings->Column2->FontSize, _('Signed for') . ': ______________________________');
+		$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column2->x, $Page_Height - $YPos, $FormDesign->Headings->Column2->Length, $FormDesign->Headings->Column2->FontSize, _('Signed for: ') . '______________________________');
 		$LeftOvers = $pdf->addTextWrap($FormDesign->Headings->Column3->x, $Page_Height - $YPos, $FormDesign->Headings->Column3->Length, $FormDesign->Headings->Column3->FontSize, _('Date') . ' : __________');
 		$pdf->setFont('', '');
 	} /*end if there are order details to show on the order*/

@@ -195,6 +195,8 @@ if (isset($_POST['EnterAdjustment']) AND $_POST['EnterAdjustment']!= ''){
 		$SQLAdjustmentDate = FormatDateForSQL(Date($_SESSION['DefaultDateFormat']));
 
 		$Result = DB_Txn_Begin();
+		include_once('includes/Transby.php');
+		addTransBy(17,$AdjustmentNumber);
 
 		// Need to get the current location quantity will need it later for the stock movement
 		$SQL="SELECT locstock.quantity

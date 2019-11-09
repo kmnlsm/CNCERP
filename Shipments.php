@@ -172,7 +172,8 @@ if (isset($_POST['Update'])
 		if (!Is_Date($_POST['ETA'])){
 			$InputError=1;
 			prnMsg( _('The date of expected arrival of the shipment must be entered in the format') . ' ' .$_SESSION['DefaultDateFormat'], 'error');
-		} elseif (Date1GreaterThanDate2($_POST['ETA'],Date($_SESSION['DefaultDateFormat']))==0){
+		//} elseif (Date1GreaterThanDate2($_POST['ETA'],Date($_SESSION['DefaultDateFormat']))==0){
+		} elseif (Date1GreaterThanDate2(Date($_SESSION['DefaultDateFormat']),$_POST['ETA'])!=0){
 			$InputError=1;
 			prnMsg( _('An expected arrival of the shipment must be a date after today'), 'error');
 		} else {

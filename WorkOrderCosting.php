@@ -101,6 +101,7 @@ echo  '<table class="selection">
 			<th>' . _('Status') . '</th>
 			<th>' . _('Receive') . '</th>
 			<th>' . _('Issue') . '</th>
+			<th>' . _('Issue To_cqz') . '</th>
 		</tr>';
 
 $TotalStdValueRecd =0;
@@ -115,6 +116,7 @@ while ($WORow = DB_fetch_array($WOItemsResult)){
 	 			<td class="number"><a href="'. $RootPath . '/WorkOrderStatus.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $WORow['stockid'] . '">' . _('Status') . '</a></td>
 	 			<td class="number"><a href="'. $RootPath . '/WorkOrderReceive.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $WORow['stockid'] . '">' . _('Receive') . '</a></td>
 	 			<td class="number"><a href="'. $RootPath . '/WorkOrderIssue.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $WORow['stockid'] . '">' . _('Issue') . '</a></td>
+				<td class="number"><a href="'. $RootPath . '/WorkOrderIssue2.php?WO=' . $_POST['WO'] . '&amp;StockID=' . $WORow['stockid'] . '">' . _('Issue To_cqz') . '</a></td>
  			</tr>';
 
 	$TotalStdValueRecd +=($WORow['stdcost']*$WORow['qtyrecd']);
@@ -337,7 +339,8 @@ If (isset($_POST['Close'])) {
 	$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 	$WOCloseNo = GetNextTransNo(29);
 	$TransResult = DB_Txn_Begin();
-
+	include_once('includes/Transby.php');
+	addTransBy(29,$WOCloseNo);
 	while ($WORow = DB_fetch_array($WOItemsResult)){
 		if ($TotalStdValueRecd==0){
 			$ShareProportion = 1/$NoItemsOnWO;
@@ -382,7 +385,7 @@ If (isset($_POST['Close'])) {
 										'" . Date('Y-m-d') . "',
 										'" . $PeriodNo . "',
 										'" . $WORow['materialuseagevarac'] . "',
-										'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of variance') . "',
+										'" . $_POST['WO'] . ' - ' . $WORow['description'] . ' ' . _('share of variance') . "',
 										'" .round((-$TotalCostVar*$ShareProportion*(1-$ProportionOnHand)),$_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL posting for the work order variance could not be inserted because');
@@ -403,7 +406,7 @@ If (isset($_POST['Close'])) {
 							'" . Date('Y-m-d') . "',
 							'" . $PeriodNo . "',
 							'" . $WORow['stockact'] . "',
-							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of variance') . "',
+							'" . $_POST['WO'] . ' - ' . $WORow['description'] . ' ' . _('share of variance') . "',
 							'" . round((-$TotalCostVar*$ShareProportion*$ProportionOnHand),$_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL posting for the work order variance could not be inserted because');
@@ -422,7 +425,7 @@ If (isset($_POST['Close'])) {
 							'" . Date('Y-m-d') . "',
 							'" . $PeriodNo . "',
 							'" . $WORow['wipact'] . "',
-							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of variance') . "',
+							'" . $_POST['WO'] . ' - ' . $WORow['description'] . ' ' . _('share of variance') . "',
 							'" . round(($TotalCostVar*$ShareProportion),$_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL posting for the WIP side of the work order variance posting could not be inserted because');
@@ -463,7 +466,7 @@ If (isset($_POST['Close'])) {
 							'" . Date('Y-m-d') . "',
 							'" . $PeriodNo . "',
 							'" . $WORow['materialuseagevarac'] . "',
-							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of usage variance') . "',
+							'" . $_POST['WO'] . ' - ' . $WORow['description'] . ' ' . _('share of usage variance') . "',
 							'" . round((-$TotalUsageVar*$ShareProportion),$_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL posting for the material usage variance could not be inserted because');
@@ -482,7 +485,7 @@ If (isset($_POST['Close'])) {
 							'" . Date('Y-m-d') . "',
 							'" . $PeriodNo . "',
 							'" . $WORow['wipact'] . "',
-							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of usage variance') . "',
+							'" . $_POST['WO'] . ' - ' . $WORow['description'] . ' ' . _('share of usage variance') . "',
 							'" . round(($TotalUsageVar*$ShareProportion),$_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL posting for the WIP side of the usage variance posting could not be inserted because');
@@ -505,7 +508,7 @@ If (isset($_POST['Close'])) {
 							'" . Date('Y-m-d') . "',
 							'" . $PeriodNo . "',
 							'" . $WORow['purchpricevaract'] . "',
-							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of cost variance') . "',
+							'" . $_POST['WO'] . ' - ' . $WORow['description'] . ' ' . _('share of cost variance') . "',
 							'" . round((-$TotalCostVar*$ShareProportion),$_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL posting for the cost variance could not be inserted because');
@@ -524,7 +527,7 @@ If (isset($_POST['Close'])) {
 							'" . Date('Y-m-d') . "',
 							'" . $PeriodNo . "',
 							'" . $WORow['wipact'] . "',
-							'" . $_POST['WO'] . ' - ' . $WORow['stockid'] . ' ' . _('share of cost variance') . "',
+							'" . $_POST['WO'] . ' - ' . $WORow['description'] . ' ' . _('share of cost variance') . "',
 							'" . round(($TotalCostVar*$ShareProportion),$_SESSION['CompanyRecord']['decimalplaces']) . "')";
 
 				$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL posting for the WIP side of the cost variance posting could not be inserted because');

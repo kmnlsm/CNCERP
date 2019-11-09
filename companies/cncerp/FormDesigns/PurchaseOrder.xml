@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form name="Purchase Order">
+	<PaperSize name="纸张大小">Bills</PaperSize>
+	<LineHeight name="内容行距">16</LineHeight>
+	<logo type="image" name="Logo设置" id="Logo">
+		<x>55</x>
+		<y>110</y>
+		<width>0</width>
+		<height>30</height>
+	</logo>
+	<OrderNumber type="SimpleText" name="订单号" id="OrderNumber">
+		<FontSize>17</FontSize>
+		<x>220</x>
+		<y>90</y>
+	</OrderNumber>
+	<ViewingOnly type="SimpleText" name="警告文本" id="ViewingOnly">
+		<FontSize>16</FontSize>
+		<x>110</x>
+	    <y>185</y>
+	</ViewingOnly>
+	<PageNumber type="SimpleText" name="页码" id="PageNumber">
+		<FontSize>10</FontSize>
+		<x>550</x>
+	    <y>90</y>
+	</PageNumber>
+	<TaxAuthority type="SimpleText" name="税务机关" id="TaxAuthority">
+		<FontSize>10</FontSize>
+		<x>110</x>
+	    <y>135</y>
+	</TaxAuthority>
+	<CompanyName type="SimpleText" name="公司名称" id="CompanyName">
+		<FontSize>10</FontSize>
+		<x>50</x>
+		<y>115</y>
+	</CompanyName>
+	<CompanyAddress type="ElementArray" name="公司地址">
+		<Line1 type="SimpleText" name="Line 1" id="CompanyAddress1">
+			<FontSize>10</FontSize>
+			<x>40</x>
+			<y>132</y>
+		</Line1>
+		<Line2 type="SimpleText" name="Line 2" id="CompanyAddress2">
+			<FontSize>10</FontSize>
+			<x>40</x>
+			<y>132</y>
+		</Line2>
+		<Line3 type="SimpleText" name="Line 3" id="CompanyAddress3">
+			<FontSize>10</FontSize>
+			<x>40</x>
+			<y>132</y>
+		</Line3>
+		<Line4 type="SimpleText" name="Line 4" id="CompanyAddress4">
+			<FontSize>10</FontSize>
+			<x>40</x>
+			<y>132</y>
+		</Line4>
+		<Line5 type="SimpleText" name="Line 5" id="CompanyAddress5">
+			<FontSize>10</FontSize>
+			<x>40</x>
+			<y>132</y>
+		</Line5>
+	</CompanyAddress>
+	<CompanyPhone type="SimpleText" name="公司电话" id="CompanyPhone">
+		<FontSize>10</FontSize>
+			<x>40</x>
+			<y>142</y>
+	</CompanyPhone>
+	<CompanyFax type="SimpleText" name="公司传真号码" id="CompanyFax">
+		<FontSize>10</FontSize>
+			<x>40</x>
+			<y>142</y>
+	</CompanyFax>
+	<CompanyEmail type="SimpleText" name="公司邮箱" id="CompanyEmail">
+		<FontSize>10</FontSize>
+			<x>40</x>
+			<y>142</y>
+	</CompanyEmail>
+	<DeliveryAddress type="ElementArray" name="交货地址">
+		<Caption type="SimpleText" name="标题" id="DeliveryAddressCaption">
+			<FontSize>12</FontSize>
+			<x>470</x>
+			<y>115</y>
+		</Caption>
+		<Line1 type="SimpleText" name="交货地址 1" id="DeliveryAddress1">
+			<FontSize>12</FontSize>
+			<x>455</x>
+			<y>112</y>
+		</Line1>
+		<Line2 type="SimpleText" name="交货地址 2" id="DeliveryAddress2">
+			<FontSize>12</FontSize>
+			<x>400</x>
+			<y>142</y>
+		</Line2>
+		<Line3 type="SimpleText" name="交货地址 3" id="DeliveryAddress3">
+			<FontSize>12</FontSize>
+			<x>400</x>
+			<y>142</y>
+		</Line3>
+		<Line4 type="SimpleText" name="交货地址 4" id="DeliveryAddress4">
+			<FontSize>12</FontSize>
+			<x>400</x>
+			<y>142</y>
+		</Line4>
+		<Line5 type="SimpleText" name="交货地址 5" id="DeliveryAddress5">
+			<FontSize>12</FontSize>
+			<x>400</x>
+			<y>142</y>
+		</Line5>
+		<Line6 type="SimpleText" name="交货地址 6" id="DeliveryAddress6">
+			<FontSize>12</FontSize>
+			<x>448</x>
+			<y>142</y>
+		</Line6>
+	</DeliveryAddress>
+	<DeliveryAddressBox type="CurvedRectangle" name="送货地址框" id="DeliveryAddressBox">
+		<x>453</x>
+		<y>143</y>
+		<width>100</width>
+		<height>153</height>
+		<radius>10</radius>
+	</DeliveryAddressBox>
+	<SupplierName type="SimpleText" name="供应商名称标题：" id="SupplierName">
+		<FontSize>8</FontSize>
+			<x>358</x>
+			<y>90</y>
+	</SupplierName>
+	<SupplierAddress type="ElementArray" name="供应商 address">
+		<Line1 type="SimpleText" name="Line 1" id="SupplierAddress1">
+			<FontSize>12</FontSize>
+			<x>71</x>
+			<y>238</y>
+		</Line1>
+		<Line2 type="SimpleText" name="Line 2" id="SupplierAddress2">
+			<FontSize>12</FontSize>
+			<x>71</x>
+			<y>250</y>
+		</Line2>
+		<Line3 type="SimpleText" name="Line 3" id="SupplierAddress3">
+			<FontSize>12</FontSize>
+			<x>71</x>
+			<y>262</y>
+		</Line3>
+		<Line4 type="SimpleText" name="Line 4" id="SupplierAddress4">
+			<FontSize>12</FontSize>
+			<x>71</x>
+			<y>274</y>
+		</Line4>
+	</SupplierAddress>
+	<RequisitionNumber type="SimpleText" name="申请单号" id="RequisitionNumber">
+		<FontSize>12</FontSize>
+			<x>360</x>
+			<y>90</y>
+	</RequisitionNumber>
+	<OrderDate type="SimpleText" name="订单日期:" id="OrderDate">
+		<FontSize>12</FontSize>
+			<x>335</x>
+			<y>115</y>
+	</OrderDate>
+	<Initiator type="SimpleText" name="制单采购员" id="Initiator">
+		<FontSize>12</FontSize>
+			<x>450</x>
+			<y>90</y>
+	</Initiator>
+	<PaymentTerms type="SimpleText" name="付款条款" id="PaymentTerms">
+		<FontSize>12</FontSize>
+			<x>455</x>
+			<y>120</y>
+	</PaymentTerms>
+	<Comments type="MultiLineText" name="摘要" id="Comments">
+		<FontSize>12</FontSize>
+		<Length>250</Length>
+			<x>455</x>
+			<y>265</y>
+	</Comments>
+	<Currency type="SimpleText" name="货币文本" id="Currency">
+		<FontSize>12</FontSize>
+		<x>240</x>
+		<y>115</y>
+	</Currency>
+	<HeaderRectangle type="Rectangle" name="表头方框" id="HeaderRectangle">
+		<x>53</x>
+	    <y>133</y>
+		<width>390</width>
+		<height>15</height>
+	</HeaderRectangle>
+	<Headings type="ElementArray" name="表头标题">
+		<Column1 type="SimpleText" name="表头 1" id="Heading1">
+			<FontSize>10</FontSize>
+		<x>60</x>
+	    <y>135</y>
+		</Column1>
+		<Column2 type="SimpleText" name="表头 2" id="Heading2">
+			<FontSize>10</FontSize>
+		<x>120</x>
+	    <y>135</y>
+		</Column2>
+		<Column3 type="SimpleText" name="表头 3" id="Heading3">
+			<FontSize>10</FontSize>
+		<x>225</x>
+	    <y>135</y>
+		</Column3>
+		<Column4 type="SimpleText" name="表头 4" id="Heading4">
+			<FontSize>10</FontSize>
+		<x>265</x>
+	    <y>135</y>
+		</Column4>
+		<Column5 type="SimpleText" name="表头 5" id="Heading5">
+			<FontSize>10</FontSize>
+		<x>293</x>
+	    <y>135</y>
+		</Column5>
+		<Column6 type="SimpleText" name="表头 6" id="Heading6">
+			<FontSize>10</FontSize>
+		<x>360</x>
+	    <y>135</y>
+		</Column6>
+		<Column7 type="SimpleText" name="表头 7" id="Heading7">
+			<FontSize>10</FontSize>
+		<x>415</x>
+	    <y>135</y>
+		</Column7>
+	</Headings>
+	<DataRectangle type="Rectangle" name="数据区的长方形" id="DataRectangle">
+		<x>53</x>
+	    <y>133</y>
+		<width>390</width>
+		<height>173</height>
+	</DataRectangle>
+	<Data type="ElementArray" name="数据列">
+		<y type="StartLine" name="Y co-ordinate of first data line" id="DataStartLine">160</y>
+		<Column1 type="DataText" name="第一列 1" id="Data1">
+			<FontSize>10</FontSize>
+			<x>50</x>
+			<Length>94</Length>
+		</Column1>
+		<Column2 type="DataText" name="第二列 2" id="Data2">
+			<FontSize>10</FontSize>
+		<x>90</x>
+			<Length>270</Length>
+		</Column2>
+		<Column3 type="DataText" name="第三列 3" id="Data3">
+			<FontSize>10</FontSize>
+		<x>220</x>
+			<Length>85</Length>
+		</Column3>
+		<Column4 type="DataText" name="第四列 4" id="Data4">
+			<FontSize>10</FontSize>
+		<x>265</x>
+			<Length>37</Length>
+		</Column4>
+		<Column5 type="DataText" name="第五列 5" id="Data5">
+			<FontSize>10</FontSize>
+		<x>290</x>
+			<Length>60</Length>
+		</Column5>
+		<Column6 type="DataText" name="第六列6" id="Data6">
+			<FontSize>10</FontSize>
+		<x>300</x>
+			<Length>85</Length>
+		</Column6>
+		<Column7 type="DataText" name="第七列 7" id="Data7">
+			<FontSize>10</FontSize>
+		<x>310</x>
+			<Length>130</Length>
+		</Column7>
+	</Data>
+	<OrderTotalCaption type="SimpleText" name="订单总标题" id="OrderTotalCaption">
+		<FontSize>10</FontSize>
+		<x>150</x>
+		<y>290</y>
+	</OrderTotalCaption>
+	<OrderTotal type="MultiLineText" name="订单总额" id="OrderTotal">
+		<FontSize>10</FontSize>
+		<x>315</x>
+		<y>300</y>
+		<Length>125</Length>
+	</OrderTotal>
+</form>

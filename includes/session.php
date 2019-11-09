@@ -157,6 +157,8 @@ if(basename($_SERVER['SCRIPT_NAME'])=='Logout.php'){
 		$FirstLogin = true;
 	} elseif (empty($_SESSION['DatabaseName'])) {
 		$rc = UL_SHOWLOGIN;
+	} elseif (empty($_SESSION['VersionNumber'])) {
+	    $rc = UL_SHOWLOGIN;
 	} else {
 		$rc = UL_OK;
 	}
@@ -194,9 +196,10 @@ if(basename($_SERVER['SCRIPT_NAME'])=='Logout.php'){
 	}
 }
 
-/*If the Code $Version - held in ConnectDB.inc is > than the Database VersionNumber held in config table then do upgrades */
+/*If the Code $Version - held in ConnectDB.inc is > than the Database VersionNumber held in config table then do upgrades !empty($_SESSION['VersionNumber']) AND */
 if (strcmp($Version,$_SESSION['VersionNumber'])>0 AND (basename($_SERVER['SCRIPT_NAME'])!='UpgradeDatabase.php')) {
 	header('Location: UpgradeDatabase.php');
+	exit;
 }
 
 
@@ -207,7 +210,7 @@ If (isset($_POST['Theme']) AND ($_SESSION['UsersRealName'] == $_POST['RealName']
 	$Theme = $_SESSION['Theme'];
 } else {
 	$Theme = $DefaultTheme;
-	$_SESSION['Theme'] = $DefaultTheme;
+	$_SESSION['Theme'] = '$DefaultTheme';
 }
 
 
@@ -282,6 +285,11 @@ if (in_array($_SESSION['PageSecurityArray']['WWW_Users.php'], $_SESSION['Allowed
 
 if ($FirstLogin AND !$SupplierLogin AND !$CustomerLogin AND $_SESSION['ShowDashboard']==1) {
 	header('Location: ' . $PathPrefix .'Dashboard.php');
+	return;
+}
+if ($FirstLogin AND !$SupplierLogin AND !$CustomerLogin AND $_SESSION['ShowDashboard']==2) {
+	header('Location: ' . $PathPrefix .'pos.php');
+	return;
 }
 
 

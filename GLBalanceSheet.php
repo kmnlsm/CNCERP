@@ -444,7 +444,9 @@ if (!isset($_POST['PeriodTo']) or isset($_POST['NewReport'])) {
 		_('as at'), ' ', $BalanceDate, '<br />'; // Page title, reporting period.
 	include_once('includes/CurrenciesArray.php');// Array to retrieve currency name.
 	echo _('All amounts stated in'), ': ', _($CurrencyName[$_SESSION['CompanyRecord']['currencydefault']]), '</p>';// Page title, reporting presentation currency and level of rounding used.
-	echo '<table class="selection">',
+	echo '<script src="', $RootPath, '/javascripts/table2excel/exceljs.min.js"></script>
+    <script src="', $RootPath, '/javascripts/table2excel/table2excel.core.js"></script>
+	<table id="toexcel" class="selection">',
 		// Content of the header and footer of the output table:
 		'<thead>
 			<tr>';
@@ -486,6 +488,7 @@ if (!isset($_POST['PeriodTo']) or isset($_POST['NewReport'])) {
 							<td class="number">', locale_number_format($GroupTotal[$Level], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
 							<td>&nbsp;</td>
 							<td class="number">', locale_number_format($GroupTotalLY[$Level], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+							<td>&nbsp;</td>
 						</tr>';
 					$ParentGroups[$Level] = '';
 					$GroupTotal[$Level] = 0;
@@ -507,6 +510,7 @@ if (!isset($_POST['PeriodTo']) or isset($_POST['NewReport'])) {
 						<td class="number">', locale_number_format($GroupTotal[$Level], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
 						<td>&nbsp;</td>
 						<td class="number">', locale_number_format($GroupTotalLY[$Level], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+						<td>&nbsp;</td>
 					</tr>';
 				$ParentGroups[$Level] = '';
 				$GroupTotal[$Level] = 0;
@@ -631,6 +635,7 @@ if (!isset($_POST['PeriodTo']) or isset($_POST['NewReport'])) {
 			<td class="number">', locale_number_format($GroupTotal[$Level], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
 			<td>&nbsp;</td>
 			<td class="number">', locale_number_format($GroupTotalLY[$Level], $_SESSION['CompanyRecord']['decimalplaces']), '</td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>';
 
@@ -694,6 +699,8 @@ if (!isset($_POST['PeriodTo']) or isset($_POST['NewReport'])) {
 			'<input name="ShowDetail" type="hidden" value="', $_POST['ShowDetail'], '" />',
 			'<input name="ShowZeroBalance" type="hidden" value="', $_POST['ShowZeroBalance'], '" />',
 			'<div class="centre noprint">', // Form buttons:
+			'<button type="button"  onclick="exportTables()"><img alt="" src="', $RootPath, '/css/', $Theme,
+					'/images/excel.svg" />  导出excel</button>',
 				'<button onclick="window.print()" type="button"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/printer.png" /> ', _('Print'), '</button>', // "Print" button.
 				'<button name="NewReport" type="submit" value="on"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/reports.png" /> ', _('New Report'), '</button>', // "New Report" button.
 				'<button onclick="window.location=\'index.php?Application=GL\'" type="button"><img alt="" src="', $RootPath, '/css/', $Theme, '/images/return.svg" /> ', _('Return'), '</button>', // "Return" button.

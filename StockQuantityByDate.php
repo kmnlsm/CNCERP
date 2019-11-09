@@ -76,7 +76,7 @@ if (isset($_POST['ShowZeroStocks'])) {
 }
 
 echo '<td>
-		<td>', ('Include zero stocks'), '</td>
+		<td>', _('Include zero stocks'), '</td>
 		<td><input type="checkbox" name="ShowZeroStocks" value="" ', $Checked, '  /></td>
 	</td>
 </tr>';

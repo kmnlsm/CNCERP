@@ -12,6 +12,7 @@ class StockAdjustment {
 	var $Quantity;
 	var $tag;
 	var $SerialItems; /*array to hold controlled items*/
+	var $stkadjustmentno;
 
 	//Constructor
 	function __construct(){
@@ -26,6 +27,7 @@ class StockAdjustment {
 		$this->SerialItems = array();
 		$this->Quantity = 0;
 		$this->tag=0;
+		$this->stkadjustmentno=0;
 	}
 
 	function StockAdjustment() {

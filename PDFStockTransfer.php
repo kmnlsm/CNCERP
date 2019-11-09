@@ -2,7 +2,11 @@
 
 
 /* This script is superseded by the PDFStockLocTransfer.php which produces a multiple item stock transfer listing - this was for the old individual stock transfers where there is just single items being transferred */
-
+if(isset($_POST['PDFStockLocTransfer'])){
+	$_GET['TransferNo']=$_POST['TransferNo'];
+	include('PDFStockLocTransfer.php');
+	exit();
+}
 include('includes/session.php');
 
 if (!isset($_GET['TransferNo'])){
@@ -31,6 +35,7 @@ if (!isset($_GET['TransferNo'])){
 		echo '<br />
 			<div class="centre">
 				<input type="submit" name="Process" value="' . _('Print Transfer Note') . '" />
+				<input type="submit" name="PDFStockLocTransfer" value="' . _('Reprint transfer docket') . '" />
 			</div>
             </div>
 			</form>';
@@ -150,8 +155,13 @@ while ($myrow=DB_fetch_array($result)) {
 }
 $LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos-70,300-$Left_Margin,$FontSize, _('Date of transfer: ').$Date);
 
-$LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos-120,300-$Left_Margin,$FontSize, _('Signed for').' '.$From.'______________________');
-$LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos-160,300-$Left_Margin,$FontSize, _('Signed for').' '.$To.'______________________');
+include_once('includes/Transby.php');
+list($userid,$realname,$stepdate)=getTransBy(16,$_GET['TransferNo']);
+$LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos-120,300-$Left_Margin,$FontSize, _('Signed for ').$From.'______'.$realname.'_______');
+list($userid,$realname,$stepdate)=getTransBy(16,$_GET['TransferNo'],1);
+$LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos-160,300-$Left_Margin,$FontSize, _('Signed for ').$To.'______'.$realname.'_______');
+//$LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos-120,300-$Left_Margin,$FontSize, _('Signed for ').$From.'______________________');//这是weberp415的
+//$LeftOvers = $pdf->addTextWrap($Left_Margin,$YPos-160,300-$Left_Margin,$FontSize, _('Signed for ').$To.'______________________');//这是weberp415的
 
 $pdf->OutputD($_SESSION['DatabaseName'] . '_StockTransfer_' . date('Y-m-d') . '.pdf');
 $pdf->__destruct();

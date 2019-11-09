@@ -4,6 +4,7 @@ include('includes/session.php');
 $Title = _('Receive Work Order');
 include('includes/header.php');
 include('includes/SQL_CommonFunctions.inc');
+include('includes/Transby.php');
 
 if (isset($_GET['WO'])) {
 	$SelectedWO = $_GET['WO'];
@@ -199,6 +200,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 		$Result = DB_Txn_Begin();
 		/*Now Get the next WOReceipt transaction type 26 - function in SQL_CommonFunctions*/
 		$WOReceiptNo = GetNextTransNo(26);
+		addTransBy(26,$WOReceiptNo);
 
 		$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
 
@@ -250,6 +252,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 
 					$CostUpdateNo = GetNextTransNo(35);
 					$PeriodNo = GetPeriod(Date($_SESSION['DefaultDateFormat']));
+					addTransBy(35,$CostUpdateNo);
 
 					$ValueOfChange = $ItemCostRow['totalqoh'] * (($Cost + $ItemCostRow['labourcost'] + $ItemCostRow['overheadcost']) - $ItemCostRow['cost']);
 
@@ -265,7 +268,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 								'" . Date('Y-m-d') . "',
 								'" . $PeriodNo . "',
 								'" . $StockGLCode['adjglact'] . "',
-								'" . _('Cost roll on release of WO') . ': ' . $_POST['WO'] . ' - ' . $_POST['StockID'] . ' ' . _('cost was') . ' ' . $ItemCostRow['cost'] . ' ' . _('changed to') . ' ' . $Cost . ' x ' . _('Quantity on hand of') . ' ' . $ItemCostRow['totalqoh'] . "',
+								'" . DB_escape_string(_('Cost roll on release of WO') . ': ' . $_POST['WO'] . ' - ' . $WORow['description'].'['.$_POST['StockID'] . '] ' . _('cost was') . ' ' . $ItemCostRow['cost'] . ' ' . _('changed to') . ' ' . $Cost . ' x ' . _('Quantity on hand of') . ' ' . $ItemCostRow['totalqoh']) . "',
 								'" . (-$ValueOfChange) . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL credit for the stock cost adjustment posting could not be inserted because');
@@ -284,7 +287,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 								'" . Date('Y-m-d') . "',
 								'" . $PeriodNo . "',
 								'" . $StockGLCode['stockact'] . "',
-								'" . _('Cost roll on release of WO') . ': ' . $_POST['WO'] . ' - ' . $_POST['StockID'] . ' ' . _('cost was') . ' ' . $ItemCostRow['cost'] . ' ' . _('changed to') . ' ' . $Cost . ' x ' . _('Quantity on hand of') . ' ' . $ItemCostRow['totalqoh'] . "',
+								'" . DB_escape_string(_('Cost roll on release of WO') . ': ' . $_POST['WO'] . ' - ' . $WORow['description'].'['.$_POST['StockID'] . '] ' . _('cost was') . ' ' . $ItemCostRow['cost'] . ' ' . _('changed to') . ' ' . $Cost . ' x ' . _('Quantity on hand of') . ' ' . $ItemCostRow['totalqoh']) . "',
 								'" . $ValueOfChange . "')";
 
 					$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The GL debit for stock cost adjustment posting could not be inserted because');
@@ -311,7 +314,8 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 												 qtypu,
 												 materialcost+labourcost+overheadcost AS cost,
 												 stockcategory.stockact,
-												 stockcategory.stocktype
+												 stockcategory.stocktype,
+												 stockmaster.description
 										  FROM worequirements
 										  INNER JOIN stockmaster
 										  ON worequirements.stockid=stockmaster.stockid
@@ -322,6 +326,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 										  AND autoissue=1");
 
 		$WOIssueNo = GetNextTransNo(28);
+		addTransBy(28,$WOIssueNo);
 		while ($AutoIssueCompRow = DB_fetch_array($AutoIssueCompsResult)){
 
 			//Note that only none-controlled items can be auto-issuers so don't worry about serial nos and batches of controlled ones
@@ -405,7 +410,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 								'" . Date('Y-m-d') . "',
 								'" . $PeriodNo . "',
 								'" . $StockGLCode['wipact'] . "',
-								'" . $_POST['WO'] . ' - ' . $_POST['StockID'] . ' ' . _('Component') . ': ' . $AutoIssueCompRow['stockid'] . ' - ' . $QuantityReceived . ' x ' . $AutoIssueCompRow['qtypu'] . ' @ ' . locale_number_format($AutoIssueCompRow['cost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
+								'" . $_POST['WO'] . ' - ' . $WORow['description'].'['.$_POST['StockID'] . '] ' . _('Component') . ': ' . $AutoIssueCompRow['description'].'['.$AutoIssueCompRow['stockid'] . '] - ' . $QuantityReceived . ' x ' . $AutoIssueCompRow['qtypu'] . ' @ ' . locale_number_format($AutoIssueCompRow['cost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
 								'" . ($AutoIssueCompRow['qtypu'] * $QuantityReceived * $AutoIssueCompRow['cost']) . "')";
 
 					$ErrMsg =   _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The WIP side of the work order issue GL posting could not be inserted because');
@@ -424,7 +429,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 								'" . Date('Y-m-d') . "',
 								'" . $PeriodNo . "',
 								'" . $AutoIssueCompRow['stockact'] . "',
-								'" . $_POST['WO'] . ' - ' . $_POST['StockID'] . ' -> ' . $AutoIssueCompRow['stockid'] . ' - ' . $QuantityReceived . ' x ' . $AutoIssueCompRow['qtypu'] . ' @ ' . locale_number_format($AutoIssueCompRow['cost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
+								'" . $_POST['WO'] . ' - ' . $WORow['description'].'['.$_POST['StockID'] . '] -> ' . $AutoIssueCompRow['description'].'['.$AutoIssueCompRow['stockid'] . '] - ' . $QuantityReceived . ' x ' . $AutoIssueCompRow['qtypu'] . ' @ ' . locale_number_format($AutoIssueCompRow['cost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
 								'" . -($AutoIssueCompRow['qtypu'] * $QuantityReceived * $AutoIssueCompRow['cost']) . "')";
 
 					$ErrMsg =   _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The stock side of the work order issue GL posting could not be inserted because');
@@ -460,6 +465,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 		$Result = DB_query($SQL, $ErrMsg, $DbgMsg, true);
 		$WOReceiptNo = GetNextTransNo(26);
 		/*Insert stock movements - with unit cost */
+		addTransBy(26,$WOReceiptNo);
 
 		$SQL = "INSERT INTO stockmoves (stockid,
 										type,
@@ -705,7 +711,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 								'" . Date('Y-m-d') . "',
 								'" . $PeriodNo . "',
 								'" . $StockGLCode['stockact'] . "',
-								'" . $_POST['WO'] . " " . $_POST['StockID'] . " - " . DB_escape_string($WORow['description']) . ' x ' . $QuantityReceived . " @ " . locale_number_format($WORow['stdcost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
+								'" . $_POST['WO'] . " " . $WORow['description'].'['.$_POST['StockID'] . "] - " . DB_escape_string($WORow['description']) . ' x ' . $QuantityReceived . " @ " . locale_number_format($WORow['stdcost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
 								'" . ($WORow['stdcost'] * $QuantityReceived) . "')";
 
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The receipt of work order finished stock GL posting could not be inserted because');
@@ -725,7 +731,7 @@ if (isset($_POST['Process'])){ //user hit the process the work order receipts en
 								'" . Date('Y-m-d') . "',
 								'" . $PeriodNo . "',
 								'" . $StockGLCode['wipact'] . "',
-								'" . $_POST['WO'] . " " . $_POST['StockID'] . " - " . DB_escape_string($WORow['description']) . ' x ' . $QuantityReceived . " @ " . locale_number_format($WORow['stdcost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
+								'" . $_POST['WO'] . " " . $WORow['description'].'['.$_POST['StockID'] . "] - " . DB_escape_string($WORow['description']) . ' x ' . $QuantityReceived . " @ " . locale_number_format($WORow['stdcost'],$_SESSION['CompanyRecord']['decimalplaces']) . "',
 								'" . -($WORow['stdcost'] * $QuantityReceived) . "')";
 
 			$ErrMsg =   _('CRITICAL ERROR') . '! ' . _('NOTE DOWN THIS ERROR AND SEEK ASSISTANCE') . ': ' . _('The WIP credit on receipt of finished items from a work order GL posting could not be inserted because');

@@ -794,7 +794,7 @@ if (isset($PrintPDF)
 
 				echo '<table class="table1">
 						<tr>
-							<td valign="top" style="width:10%"><img src="' . $_SESSION['LogoFile'] . '" alt="" /></td>
+							<td valign="top" style="width:10%"><img src="' . $_SESSION['LogoFile'] . '" alt="" height="50px"/></td>
 							<td style="background-color:#bbbbbb">';
 
 				if ($InvOrCredit=='Invoice') {

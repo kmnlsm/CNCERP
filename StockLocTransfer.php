@@ -212,6 +212,8 @@ if(isset($_POST['Submit']) AND $InputError==False){
 							'" . $_POST['ToStockLocation'] . "')";
 			$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to enter Location Transfer record for'). ' '.$_POST['StockID' . $i];
 			$resultLocShip = DB_query($sql, $ErrMsg);
+			include_once('includes/Transby.php');
+			addTransBy(16,$_POST['Trf_ID']);
 		}
 	}
 	$ErrMsg = _('CRITICAL ERROR') . '! ' . _('Unable to COMMIT Location Transfer transaction');

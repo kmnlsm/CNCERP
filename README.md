@@ -2,18 +2,19 @@
 [![Download Zen Cart&reg;](https://img.shields.io/sourceforge/dm/web-erp.svg)](http://sourceforge.net/projects/cncerp/files/latest/download) [![Download Zen Cart&reg;](https://img.shields.io/sourceforge/dt/web-erp.svg)](http://sourceforge.net/projects/cncerp/files/latest/download) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/webERP-team/webERP/master.svg) ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/webERP-team/webERP.svg)
 ## Introduction
 webERP is a free open-source ERP system, providing best practise, multi-user business administration and accounting tools over the web. For further information and for a full list of features, please visit the support site at: http://www.weberp.org/
+CNCERP please visit the support site at: http://www.cncerp.com/
 
 ## Demo
-A live demo of the latest release is available on the webERP support site, where you can login and experiment with all the webERP features: http://www.weberp.org/weberp/
+A live demo of the latest release is available on the CNCERP support site, where you can login and experiment with all the CNCERP features: http://www.cncerp.com/demo/
 
 ## Download
 The latest stable version is currently v4.15, and can be downloaded from SourceForge.
 [![Download Latest Official Zen Cart&reg; Release](https://a.fsdn.com/con/app/sf-download-button)
-Download the latest official webERP release](http://sourceforge.net/projects/web-erp/files/latest/download)
+Download the latest official webERP release](http://sourceforge.net/projects/cncerp/files/latest/download)
 
 ## Requirements
-- A web server - webERP has been tested on Apache, NGINX, lighthttpd, and Hiawatha
-- PHP version 5.1 and above
+- A web server - Chinese derived version-CNCERP has been tested on Apache, NGINX, lighthttpd, and Hiawatha
+- PHP version 5.1 and above ,PHP version greater than 7 is highly recommended
 - MySQL version 4.3 and above, or MariaDB version 5.1 and above
 - A web browser with HTML5 compatibility
 
@@ -21,7 +22,7 @@ Further information about hardware and software requirements is available in the
 
 ## Installation
 ### New installation
-1. [Download the latest official webERP release.](http://sourceforge.net/projects/web-erp/files/latest/download)
+1. [Download the latest official CNCERP release.](http://sourceforge.net/projects/cncerp/files/latest/download)
 2. Unzip the downloaded file.
 3. Create an empty database, taking note of your username, password, hostname, and database name.
 4. Everything inside the folder you unzipped needs to be uploaded/copied to your webserver, for example, into your `public_html` or `www` or `html` folder (the folder will already exist on your webserver).
@@ -29,7 +30,7 @@ Further information about hardware and software requirements is available in the
 6. Follow the instructions that appear in your browser for installation.
 
 ### Upgrading
-1. [Download the latest official webERP release.](http://sourceforge.net/projects/web-erp/files/latest/download)
+1. [Download the latest official CNCERP release.](http://sourceforge.net/projects/cncerp/files/latest/download)
 2. Unzip the downloaded file.
 3. Backup the `config.php` script and `companies/` directory from your previous installation. 
 3. Everything inside the folder you unzipped needs to be uploaded/copied to your webserver, overwriting your previous installation.
@@ -40,7 +41,7 @@ Further information about hardware and software requirements is available in the
 Further information about installation and upgrading is available in the [documentation](http://www.weberp.org/weberp/ManualContents.php?ViewTopic=GettingStarted).
 
 ## Documentation
-The webERP documentation is included in every installation, and can accessed by clicking on the `Manual` button on the top menu bar. The documentation is also available within the [live demo.](http://www.weberp.org/weberp/ManualContents.php)
+The CNCERP documentation is included in every installation, and can accessed by clicking on the `Manual` button on the top menu bar. The documentation is also available within the [live demo.](http://www.weberp.org/weberp/ManualContents.php)
 
 ## Support
 Free support is available 24/7, provided by our enthusiastic community of actual webERP users, integrators, and the developers themselves.

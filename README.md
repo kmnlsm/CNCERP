@@ -1,8 +1,7 @@
 # [CNCERP - webERP Chinese derived version - Accounting and Business Administration ERP System](http://http://www.cncerp.com/) 
 [![Download Zen Cart&reg;](https://img.shields.io/sourceforge/dm/web-erp.svg)](http://sourceforge.net/projects/cncerp/files/latest/download) [![Download Zen Cart&reg;](https://img.shields.io/sourceforge/dt/web-erp.svg)](http://sourceforge.net/projects/cncerp/files/latest/download) ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/webERP-team/webERP/master.svg) ![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/webERP-team/webERP.svg)
 ## Introduction
-webERP is a free open-source ERP system, providing best practise, multi-user business administration and accounting tools over the web. For further information and for a full list of features, please visit the support site at: http://www.weberp.org/
-CNCERP please visit the support site at: http://www.cncerp.com/
+CNCERP - webERP Chinese derived version is a free open-source ERP system, providing best practise, multi-user business administration and accounting tools over the web. For further information and for a full list of features, please visit the support site at: http://www.weberp.org/ CNCERP please visit the support site at: http://www.cncerp.com/
 
 ## Demo
 A live demo of the latest release is available on the CNCERP support site, where you can login and experiment with all the CNCERP features: http://www.cncerp.com/demo/

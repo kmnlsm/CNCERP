@@ -48,7 +48,7 @@ The primary means of support is through the forum at: http://www.weberp.org/foru
 You may also join the mailing list at: http://lists.sourceforge.net/lists/listinfo/web-erp-users
 The answers to most questions can be found by searchng the forums, or the mailing list archives at: https://sourceforge.net/p/web-erp/mailman/ 
 
-## Contribute to the webERP project
+## Contribute to the CNCERP project
 Contributions of code and documententation including How-Tos with screen-shots etc are very much appreciated. If your business has done such training materials for your own team this will no doubt be useful to many others and a productive way that you could contribute. Contributions in the form of bug reports or other feedback through the forums or mailing lists above also help to improve the project.
 
 Guidelines for contributing code can be found at: http://www.weberp.org/Development.html
@@ -63,5 +63,5 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 A copy of the GNU General Public License is included in the doc directory along with this program; if not, write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 Copyright © weberp.org 2003-2018 - Contact: info@weberp.org
-
+CNCERP  Contact:cncerp@163.com
 Note that as well as the name of the project/development community of webERP "weberp.org" is a domain name administered by the project administrator on behalf of the project. Irrespective of misleading comments elsewhere, copyright of all contributed code remains with the developer who contributed it and the "weberp.org" project is the collective name for the webERP development team.

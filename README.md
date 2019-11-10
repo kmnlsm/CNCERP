@@ -13,7 +13,7 @@ Download the latest official webERP release](http://sourceforge.net/projects/cnc
 
 ## Requirements
 - A web server - Chinese derived version-CNCERP has been tested on Apache, NGINX, lighthttpd, and Hiawatha
-- PHP version 5.1 and above ,PHP version greater than 7 is highly recommended
+- PHP version 5.1 and above , PHP 7 and above is highly recommended
 - MySQL version 4.3 and above, or MariaDB version 5.1 and above
 - A web browser with HTML5 compatibility
 

@@ -8,7 +8,7 @@ $Title = _('Payment Entry');
 if(isset($_GET['SupplierID'])) {// Links to Manual before header.php
 	$ViewTopic = 'AccountsPayable';
 	$BookMark = 'SupplierPayments';
-	$PageTitleText = _('初始化工具');
+	$PageTitleText = _('Enter a Payment to, or Receipt from the Supplier');
 } else {
 	$ViewTopic= 'GeneralLedger';
 	$BookMark = 'BankAccountPayments';
@@ -427,10 +427,10 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 
 		//its a nominal bank transaction type 1
 
-			$TransNo = GetNextTransNo( 50 );
-			$TransType = 50;
+			$TransNo = GetNextTransNo( 1 );
+			$TransType = 1;
 			include_once('includes/Transby.php');
-			addTransBy(50,$TransNo);
+			addTransBy(1,$TransNo);
 
 			if($_SESSION['CompanyRecord']['gllink_creditors']==1) { /* then enter GLTrans */
 				$TotalAmount=0;
@@ -528,9 +528,9 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 
 				*/
 
-					$ReceiptTransNo = GetNextTransNo( 50 );
+					$ReceiptTransNo = GetNextTransNo( 2 );
 					include_once('includes/Transby.php');
-					addTransBy(50,$ReceiptTransNo);
+					addTransBy(2,$ReceiptTransNo);
 					$SQL = "INSERT INTO banktrans (
 								transno,
 								type,
@@ -544,7 +544,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 								currcode
 							) VALUES ('" .
 								$ReceiptTransNo . "',
-								50,'" .
+								2,'" .
 								$PaymentItem->GLCode . "','" .
 								'@' . $TransNo . ' ' . _('Act Transfer From') .' '. $_SESSION['PaymentDetail'.$identifier]->Account . ' - ' . $PaymentItem->Narrative . "','" .
 								$ExRate . "','" .
@@ -576,10 +576,10 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 			/*Its a supplier payment type 22 */
 			$CreditorTotal = (($_SESSION['PaymentDetail'.$identifier]->Discount + $_SESSION['PaymentDetail'.$identifier]->Amount)/$_SESSION['PaymentDetail'.$identifier]->ExRate)/$_SESSION['PaymentDetail'.$identifier]->FunctionalExRate;
 
-			$TransNo = GetNextTransNo(50);
-			$TransType = 50;
+			$TransNo = GetNextTransNo(22);
+			$TransType = 22;
 			include_once('includes/Transby.php');
-			addTransBy(50,$TransNo);
+			addTransBy(22,$TransNo);
 			/* Create a SuppTrans entry for the supplier payment */
 			$SQL = "INSERT INTO supptrans (
 							transno,
@@ -594,7 +594,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 							chequeno
 						) VALUES ('" .
 							$TransNo . "',
-							50,'" .
+							22,'" .
 							$_SESSION['PaymentDetail'.$identifier]->SupplierID . "','" .
 							FormatDateForSQL($_SESSION['PaymentDetail'.$identifier]->DatePaid) . "','" .
 							date('Y-m-d H-i-s') . "','" .
@@ -667,7 +667,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 							narrative,
 							amount
 						) VALUES (
-							50,'" .
+							22,'" .
 							$TransNo . "','" .
 							FormatDateForSQL($_SESSION['PaymentDetail'.$identifier]->DatePaid) . "','" .
 							$PeriodNo . "','" .
@@ -690,7 +690,7 @@ if(isset($_POST['CommitBatch']) AND empty($Errors)) {
 								narrative,
 								amount
 							) VALUES (
-								50,'" .
+								22,'" .
 								$TransNo . "','" .
 								FormatDateForSQL($_SESSION['PaymentDetail'.$identifier]->DatePaid) . "','" .
 								$PeriodNo . "','" .

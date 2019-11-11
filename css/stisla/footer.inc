@@ -90,6 +90,8 @@ echo '
   <script src="', $RootPath, '/css/', $_SESSION['Theme'], '/assets/modules/nicescroll/jquery.nicescroll.min.js"></script>
   <script src="', $RootPath, '/css/', $_SESSION['Theme'], '/assets/modules/moment.min.js"></script>
   <!--script src="/assets/js/stisla.js"></script-->
+  <script src="', $RootPath, '/includes/CNCERP/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+  <script src="', $RootPath, '/includes/CNCERP/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js"></script>
   
   <!-- JS Libraies -->
 

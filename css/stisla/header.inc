@@ -33,14 +33,15 @@
 			<!-- Template CSS -->
 			<link rel="stylesheet" href="', $RootPath, '/css/', $_SESSION['Theme'], '/assets/css/style.css">
 			<link rel="stylesheet" href="', $RootPath, '/css/', $_SESSION['Theme'], '/assets/css/components.css">
+			<link rel="stylesheet" href="', $RootPath, '/includes/CNCERP/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css">
 			<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" media="screen"/>
 			<!--link href="', $RootPath, '/css/print.css" rel="stylesheet" type="text/css" media="print" /-->
-			<script defer="defer" src="', $RootPath, '/javascripts/MiscFunctions.js"></script>
+			<script defer="defer" src="', $RootPath, '/css/', $_SESSION['Theme'], '/MiscFunctions.js"></script>
 			<script>
 				localStorage.setItem("DateFormat", "', $_SESSION['DefaultDateFormat'], '");
 				localStorage.setItem("Theme", "', $_SESSION['Theme'], '");
 			</script>';
-
+     //var_dump($_SESSION['DefaultDateFormat']);
 	// If it is set the $_SESSION['ShowPageHelp'] parameter AND it is FALSE, hides the page help text:
 	if(isset($_SESSION['ShowPageHelp']) AND !$_SESSION['ShowPageHelp']) {
 		echo '<style>

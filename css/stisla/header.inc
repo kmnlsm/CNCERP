@@ -35,7 +35,7 @@
 			<link rel="stylesheet" href="', $RootPath, '/css/', $_SESSION['Theme'], '/assets/css/components.css">
 			<link rel="stylesheet" href="', $RootPath, '/includes/CNCERP/bootstrap-datepicker/css/bootstrap-datepicker3.standalone.min.css">
 			<link href="', $RootPath, '/css/', $_SESSION['Theme'], '/default.css" rel="stylesheet" type="text/css" media="screen"/>
-			<!--link href="', $RootPath, '/css/print.css" rel="stylesheet" type="text/css" media="print" /-->
+			<link href="', $RootPath, '/css/print.css" rel="stylesheet" type="text/css" media="print" />
 			<script defer="defer" src="', $RootPath, '/css/', $_SESSION['Theme'], '/MiscFunctions.js"></script>
 			<script>
 				localStorage.setItem("DateFormat", "', $_SESSION['DefaultDateFormat'], '");
@@ -55,13 +55,13 @@
 		'<body>',
 			'<div id="app"><div class="main-wrapper main-wrapper-1">',
 			'<input type="hidden" name="Lang" id="Lang" value="', $Lang, '" />',
-			'<div class="navbar-bg"></div>',
-				'<nav class="navbar navbar-expand-lg main-navbar">',
-                '<div class="form-inline mr-auto">',
+			'<div class="navbar-bg noPrint"></div>',
+				'<nav class="navbar navbar-expand-lg main-navbar noPrint">',
+                '<div class="form-inline mr-auto noPrint">',
                     '<ul class="navbar-nav mr-3">',
                        '<li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>',
                     '</ul>',
-		      '<div class="search-element">';
+		      '<div class="search-element noPrint">';
 
 	if (isset($Title)) {
 		echo '
@@ -72,40 +72,40 @@
 		echo '<ul class="navbar-nav navbar-right right">
 		<li><a href="', $RootPath, '/index.php"  class="nav-link nav-link-lg"><i class="fas fa-home"></i></a></li>';
 	/*echo '<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="fas fa-share-square"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-              <div class="dropdown-header">', _('快速访问'), ' <b class="float-right">常用功能</b>
+            <div class="dropdown-menu dropdown-list dropdown-menu-right noPrint">
+              <div class="dropdown-header noPrint">', _('快速访问'), ' <b class="float-right">常用功能</b>
               </div>
-			  <div class="dropdown-list-content dropdown-list-message">';
+			  <div class="dropdown-list-content dropdown-list-message noPrint">';
 	if (count($_SESSION['AllowedPageSecurityTokens'])>1){
                echo ' <a href="', $RootPath, '/SelectCustomer.php" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-avatar">
+                  <div class="dropdown-item-avatar noPrint">
                     <img alt="image" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/cncerp-kehu.svg" class="rounded">
                   </div>
-                  <div class="dropdown-item-desc">
+                  <div class="dropdown-item-desc noPrint">
                     <b>', _('Customers'), '</b>
                     <p>', _('进行客户或会员管理，并针对客户发起交易或查询报告等'), '</p>
                   </div>
                   </a>
                 <a href="', $RootPath, '/SelectProduct.php" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-avatar">
+                  <div class="dropdown-item-avatar noPrint">
                     <img alt="image" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/inventory.png" class="rounded">
                   </div>
-                  <div class="dropdown-item-desc">
+                  <div class="dropdown-item-desc noPrint">
                     <b>', _('Items'), '</b>
                     <p>', _('进行物料管理，并针对物料进行相关设置、查询及为存货报告等'), '</p>
                   </div>
                 </a>
                 <a href="', $RootPath, '/SelectSupplier.php" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-avatar">
+                  <div class="dropdown-item-avatar noPrint">
                     <img alt="image" src="', $RootPath, '/css/', $_SESSION['Theme'], '/images/cncerp-gongying.svg" class="rounded">
                   </div>
-                  <div class="dropdown-item-desc">
+                  <div class="dropdown-item-desc noPrint">
                     <b>', _('Suppliers'), '</b>
                     <p>', _('管理供应商，并针对供应商发起交易或查询报告等'), '</p>
                   </div>
                 </a>
               </div>
-              <div class="dropdown-footer text-center">
+              <div class="dropdown-footer text-center noPrint">
                </div>
             </div>
           </li>';
@@ -134,8 +134,8 @@
                 }
 
 echo '<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="fa fa-heart"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-              <div class="dropdown-header">
+            <div class="dropdown-menu dropdown-list dropdown-menu-right noPrint">
+              <div class="dropdown-header noPrint">
 		        <form action="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '" method="post">
 	              <input type="hidden" name="FormID" value="' . $_SESSION['FormID'] . '" />
 			      <input type="hidden" name="ScriptName" value="' . htmlspecialchars($ScriptName,ENT_QUOTES,'UTF-8') . '" />
@@ -147,16 +147,16 @@ echo '<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdow
 				  </form>
               </div>
 			  
-			  <div class="dropdown-list-content dropdown-list-icons">';
+			  <div class="dropdown-list-content dropdown-list-icons noPrint">';
 		
 		if (isset($_SESSION['Favourites']) AND count($_SESSION['Favourites'])>0) {
 			foreach ($_SESSION['Favourites'] as $url=>$ttl) {
 				echo '
 				 <a href="', $url , '" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-icon bg-primary text-white">
+                  <div class="dropdown-item-icon bg-primary text-white noPrint">
                     <i class="fas fa-code"></i>
                   </div>
-                  <div class="dropdown-item-desc">
+                  <div class="dropdown-item-desc noPrint">
                     ', _($ttl), '
                   </div>
                 </a>';
@@ -164,10 +164,10 @@ echo '<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdow
 		}else{
 		echo '
 				 <a href="#" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-icon bg-primary text-white">
+                  <div class="dropdown-item-icon bg-primary text-white noPrint">
                     <i class="fas fa-code"></i>
                   </div>
-                  <div class="dropdown-item-desc">
+                  <div class="dropdown-item-desc noPrint">
                     ', _(空的，什么也没有), '
                   </div>
                 </a>';
@@ -183,9 +183,9 @@ echo '<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdow
 		  
 		  <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="', $RootPath, '/css/', $_SESSION['Theme'], '/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block">', stripslashes($_SESSION['UsersRealName']), '</div></a>
-            <div class="dropdown-menu dropdown-menu-right">
-              <div class="dropdown-title">', _('当前登录用户：'), '&nbsp;', stripslashes($_SESSION['UsersRealName']), '</div>
+            <div class="d-sm-none d-lg-inline-block noPrint">', stripslashes($_SESSION['UsersRealName']), '</div></a>
+            <div class="dropdown-menu dropdown-menu-right noPrint">
+              <div class="dropdown-title noPrint">', _('当前登录用户：'), '&nbsp;', stripslashes($_SESSION['UsersRealName']), '</div>
               <a href="' . htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?Language='.($_SESSION['Language']=='zh_CN.utf8'?'en_US.utf8':'zh_CN.utf8').'" class="dropdown-item has-icon">
                 <i class="fas fa-language"></i> ', _('语言切换'), '
               </a>
@@ -195,7 +195,7 @@ echo '<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdow
               <a href="', $RootPath, '/ManualContents.php', $ViewTopic, $BookMark, '" rel="external" accesskey="8" class="dropdown-item has-icon">
                 <i class="fas fa-book"></i> ', _('Manual'),'
               </a>
-              <div class="dropdown-divider"></div>
+              <div class="dropdown-divider noPrint"></div>
               <a href="', $RootPath, '/Logout.php" class="dropdown-item has-icon text-danger" onclick="return confirm(\'', _('Are you sure you wish to logout?'), '\');">
                 <i class="fas fa-sign-out-alt"></i>', _('Logout'), '
               </a>
@@ -208,15 +208,14 @@ echo '<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdow
 	
 /*The module link codes are hard coded in a switch statement below to determine the options to show for each tab */
 include('includes/MainMenuLinksArray.php');
-$abcd = '123456';
 // 显示左侧 ===========================================================
 // Option 1:
-echo '<div class="main-sidebar sidebar-style-2">
+echo '<div class="main-sidebar sidebar-style-2 noPrint">
         <aside id="sidebar-wrapper">
-          <div class="sidebar-brand CNCERPsidebar-brand">
+          <div class="sidebar-brand CNCERPsidebar-brand noPrint">
             <a href="#"><img src="'. $RootPath . '/' . $_SESSION['LogoFile'] . '" width="160" alt="CNCERP" title="CNCERP ' . _('Copyright') . ' &copy; weberp -cncerp- ' . date('Y') . '" /></a>
           </div>
-          <div class="sidebar-brand CNCERPsidebar-brand sidebar-brand-sm">
+          <div class="sidebar-brand CNCERPsidebar-brand sidebar-brand-sm ">
             <a href="#">ERP</a>
           </div>';
 		  
@@ -310,10 +309,10 @@ echo '
 	echo  ' <!-- Main Content -->
       <div class="main-content">
         <section class="section">
-          <div  class="section-header">
+          <div class="section-header" id="noprint">
             <h1>'.$Title.'</h1>
 			</div>
           <div class="section-body">
-                      <div class="alert-body" id="MessageContainerHead"></div>
+                      <div class="alert-body noPrint" id="MessageContainerHead"></div>
 		<!--div  class="card"-->';
 ?>

@@ -1,5 +1,5 @@
 <?php
-echo '<div id="MessageContainerFoot">';
+echo '<div id="MessageContainerFoot" class="noPrint">';
 
 if (isset($Messages) and count($Messages) > 0) {
 	foreach ($Messages as $Message) {
@@ -74,8 +74,8 @@ echo '
 <!--/div-->
 </div>
 	  <!-- Main Content 结束-->
-      <footer class="main-footer">
-        <div class="footer-right">
+      <footer class="main-footer noPrint">
+        <div class="footer-right noPrint">
 		CNCERP ' . _('version') . ' ' . $_SESSION['VersionNumber'] . ' ' . _('Copyright') . ' &copy; 2004 - ' . Date('Y'). '<a target="_blank" href="http://cncerp.com/ManualContributors.html">weberp,CNCERP</a>
         </div>
       </footer>

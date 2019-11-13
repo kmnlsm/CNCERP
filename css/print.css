@@ -1,34 +1,40 @@
 /* Print style sheet. */
 
 @media print {
-CNCERP-menu
-CNCERP-menu-content
-CNCERP-menu-items-wrapper
-CNCERP-menu-scroller
 /*#FooterDiv, #HeaderDiv, #MainMenuDiv, .noprint, .page_title_text img, .site-description, .site-title {*/
-#CNCERP-menu, #CNCERP-menu-content,#CNCERP-menu-items-wrapper,#CNCERP-menu-scroller,.noprint, .page_title_text,.img, .site-description, .site-title {
+#CNCERP-menu, #CNCERP-menu-content,#CNCERP-menu-items-wrapper,#CNCERP-menu-scroller, #MessageContainerFoot, #noprint, .noprint, .noPrint, .page_title_text img, .site-description, .site-title {
 	display:none;
 	/* Remove unwanted elements. */
 }
-
+p.page_title_text{
+	font-size: 14px;
+}
 h1 {
-	font-size: 100%;
+	font-size: 30%;
 	font-weight:bold;
 	/* Heading 1. */
 }
 
 h2 {
-	font-size: 144%;
+	font-size: 20%;
 	font-weight:bold;
 	/* Heading 2. */
 }
 
 h3 {
-	font-size: 120%;
+	font-size: 10%;
 	font-weight:bold;
 	/* Heading 3. */
 }
-
+table,table tr th, table tr td { border:1px solid #0000CC; }
+table {
+	  min-width: 90%;
+	  display: table;
+      margin-right: auto;
+      margin-left: auto;
+      border-spacing: 0;
+      border-collapse: collapse;
+	}   
 #content p {
 	color:black;
 }

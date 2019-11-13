@@ -219,7 +219,7 @@ if (!isset($_POST['Show'])) {
 					<td>' . _($myrow['typename']) . '</td>';
 					if ($GLURL==1){
 						echo '
-					<td class="number GLshowlnk noprint" onclick="CNCERP_GLShows(', $myrow['typeid'],',', $myrow['transno'],')">' . $myrow['transno'] . '</th>';
+					<td class="number GLshowlnk" onclick="CNCERP_GLShows(', $myrow['typeid'],',', $myrow['transno'],')">' . $myrow['transno'] . '</th>';
 					}else{
 						echo '<th>' . $myrow['transno'] . '</th>';
 					}

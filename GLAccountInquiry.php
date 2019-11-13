@@ -352,7 +352,7 @@ if(isset($_POST['Show'])) {
 		echo	'<tr class="striped_row">
 		        <td class="centre">', $FormatedTranDate, '</td>
 				<td class="text">', _($myrow['typename']), '</td>
-				<td class="number GLshowlnk noprint" onclick="CNCERP_GLShows(', $myrow['type'] ,',', $myrow['typeno'] ,')">' . $myrow['typeno'] . '</td>
+				<td class="number GLshowlnk" onclick="CNCERP_GLShows(', $myrow['type'] ,',', $myrow['typeno'] ,')">' . $myrow['typeno'] . '</td>
 				<td class="text">', $myrow['narrative'], '</td>
 				<td class="number">', $DebitAmount, '</td>
 				<td class="number">', $CreditAmount, '</td>

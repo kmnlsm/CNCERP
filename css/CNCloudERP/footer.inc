@@ -1,6 +1,6 @@
 <?php //LogPath is set in the table `config`. This fold need writing previlige.
 
-echo '<div id="MessageContainerFoot">';
+echo '<div id="MessageContainerFoot" class="noPrint">';
 global $Messages;
 if (isset($Messages) and count($Messages) > 0) {
 	foreach ($Messages as $Message) {
@@ -57,7 +57,7 @@ if (isset($Messages) and count($Messages) > 0) {
 
 echo '</div>'; // eof MessageContainer div
 
-echo '<footer class="CNCERP-footer noprints">';
+echo '<footer class="CNCERP-footer noprint">';
 
 	//echo '<span class="pull-left">',DisplayDateTime();//</span>
 	echo '<span class="pull-right><a target="_blank" href="http://www.weberp.org/weberp/doc/Manual/ManualContributors.html">',_('webERP') . _('version') . ' ' . $_SESSION['VersionNumber'] . ' ' . _('Copyright') . ' &copy; 2004 - ' . Date('Y'). ' </a></span>';
@@ -71,15 +71,14 @@ echo '</footer>
 echo '
     <script src="', $RootPath, '/css/', $_SESSION['Theme'], '/js/jquery-2.1.3.min.js"></script>
 	<script src="', $RootPath, '/css/', $_SESSION['Theme'], '/js/jquery.cookie.min.js"></script>
-	<!--script src="', $RootPath, '/css/', $_SESSION['Theme'], '/js/fastclick.min.js"></script-->
 	<script src="', $RootPath, '/css/', $_SESSION['Theme'], '/js/bootstrap.min.js"></script>
 	<script src="', $RootPath, '/css/', $_SESSION['Theme'], '/js/CNCERP.min.js"></script>
             '; 
 echo '
-<div class="modal fade bd-example-modal-xl" id="modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
-    <div class="modal-content">
-     <div class="modal-body">
+<div class="modal fade bd-example-modal-xl noPrint" id="modal" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl noPrint">
+    <div class="modal-content noPrint">
+     <div class="modal-body noPrint">
           等待结果，请稍候...
         </div>
     </div>

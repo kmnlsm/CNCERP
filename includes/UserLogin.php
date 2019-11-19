@@ -216,7 +216,9 @@ function userLogin($Name, $Password, $SysAdminEmail = '') {
 			 */
 			if (empty($_SESSION['LogoFile'])) {
 				/* find a logo in companies/CompanyDir */
-				if (file_exists($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/logo.png')) {
+				if (file_exists($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/logo.svg')) {
+					$_SESSION['LogoFile'] = 'companies/' .  $_SESSION['DatabaseName'] . '/logo.svg';
+				} elseif (file_exists($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/logo.png')) {
 					$_SESSION['LogoFile'] = 'companies/' .  $_SESSION['DatabaseName'] . '/logo.png';
 				} elseif (file_exists($PathPrefix . 'companies/' . $_SESSION['DatabaseName'] . '/logo.jpg')) {
 					$_SESSION['LogoFile'] = 'companies/' .  $_SESSION['DatabaseName'] . '/logo.jpg';

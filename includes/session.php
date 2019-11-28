@@ -27,6 +27,9 @@ if (isset($SessionSavePath)){
 if (!isset($SysAdminEmail)) {
 	$SysAdminEmail='';
 }
+if (!isset($SysAdminWorkWeixinID)) {
+	$SysAdminWorkWeixinID ='';
+}
 
 ini_set('session.gc_maxlifetime',$SessionLifeTime);
 
@@ -42,8 +45,11 @@ ini_set('session.cookie_httponly',1);
 // with other apps using the same host.
 // For an example situation to support this need, see:
 // http://www.weberp.org/forum/showthread.php?tid=8133
-session_name('PHPSESSIDwebERPteam');
+session_name('PHPSESSIDCNCERPteam');//改一下防止安装人员同时在服务器上安装了webERP后在特定条件下的混乱
 session_start();
+if (isset($_GET['code']) AND isset($_GET['state'])) {
+			$_SESSION['DatabaseName'] = $DefaultDatabase;//默认数据库作为企业微信登录公司
+				}
 
 include($PathPrefix . 'includes/ConnectDB.inc');
 include($PathPrefix . 'includes/DateFunctions.inc');
@@ -52,7 +58,8 @@ if (!isset($_SESSION['AttemptsCounter']) OR $AllowDemoMode==true){
 	$_SESSION['AttemptsCounter'] = 0;
 }
 
-/* iterate through all elements of the $_POST array and DB_escape_string them
+/*
+iterate through all elements of the $_POST array and DB_escape_string them
 to limit possibility for SQL injection attacks and cross scripting attacks
 */
 
@@ -75,7 +82,8 @@ if (isset($_SESSION['DatabaseName'])){
 		}
 	}
 
-	/* iterate through all elements of the $_GET array and DB_escape_string them
+	/*
+	 iterate through all elements of the $_GET array and DB_escape_string them
 	to limit possibility for SQL injection attacks and cross scripting attacks
 	*/
 	foreach ($_GET as $GetKey => $GetValue) {
@@ -83,9 +91,18 @@ if (isset($_SESSION['DatabaseName'])){
 			$_GET[$GetKey] = DB_escape_string(htmlspecialchars($GetValue,ENT_QUOTES,'UTF-8'));
 		}
 	}
-} else { //set SESSION['FormID'] before the a user has even logged in
-	$_SESSION['FormID'] = sha1(uniqid(mt_rand(), true));
-}
+	if (isset($_GET['state']) AND isset($_GET['code'])) {
+			/*安全检查以确保企业微信回调提交的表单最初来自CNCERP*/
+			if (!isset($_GET['state']) OR ($_GET['state'] != $_SESSION['FormID'])) {
+				$_SESSION['DatabaseName'] = NULL ;
+				$_SESSION['CompanyName'] = NULL ;
+			}else{
+				$WXLOGIN = $_GET['code'];//准备消费这个code
+			}
+		}
+} else {
+		$_SESSION['FormID'] = sha1(uniqid(mt_rand(), true));
+	}
 
 include($PathPrefix . 'includes/LanguageSetup.php');
 $FirstLogin = False;
@@ -155,6 +172,10 @@ if(basename($_SERVER['SCRIPT_NAME'])=='Logout.php'){
 	if (isset($_POST['UserNameEntryField']) AND isset($_POST['Password'])) {
 		$rc = userLogin($_POST['UserNameEntryField'], $_POST['Password'], $SysAdminEmail);
 		$FirstLogin = true;
+	} elseif (isset($_GET['state']) AND isset($_GET['code'])) {
+		$rc = CorpUserLogin($WXLOGIN);//使用验证过的code去获取后续的回调
+		$FirstLogin = true;
+		unset($_GET['code']);//防止浏览器返回重新提交
 	} elseif (empty($_SESSION['DatabaseName'])) {
 		$rc = UL_SHOWLOGIN;
 	} elseif (empty($_SESSION['VersionNumber'])) {
@@ -162,7 +183,6 @@ if(basename($_SERVER['SCRIPT_NAME'])=='Logout.php'){
 	} else {
 		$rc = UL_OK;
 	}
-
 	/*  Need to set the theme to make login screen nice */
 	$Theme = (isset($_SESSION['Theme'])) ? $_SESSION['Theme'] : $DefaultTheme;
 	switch ($rc) {
@@ -181,13 +201,14 @@ if(basename($_SERVER['SCRIPT_NAME'])=='Logout.php'){
 		$Title = _('Account Error Report');
 		include($PathPrefix . 'includes/header.php');
 		echo '<br /><br /><br />';
-		prnMsg(_('Your user role does not have any access defined for webERP. There is an error in the security setup for this user account'),'error');
+		prnMsg(_('Your user role does not have any access defined for webERP. There is an error in the security setup for this user account'),'error');//您的用户角色没有为webERP定义的任何访问权限。此用户帐户的安全设置出错
 		include($PathPrefix . 'includes/footer.php');
 			exit;
 
 	case  UL_NOTVALID:
 		$demo_text = '<font size="3" color="red"><b>' .  _('incorrect password') . '</b></font><br /><b>' . _('The user/password combination') . '<br />' . _('is not a valid user of the system') . '</b>';
 		die(include($PathPrefix . 'includes/Login.php'));
+	
 
 	case  UL_MAINTENANCE:
 		$demo_text = '<font size="3" color="red"><b>' .  _('system maintenance') . '</b></font><br /><b>' . _('webERP is not available right now') . '<br />' . _('during maintenance of the system') . '</b>';
@@ -291,6 +312,10 @@ if ($FirstLogin AND !$SupplierLogin AND !$CustomerLogin AND $_SESSION['ShowDashb
 	header('Location: ' . $PathPrefix .'pos.php');
 	return;
 }
+if ($FirstLogin AND !$SupplierLogin AND !$CustomerLogin AND $_SESSION['ShowDashboard']==3) {
+	header('Location: ' . $PathPrefix .'index.php');
+	return;
+}
 
 
 function CryptPass( $Password ) {
@@ -314,7 +339,7 @@ function CryptPass( $Password ) {
 
 
 if (sizeof($_POST) > 0 AND !isset($AllowAnyone)) {
-	/*Security check to ensure that the form submitted is originally sourced from webERP with the FormID = $_SESSION['FormID'] - which is set before the first login*/
+	/*Security check to ensure that the form submitted is originally sourced from CNCERP with the FormID = $_SESSION['FormID'] - which is set before the first login*/
 	if (!isset($_POST['FormID']) OR ($_POST['FormID'] != $_SESSION['FormID'])) {
 		$Title = _('Error in form verification');
 		include('includes/header.php');
@@ -323,4 +348,5 @@ if (sizeof($_POST) > 0 AND !isset($AllowAnyone)) {
 		exit;
 	}
 }
+
 ?>

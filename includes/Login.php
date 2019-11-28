@@ -3,11 +3,12 @@
 
 //include ('LanguageSetup.php');
 if ((isset($AllowDemoMode)) AND ($AllowDemoMode == True) AND (!isset($demo_text))) {
-	$demo_text = _('Login as user') .': <i>' . _('admin') . '</i><br />' ._('with password') . ': <i>' . _('weberp') . '</i>' .
+	$demo_text = _('Login as user') .': <i>' . _('cncerp') . '</i><br />' ._('with password') . ': <i>' . _('123456') . '</i>' .
 		'<br /><a href="../">' . _('Return') . '</a>';// This line is to add a return link.
 } elseif (!isset($demo_text)) {
 	$demo_text = '';
 }
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//CN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -49,8 +50,8 @@ if (get_magic_quotes_gpc()){
 ?>
 <div id="container" class="form-signin">
 	<div title="Login CN Cloud ERP"  id="login_logo"class="text-center mb-4">
-	<img class="mb-4" src="<?php echo $RootPath.'/css/CNCloudERP'?>/loginlogo.svg" alt="CNCERP" width="260" >
-	<h1 title="CN Cloud ERP" class="h3 mb-3 font-weight-normal">登录CNCERP系统</h1>
+	<img class="mb-4" src="<?php echo $RootPath.'/css/CNCloudERP'?>/logoUI.svg" alt="CNCERP" width="260" >
+	<h1 title="CN Cloud ERP" class="h3 mb-3 font-weight-normal"><?php echo _('Login'); ?> CNCERP</h1>
 	</div>
 	<div id="login_box" class="form-login">
 	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8');?>" method="post">
@@ -130,13 +131,50 @@ if (get_magic_quotes_gpc()){
 ?>
 
 	</div>
-	<input class="btn btn-lg btn-info btn-block" title="Login CN Cloud ERP" type="submit" value="<?php echo _('Login'); ?>" name="SubmitUser" />
-	<p class="mt-5 mb-3 text-muted text-center">CNCERP-中文本地化WebERP项目</p>
+	<button type="button" class="btn btn-primary pull-right" style="width:48%"   data-toggle="modal" data-target="#exampleModalCenter">
+		 企业微信扫码登录
+		</button><!-- Button trigger modal -->
+		<input class="btn btn-primary float-right" style="width:48%" title="Login CN Cloud ERP" type="submit" value="<?php echo _('Login'); ?>" name="SubmitUser" />
+	<p class="mt-5 mb-3 text-muted text-center"><?php echo   _('Be based on').' WebERP4.15 '.'  ' . _('Copyright') . ' &copy; 2004 - ' . Date('Y'). ' <a target="_blank" href="http://www.weberp.org/weberp/doc/Manual/ManualContributors.html">weberp.org</a>';?></p>
 	
 	</div>
 	</form>
 	</div>
 	<br />
 </div>
+
 </body>
+	<!--企业微信登录Modal-->
+	<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalCenterTitle">企业微信扫码登录</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body text-center" id="wx_reg">
+	        
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!--  JS Scripts -->
+  <script src="css/stisla/assets/modules/jquery.min.js"></script>
+  <script src="css/stisla/assets/modules/bootstrap/js/bootstrap.min.js"></script>
+  <script src="http://rescdn.qqmail.com/node/ww/wwopenmng/js/sso/wwLogin-1.0.0.js"></script>
+	<script><!--这里是二维码-->
+	  window.WwLogin({
+	          "id" : "wx_reg",  
+	          "appid" : "<?php echo $WorkWeixinCORP_ID; ?>",
+	          "agentid" : "<?php echo $WorkWeixinAPPROVAL_APP_ID; ?>",
+	          "redirect_uri" :"<?php echo $WorkWeixin2CNCERPurl ?>",
+	          "state" : "<?php echo $_SESSION['FormID']; ?>",
+	          "href" : "",
+	  });
+  </script>
 </html>

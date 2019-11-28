@@ -36,16 +36,16 @@ if(!$db) {
 /* Update to allow RecurringSalesOrdersProcess.php to run via cron */
 if(isset($DatabaseName)) {
 	if(!mysqli_select_db($db,$DatabaseName)) {
+		unset ($DatabaseName);
 		echo '<br />' . _('The company name entered does not correspond to a database on the database server specified in the config.php configuration file. Try logging in with a different company name');
 		echo '<br /><a href="index.php">' . _('Back to login page') . '</a>';
-		unset ($DatabaseName);
 		exit;
 	}
 } else {
 	if(!mysqli_select_db($db,$_SESSION['DatabaseName'])) {
+		unset ($_SESSION['DatabaseName']);
 		echo '<br />' . _('The company name entered does not correspond to a database on the database server specified in the config.php configuration file. Try logging in with a different company name');
 		echo '<br /><a href="index.php">' . _('Back to login page') . '</a>';
-		unset ($_SESSION['DatabaseName']);
 		exit;
 	}
 }

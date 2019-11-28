@@ -64,6 +64,13 @@ $AllowCompanySelectionBox = 'ShowSelectionBox';
 
 //If $AllowCompanySelectionBox is not 'ShowSelectionBox' above then the $DefaultDatabase string is used to determined the default Company
 //entered in the login screen as a default, otherwise the user is expected to know the name of the company to log into.
+//企业微信配置部分
+$SysAdminWorkWeixinID = [1];//默认系统管理员的企业微信用户ID列表数组式，用来接收系统消息
+$WorkWeixinCORP_ID = '' ;//企业ID   多个自建运用共同使用，企业识别
+$WorkWeixinAPPROVAL_APP_SECRET = '';//默认自建运用的Secret
+$WorkWeixinAPPROVAL_APP_ID = '';//默认自建运用的id——即 AgentId
+$WorkWeixin2CNCERPurl = 'http://';//CNCERP的地址域名需是企业微信可信域名
+/*还需要一个默认登录的公司数据库名，这里使用$DefaultDatabase试试*/
 $DefaultDatabase = 'cncerpdemo';
 
 //The maximum time that a login session can be idle before automatic logout

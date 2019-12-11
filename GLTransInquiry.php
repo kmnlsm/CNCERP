@@ -184,7 +184,7 @@ if( !isset($_GET['TypeID']) OR !isset($_GET['TransNo']) ) {
 							$Debit = '&nbsp;';				//特殊情况下显示负号，更改为显示红字CQZ	
 							}
 						} else {
-							$Credit = locale_number_format(($DetailRow['ovamount'] + $DetailRow['ovgst']) / $DetailRow['rate'],$_SESSION['CompanyRecord']['decimalplaces']);
+							$Credit = locale_number_format(($DetailRow['ovamount'] + $DetailRow['ovdiscount'] + $DetailRow['ovgst']) / $DetailRow['rate'],$_SESSION['CompanyRecord']['decimalplaces']);
 							$Debit = '&nbsp;';
 						}
 					}
